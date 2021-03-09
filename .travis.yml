@@ -4,6 +4,10 @@ dart:
 addons:
   postgresql: "9.6"
 
+cache:
+  directories:
+    - $HOME/.pub-cache
+
 services:
   - postgresql
 
