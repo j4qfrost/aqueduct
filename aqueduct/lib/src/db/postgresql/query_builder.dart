@@ -13,7 +13,7 @@ class PostgresQueryBuilder extends TableBuilder {
         .forEach(addColumnValueBuilder);
 
     columnValueBuilders.forEach((cv) {
-      variables[cv!.sqlColumnName(withPrefix: valueKeyPrefix)!] = cv.value;
+      variables[cv!.sqlColumnName(withPrefix: valueKeyPrefix)] = cv.value;
     });
 
     finalize(variables);
@@ -40,7 +40,7 @@ class PostgresQueryBuilder extends TableBuilder {
   void addColumnValueBuilder(String key, dynamic value) {
     final builder = _createColumnValueBuilder(key, value);
     columnValueBuilders.add(builder);
-    variables[builder!.sqlColumnName(withPrefix: valueKeyPrefix)!] =
+    variables[builder!.sqlColumnName(withPrefix: valueKeyPrefix)] =
         builder.value;
   }
 

@@ -123,7 +123,7 @@ class AuthServer implements AuthValidator, APIComponentDocumenter {
   /// Returns a [AuthClient] record for its [clientID].
   ///
   /// Returns null if none exists.
-  Future<AuthClient?> getClient(String? clientID) async {
+  Future<AuthClient?> getClient(String clientID) async {
     return delegate.getClient(this, clientID);
   }
 
@@ -222,8 +222,8 @@ class AuthServer implements AuthValidator, APIComponentDocumenter {
 
     final t = await delegate.getToken(this, byAccessToken: accessToken);
     if (t == null || t.isExpired) {
-      throw AuthServerException(
-          AuthRequestError.invalidGrant, AuthClient(t?.clientID, null, null));
+      throw AuthServerException(AuthRequestError.invalidGrant,
+          AuthClient(t?.clientID ?? "", null, null));
     }
 
     if (scopesRequired != null) {
@@ -493,7 +493,7 @@ class AuthServer implements AuthValidator, APIComponentDocumenter {
 
   Future<Authorization> _validateClientCredentials(
       AuthBasicCredentials credentials) async {
-    final username = credentials.username;
+    final username = credentials.username ?? "";
     final password = credentials.password ?? "";
 
     final client = await getClient(username);
@@ -550,7 +550,7 @@ class AuthServer implements AuthValidator, APIComponentDocumenter {
   }
 
   AuthToken _generateToken(
-      int? ownerID, String? clientID, int expirationInSeconds,
+      int? ownerID, String clientID, int expirationInSeconds,
       {bool allowRefresh = true, List<AuthScope>? scopes}) {
     final now = DateTime.now().toUtc();
     final token = AuthToken()

@@ -71,7 +71,7 @@ class TestToken implements AuthToken, AuthCode {
   @override
   int? resourceOwnerIdentifier;
   @override
-  String? clientID;
+  late String clientID;
   @override
   String? code;
   @override
@@ -114,7 +114,7 @@ class InMemoryAuthStorage extends AuthServerDelegate {
 
   static const String defaultPassword = "foobaraxegrind21%";
 
-  Map<String?, AuthClient>? clients;
+  Map<String, AuthClient>? clients;
   Map<int, TestUser?> users = {};
   List<TestToken?> tokens = [];
   late List<AuthScope> allowedScopes;

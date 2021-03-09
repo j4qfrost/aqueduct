@@ -9,11 +9,11 @@ void main() {
       // ignore: empty_catches
     } on FormatException {}
 
-    try {
-      AuthScope(null);
-      expect(true, false);
-      // ignore: empty_catches
-    } on FormatException {}
+    // try {
+    //   AuthScope(null);
+    //   expect(true, false);
+    //   // ignore: empty_catches
+    // } on FormatException {}
 
     try {
       AuthScope("user.readonly:location");

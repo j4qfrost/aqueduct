@@ -42,7 +42,7 @@ class CLIAuthScopeClient extends CLICommand
     var dataModel = ManagedDataModel.fromCurrentMirrorSystem();
     context = ManagedContext(dataModel, persistentStore);
 
-    var scopingClient = AuthClient.public(clientID,
+    var scopingClient = AuthClient.public(clientID!,
         allowedScopes: scopes?.map((s) => AuthScope(s)).toList());
 
     var query = Query<ManagedAuthClient>(context)

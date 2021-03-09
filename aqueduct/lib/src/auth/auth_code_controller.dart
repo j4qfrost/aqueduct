@@ -74,7 +74,7 @@ class AuthCodeController extends ResourceController {
   ///
   /// This must be a valid client ID according to [authServer].\
   @Bind.query("client_id")
-  String? clientID;
+  late String clientID;
 
   /// Renders an HTML login form.
   final AuthCodeControllerDelegate? delegate;

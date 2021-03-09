@@ -134,11 +134,11 @@ class ColumnBuilder extends Returnable {
     return "";
   }
 
-  String? sqlColumnName(
+  String sqlColumnName(
       {bool withTypeSuffix = false,
       bool withTableNamespace = false,
       String? withPrefix}) {
-    var name = property?.name;
+    var name = property!.name;
 
     if (property is ManagedRelationshipDescription) {
       var relatedPrimaryKey = (property as ManagedRelationshipDescription)

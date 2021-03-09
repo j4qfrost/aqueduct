@@ -189,7 +189,7 @@ class _ManagedAuthClient {
   /// An OAuth 2.0 client represents the client application that authorizes on behalf of the user
   /// with this server. For example 'com.company.mobile_apps'. This value is required.
   @Column(primaryKey: true)
-  String? id;
+  late String id;
 
   /// The client secret, hashed with [salt], if this client is confidential.
   ///
@@ -422,7 +422,7 @@ class ManagedAuthDelegate<T extends ManagedAuthResourceOwner>
   }
 
   @override
-  Future<AuthClient?> getClient(AuthServer server, String? clientID) async {
+  Future<AuthClient?> getClient(AuthServer server, String clientID) async {
     final query = Query<ManagedAuthClient>(context)
       ..where((o) => o.id).equalTo(clientID);
 

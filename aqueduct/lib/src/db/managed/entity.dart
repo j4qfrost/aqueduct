@@ -52,7 +52,7 @@ class ManagedEntity implements APIComponentDocumenter {
   ///
   /// Managed objects are made up of two components, a table definition and an instance type.
   /// The system uses this type to define the mapping to the underlying database table.
-  final String? tableDefinition;
+  final String tableDefinition;
 
   /// All attribute values of this entity.
   ///

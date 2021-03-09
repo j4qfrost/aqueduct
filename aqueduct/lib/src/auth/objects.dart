@@ -15,13 +15,13 @@ class AuthClient {
   ///
   /// If this client supports scopes, [allowedScopes] must contain a list of scopes that tokens may request when authorized
   /// by this client.
-  AuthClient(String? id, String? hashedSecret, String? salt,
+  AuthClient(String id, String? hashedSecret, String? salt,
       {List<AuthScope>? allowedScopes})
       : this.withRedirectURI(id, hashedSecret, salt, null,
             allowedScopes: allowedScopes);
 
   /// Creates an instance of a public [AuthClient].
-  AuthClient.public(String? id, {List<AuthScope>? allowedScopes})
+  AuthClient.public(String id, {List<AuthScope>? allowedScopes})
       : this.withRedirectURI(id, null, null, null,
             allowedScopes: allowedScopes);
 
@@ -37,7 +37,7 @@ class AuthClient {
   List<AuthScope>? _allowedScopes;
 
   /// The ID of the client.
-  String? id;
+  String id;
 
   /// The hashed secret of the client.
   ///
@@ -129,7 +129,7 @@ class AuthToken {
   int? resourceOwnerIdentifier;
 
   /// The client ID this token was issued from.
-  String? clientID;
+  late String clientID;
 
   /// Scopes this token has access to.
   List<AuthScope>? scopes;
@@ -172,7 +172,7 @@ class AuthCode {
   String? code;
 
   /// The client ID the authorization code was issued under.
-  String? clientID;
+  late String clientID;
 
   /// The identifier of the resource owner.
   ///
@@ -212,7 +212,7 @@ class Authorization {
       {this.credentials, this.scopes});
 
   /// The client ID the permission was granted under.
-  final String? clientID;
+  final String clientID;
 
   /// The identifier for the owner of the resource, if provided.
   ///
@@ -286,7 +286,7 @@ class AuthScope {
   /// list of valid characters. A modifier adds an additional restriction to a scope, without having to make up a segment.
   /// An example is the 'readonly' modifier above. A route that requires `user:posts.readonly` would allow passage when the token
   /// has `user`, `user:posts` or `user:posts.readonly`. A route that required `user:posts` would not allow `user:posts.readonly`.
-  factory AuthScope(String? scopeString) {
+  factory AuthScope(String scopeString) {
     final cached = _cache[scopeString];
     if (cached != null) {
       return cached;
@@ -347,7 +347,7 @@ class AuthScope {
     });
   }
 
-  static final Map<String?, AuthScope> _cache = {};
+  static final Map<String, AuthScope> _cache = {};
 
   final String _scopeString;
 
