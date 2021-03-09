@@ -13,10 +13,13 @@ abstract class ResourceControllerRuntime {
   ResourceControllerDocumenter? documenter;
 
   ResourceControllerOperation? getOperationRuntime(
-      String method, List<String> pathVariables) {
-    return operations?.firstWhere(
-        (op) => op?.isSuitableForRequest(method, pathVariables) ?? false,
-        orElse: () => null);
+      String method, List<String?> pathVariables) {
+    try {
+      return operations?.firstWhere(
+          (op) => op?.isSuitableForRequest(method, pathVariables) ?? false);
+    } on StateError {
+      return null;
+    }
   }
 
   void applyRequestProperties(ResourceController untypedController,
@@ -47,7 +50,7 @@ class ResourceControllerOperation {
       required this.invoker});
 
   final List<AuthScope>? scopes;
-  final List<String> pathVariables;
+  final List<String?> pathVariables;
   final String httpMethod;
   final String dartMethodName;
 
@@ -62,7 +65,7 @@ class ResourceControllerOperation {
   /// Note that [requestMethod] may be null; if this is the case, only
   /// path variables are compared.
   bool isSuitableForRequest(
-      String? requestMethod, List<String> requestPathVariables) {
+      String? requestMethod, List<String?> requestPathVariables) {
     if (requestMethod != null && requestMethod.toUpperCase() != httpMethod) {
       return false;
     }
@@ -117,13 +120,13 @@ class ResourceControllerParameter {
   }
 
   final String symbolName;
-  final String name;
+  final String? name;
   final Type type;
   final dynamic defaultValue;
-  final List<String> acceptFilter;
-  final List<String> ignoreFilter;
-  final List<String> requireFilter;
-  final List<String> rejectFilter;
+  final List<String>? acceptFilter;
+  final List<String>? ignoreFilter;
+  final List<String>? requireFilter;
+  final List<String>? rejectFilter;
 
   /// The location in the request that this parameter is bound to
   final BindingType location;
@@ -168,7 +171,7 @@ class ResourceControllerParameter {
         {
           var queryParameters = request.raw.uri.queryParametersAll;
           var value = request.body.isFormData
-              ? request.body.as<Map<String, List<String>>>()[name]
+              ? request.body.as<Map<String, List<String>>>()![name]
               : queryParameters[name];
           if (value == null) {
             return null;
@@ -184,7 +187,7 @@ class ResourceControllerParameter {
         }
       case BindingType.header:
         {
-          final header = request.raw.headers[name];
+          final header = request.raw.headers[name!];
           if (header == null) {
             return null;
           }

@@ -153,7 +153,7 @@ class CrashingTestChannel extends ApplicationChannel {
 
 class TestChannel extends ApplicationChannel {
   static Future initializeApplication(ApplicationOptions config) async {
-    final v = config.context["startup"] as List<int>;
+    final v = config.context["startup"] = [];
     v.add(1);
     config.context["startup"] = v;
   }

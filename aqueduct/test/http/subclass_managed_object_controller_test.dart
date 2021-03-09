@@ -16,7 +16,7 @@ void main() {
 
       var now = DateTime.now().toUtc();
       for (var i = 0; i < 5; i++) {
-        var q = Query<TestModel>(app.channel.context)
+        var q = Query<TestModel>(app.channel!.context)
           ..values!.createdAt = now
           ..values!.name = "$i";
         allObjects.add(await q.insert());
@@ -26,7 +26,7 @@ void main() {
     });
 
     tearDownAll(() async {
-      await app.channel.context?.close();
+      await app.channel?.context?.close();
       await app.stop();
     });
 

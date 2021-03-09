@@ -57,12 +57,12 @@ abstract class BodyDecoder {
   /// The raw bytes of this request body.
   ///
   /// This value is valid if [retainOriginalBytes] was set to true prior to [decode] being invoked.
-  List<int> get originalBytes {
+  List<int>? get originalBytes {
     if (retainOriginalBytes == false) {
       throw StateError(
           "'originalBytes' were not retained. Set 'retainOriginalBytes' to true prior to decoding.");
     }
-    return _bytes ?? [];
+    return _bytes;
   }
 
   final Stream<List<int>> _originalByteStream;
@@ -82,7 +82,7 @@ abstract class BodyDecoder {
   ///
   /// The decoded value is retained, and subsequent invocations of this method return the
   /// retained value to avoid performing the decoding process again.
-  Future<T> decode<T>() async {
+  Future<T?> decode<T>() async {
     if (hasBeenDecoded) {
       return _cast<T>(_decodedData);
     }
@@ -116,7 +116,7 @@ abstract class BodyDecoder {
   ///
   /// This method is the synchronous version of [decode]. However, [decode] must have been called
   /// prior to invoking this method or an error is thrown.
-  T as<T>() {
+  T? as<T>() {
     if (!hasBeenDecoded) {
       throw StateError("Attempted to access request body without decoding it.");
     }
@@ -124,9 +124,9 @@ abstract class BodyDecoder {
     return _cast<T>(_decodedData);
   }
 
-  T _cast<T>(dynamic body) {
+  T? _cast<T>(dynamic body) {
     try {
-      return RuntimeContext.current.coerce<T>(body);
+      return RuntimeContext.current.coerce<T?>(body);
     } on TypeCoercionException {
       throw Response.badRequest(
           body: {"error": "request entity was unexpected type"});

@@ -10,8 +10,13 @@ Iterable<ClassMirror?> classHierarchyForClass(ClassMirror? t) sync* {
 
 T? firstMetadataOfType<T>(DeclarationMirror dm, {TypeMirror? dynamicType}) {
   final tMirror = dynamicType ?? reflectType(T);
-  return dm.metadata.firstWhere((im) => im.type.isSubtypeOf(tMirror)).reflectee
-      as T?;
+  try {
+    return dm.metadata
+        .firstWhere((im) => im.type.isSubtypeOf(tMirror))
+        .reflectee as T;
+  } on StateError {
+    return null;
+  }
 }
 
 List<T> allMetadataOfType<T>(DeclarationMirror dm) {

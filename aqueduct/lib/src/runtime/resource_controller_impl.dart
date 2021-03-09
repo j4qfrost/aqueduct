@@ -164,7 +164,7 @@ class ResourceControllerRuntimeImpl extends ResourceControllerRuntime {
             decoder = (b) {
               final body = b as RequestBody;
               final bodyList = body.as<List<Map<String, dynamic>>>();
-              if (bodyList.isEmpty) {
+              if (bodyList!.isEmpty) {
                 return boundType.newInstance(#from, [[]]).reflectee;
               }
 
@@ -239,11 +239,11 @@ class ResourceControllerRuntimeImpl extends ResourceControllerRuntime {
     }
 
     return ResourceControllerParameter(
-        acceptFilter: metadata.accept!,
-        ignoreFilter: metadata.ignore!,
-        rejectFilter: metadata.reject!,
-        requireFilter: metadata.require!,
-        name: metadata.name!,
+        acceptFilter: metadata.accept,
+        ignoreFilter: metadata.ignore,
+        rejectFilter: metadata.reject,
+        requireFilter: metadata.require,
+        name: metadata.name,
         type: mirror.type.reflectedType,
         symbolName: MirrorSystem.getName(mirror.simpleName),
         location: metadata.bindingType,
@@ -327,9 +327,9 @@ void _enforceTypeCanBeParsedFromString(
 }
 
 dynamic _convertParameterListWithMirror(
-    List<String> parameterValues, TypeMirror typeMirror) {
+    List<String>? parameterValues, TypeMirror typeMirror) {
   if (typeMirror.isSubtypeOf(reflectType(List))) {
-    final iterable = parameterValues.map((str) =>
+    final iterable = parameterValues?.map((str) =>
         _convertParameterWithMirror(str, typeMirror.typeArguments.first));
 
     return (typeMirror as ClassMirror).newInstance(#from, [iterable]).reflectee;
@@ -337,7 +337,7 @@ dynamic _convertParameterListWithMirror(
     if (parameterValues == null) {
       print('wtf');
     }
-    if (parameterValues.length > 1) {
+    if (parameterValues!.length > 1) {
       throw ArgumentError("multiple values not expected");
     }
     return _convertParameterWithMirror(parameterValues.first, typeMirror);

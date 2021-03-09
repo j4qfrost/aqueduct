@@ -69,7 +69,7 @@ void main() {
     await ctx!.finalize();
 
     expect(
-        op["post"]!
+        op!["post"]!
             .requestBody!
             .content!["application/json"]!
             .schema!
@@ -86,7 +86,7 @@ class A extends Serializable {
   B? b;
 
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 
   @override
   Map<String, dynamic>? asMap() {
@@ -98,7 +98,7 @@ class B extends Serializable {
   String? y;
 
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 
   @override
   Map<String, dynamic>? asMap() {
@@ -113,7 +113,7 @@ class FailsToDocument extends Serializable {
   Map<String, dynamic>? asMap() => null;
 
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 }
 
 class OverrideDocument extends Serializable {
@@ -126,7 +126,7 @@ class OverrideDocument extends Serializable {
   Map<String, dynamic>? asMap() => null;
 
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 }
 
 class BoundBody extends Serializable {
@@ -136,7 +136,7 @@ class BoundBody extends Serializable {
   Map<String, dynamic>? asMap() => null;
 
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 }
 
 class BoundBodyController extends ResourceController {

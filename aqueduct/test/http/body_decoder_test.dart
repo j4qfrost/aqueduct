@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:aqueduct/aqueduct.dart';
 import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
+import 'package:mockito/mockito.dart';
 
 import 'package:aqueduct/src/dev/helpers.dart';
 
@@ -40,7 +41,9 @@ void main() {
 
       test("Empty body shows as isEmpty", () async {
         // ignore: unawaited_futures
-        http.get(Uri.parse("http://localhost:8123")).catchError((err) => null);
+        http
+            .get(Uri.parse("http://localhost:8123"))
+            .catchError((err) => Future.value(http.Response.bytes([], 500)));
         var request = await server!.first;
         var body = RequestBody(request);
         expect(body.isEmpty, true);
@@ -95,11 +98,10 @@ void main() {
           .post(Uri.parse("http://localhost:8123"),
               headers: {"Content-Type": "application/json"},
               body: json.encode({"a": "val"}))
-          // ignore: return_of_invalid_type_from_catch_error
-          .catchError((err) => null);
+          .catchError((err) => Future.value(http.Response.bytes([], 500)));
 
       request = Request(await server!.first);
-      Map<String, dynamic> body = await request!.body.decode();
+      Map<String, dynamic>? body = await request!.body.decode();
       expect(body, {"a": "val"});
     });
 
@@ -110,13 +112,12 @@ void main() {
       req.headers.add(HttpHeaders.contentTypeHeader, "application/json");
       req.add(utf8.encode(json.encode({"a": "val"})));
       // ignore: unawaited_futures
-      // ignore: return_of_invalid_type_from_catch_error
-      await req.close().catchError((err) => null);
+      req.close();
 
       request = Request(await server!.first);
       expect(request!.raw.headers.contentType!.charset, null);
 
-      Map<String, dynamic> body = await request!.body.decode();
+      Map<String, dynamic>? body = await request!.body.decode();
       expect(body, {"a": "val"});
     });
 
@@ -127,17 +128,16 @@ void main() {
           .post(Uri.parse("http://localhost:8123"),
               headers: {"Content-Type": "application/x-www-form-urlencoded"},
               body: "a=b&c=2%2F4")
-          // ignore: return_of_invalid_type_from_catch_error
-          .catchError((err) => null);
+          .catchError((err) => Future.value(http.Response.bytes([], 500)));
       var request = Request(await server!.first);
       request.body.retainOriginalBytes = true;
-      Map<String, dynamic> body = await request.body.decode();
+      Map<String, dynamic>? body = await request.body.decode();
       expect(body, {
         "a": ["b"],
         "c": ["2/4"]
       });
 
-      expect(utf8.decode(request.body.originalBytes), "a=b&c=2%2F4");
+      expect(utf8.decode(request.body.originalBytes!), "a=b&c=2%2F4");
     });
 
     test("Any text decoder works on text with charset", () async {
@@ -146,11 +146,10 @@ void main() {
           .post(Uri.parse("http://localhost:8123"),
               headers: {"Content-Type": "text/plain; charset=utf-8"},
               body: "foobar")
-          // ignore: return_of_invalid_type_from_catch_error
-          .catchError((err) => null);
+          .catchError((err) => Future.value(http.Response.bytes([], 500)));
 
       var request = Request(await server!.first);
-      String body = await request.body.decode();
+      String? body = await request.body.decode();
       expect(body, "foobar");
     });
 
@@ -160,11 +159,10 @@ void main() {
           .post(Uri.parse("http://localhost:8123"),
               headers: {"Content-Type": "notarealthing/nothing"},
               body: "foobar".codeUnits)
-          // ignore: return_of_invalid_type_from_catch_error
-          .catchError((err) => null);
+          .catchError((err) => Future.value(http.Response.bytes([], 500)));
 
       var request = Request(await server!.first);
-      List<int> body = await request.body.decode();
+      List<int>? body = await request.body.decode();
       expect(body, "foobar".codeUnits);
     });
 
@@ -173,11 +171,10 @@ void main() {
           .openUrl("POST", Uri.parse("http://localhost:8123"));
       req.add("foobar".codeUnits);
       // ignore: unawaited_futures
-      // ignore: return_of_invalid_type_from_catch_error
-      await req.close().catchError((err) => null);
+      req.close().catchError((err) => Future.value(MockHttpClientResponse()));
 
       var request = Request(await server!.first);
-      List<int> body = await request.body.decode();
+      List<int>? body = await request.body.decode();
 
       expect(request.raw.headers.contentType, isNull);
       expect(body, "foobar".codeUnits);
@@ -188,8 +185,7 @@ void main() {
       http
           .post(Uri.parse("http://localhost:8123"),
               headers: {"Content-Type": "application/json"}, body: "{a=b&c=2")
-          // ignore: return_of_invalid_type_from_catch_error
-          .catchError((err) => null);
+          .catchError((err) => Future.value(http.Response.bytes([], 500)));
       var request = Request(await server!.first);
 
       try {
@@ -228,10 +224,9 @@ void main() {
           .post(Uri.parse("http://localhost:8123"),
               headers: {"Content-Type": "application/thingy"},
               body: json.encode({"key": "value"}))
-          // ignore: return_of_invalid_type_from_catch_error
-          .catchError((err) => null);
+          .catchError((err) => Future.value(http.Response.bytes([], 500)));
       var request = Request(await server!.first);
-      Map<String, dynamic> body = await request.body.decode();
+      Map<String, dynamic>? body = await request.body.decode();
       expect(body, {"key": "value"});
     });
 
@@ -241,11 +236,10 @@ void main() {
           .post(Uri.parse("http://localhost:8123"),
               headers: {"Content-Type": "somethingelse/whatever"},
               body: json.encode({"key": "value"}))
-          // ignore: return_of_invalid_type_from_catch_error
-          .catchError((err) => null);
+          .catchError((err) => Future.value(http.Response.bytes([], 500)));
 
       var request = Request(await server!.first);
-      Map<String, dynamic> body = await request.body.decode();
+      Map<String, dynamic>? body = await request.body.decode();
       expect(body, {"key": "value"});
     });
 
@@ -257,13 +251,12 @@ void main() {
       req.headers.add(HttpHeaders.contentTypeHeader, "somethingelse/foobar");
       req.add(utf8.encode(json.encode({"a": "val"})));
       // ignore: unawaited_futures
-      // ignore: return_of_invalid_type_from_catch_error
-      await req.close().catchError((err) => null);
+      req.close().catchError((err) => Future.value(MockHttpClientResponse()));
 
       var request = Request(await server!.first);
       expect(request.raw.headers.contentType!.charset, null);
 
-      Map<String, dynamic> body = await request.body.decode();
+      Map<String, dynamic>? body = await request.body.decode();
       expect(body, {"a": "val"});
     });
 
@@ -275,8 +268,7 @@ void main() {
       req.headers.add(HttpHeaders.contentTypeHeader, "application/thingy");
       req.add(utf8.encode(json.encode({"a": "val"})));
       // ignore: unawaited_futures
-      // ignore: return_of_invalid_type_from_catch_error
-      await req.close().catchError((err) => null);
+      req.close().catchError((err) => Future.value(MockHttpClientResponse()));
 
       var request = Request(await server!.first);
       expect(request.raw.headers.contentType!.charset, null);
@@ -352,7 +344,7 @@ void main() {
       http.post(Uri.parse("http://localhost:8123"), headers: {
         "Content-Type": "application/json"
         // ignore: return_of_invalid_type_from_catch_error
-      }).catchError((err) => null);
+      }).catchError((err) => Future.value(http.Response('', 500)));
       var body = RequestBody(await server!.first);
 
       expect(await body.decode<Map<String, dynamic>>(), null);
@@ -364,7 +356,7 @@ void main() {
       http.post(Uri.parse("http://localhost:8123"), headers: {
         "Content-Type": "application/json"
         // ignore: return_of_invalid_type_from_catch_error
-      }).catchError((err) => null);
+      }).catchError((err) => Future.value(http.Response('', 500)));
 
       var body = RequestBody(await server!.first);
       await body.decode();
@@ -438,7 +430,7 @@ void main() {
       http.post(Uri.parse("http://localhost:8123"), headers: {
         "Content-Type": "application/json"
         // ignore: return_of_invalid_type_from_catch_error
-      }).catchError((err) => null);
+      }).catchError((err) => Future.value(http.Response('', 500)));
       var body = RequestBody(await server!.first);
 
       expect(await body.decode(), null);
@@ -450,7 +442,7 @@ void main() {
       http.post(Uri.parse("http://localhost:8123"), headers: {
         "Content-Type": "application/json"
         // ignore: return_of_invalid_type_from_catch_error
-      }).catchError((err) => null);
+      }).catchError((err) => Future.value(http.Response('', 500)));
 
       var body = RequestBody(await server!.first);
       await body.decode();
@@ -525,7 +517,7 @@ void main() {
       http.post(Uri.parse("http://localhost:8123"), headers: {
         "Content-Type": "text/plain; charset=utf-8"
         // ignore: return_of_invalid_type_from_catch_error
-      }).catchError((err) => null);
+      }).catchError((err) => Future.value(http.Response('', 500)));
       var body = RequestBody(await server!.first);
 
       expect(await body.decode<String>(), null);
@@ -537,7 +529,7 @@ void main() {
       http.post(Uri.parse("http://localhost:8123"), headers: {
         "Content-Type": "text/plain; charset=utf-8"
         // ignore: return_of_invalid_type_from_catch_error
-      }).catchError((err) => null);
+      }).catchError((err) => Future.value(http.Response('', 500)));
 
       var body = RequestBody(await server!.first);
       await body.decode();
@@ -588,7 +580,7 @@ void main() {
       http.post(Uri.parse("http://localhost:8123"), headers: {
         "Content-Type": "application/octet-stream"
         // ignore: return_of_invalid_type_from_catch_error
-      }).catchError((err) => null);
+      }).catchError((err) => Future.value(http.Response('', 500)));
       var body = RequestBody(await server!.first);
 
       expect(await body.decode<List<int>>(), null);
@@ -600,7 +592,7 @@ void main() {
       http.post(Uri.parse("http://localhost:8123"), headers: {
         "Content-Type": "application/octet-stream"
         // ignore: return_of_invalid_type_from_catch_error
-      }).catchError((err) => null);
+      }).catchError((err) => Future.value(http.Response('', 500)));
 
       var body = RequestBody(await server!.first);
       await body.decode();
@@ -656,8 +648,7 @@ void main() {
           .post(Uri.parse("http://localhost:8123"),
               headers: {"Content-Type": "application/json"},
               body: json.encode({"a": "val"}))
-          // ignore: return_of_invalid_type_from_catch_error
-          .catchError((err) => null);
+          .catchError((err) => Future.value(http.Response.bytes([], 500)));
 
       var request = Request(await server!.first);
 
@@ -744,7 +735,10 @@ void main() {
       req.headers.add(HttpHeaders.contentLengthHeader, bytes.length);
       req.add(bytes);
 
-      var response = await req.close().catchError((err) => null);
+      // ignore: return_of_invalid_type_from_catch_error
+      var response = await req
+          .close()
+          .catchError((err) => Future.value(MockHttpClientResponse()));
       expect(response.statusCode, 413);
 
       req = await client!.postUrl(Uri.parse("http://localhost:8123"));
@@ -778,7 +772,10 @@ void main() {
       req.headers.add(HttpHeaders.contentLengthHeader, bytes.length);
       req.add(bytes);
 
-      var response = await req.close().catchError((err) => null);
+      // ignore: return_of_invalid_type_from_catch_error
+      var response = await req
+          .close()
+          .catchError((err) => Future.value(MockHttpClientResponse()));
       expect(response.statusCode, 413);
 
       req = await client!.postUrl(Uri.parse("http://localhost:8123"));
@@ -799,21 +796,21 @@ Future postJSON(dynamic body) {
           headers: {"Content-Type": "application/json"},
           body: json.encode(body))
       // ignore: return_of_invalid_type_from_catch_error
-      .catchError((err) => null);
+      .catchError((err) => Future.value(http.Response('', 500)));
 }
 
 Future postString(String data) {
   return http
       .post(Uri.parse("http://localhost:8123"),
           headers: {"Content-Type": "text/html; charset=utf-8"}, body: data)
-      // ignore: return_of_invalid_type_from_catch_error
-      .catchError((err) => null);
+      .catchError((err) => Future.value(http.Response('', 500)));
 }
 
 Future postBytes(List<int> bytes) {
   return http
       .post(Uri.parse("http://localhost:8123"),
           headers: {"Content-Type": "application/octet-stream"}, body: bytes)
-      // ignore: return_of_invalid_type_from_catch_error
-      .catchError((err) => null);
+      .catchError((err) => Future.value(http.Response('', 500)));
 }
+
+class MockHttpClientResponse extends Mock implements HttpClientResponse {}

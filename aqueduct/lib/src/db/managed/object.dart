@@ -201,8 +201,8 @@ abstract class ManagedObject<T> extends Serializable {
   }
 
   @override
-  void readFromMap(Map<String, dynamic> object) {
-    object.forEach((key, v) {
+  void readFromMap(Map<String, dynamic>? object) {
+    object?.forEach((key, v) {
       final property = entity.properties[key];
       if (property == null) {
         throw ValidationException(["invalid input key '$key'"]);

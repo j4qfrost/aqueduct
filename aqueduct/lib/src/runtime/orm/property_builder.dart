@@ -10,7 +10,7 @@ import 'package:aqueduct/src/utilities/mirror_helpers.dart';
 
 class PropertyBuilder {
   PropertyBuilder(this.parent, this.declaration)
-      : relate = firstMetadataOfType(declaration)!,
+      : relate = firstMetadataOfType(declaration),
         column = firstMetadataOfType(declaration),
         serialize = _getTransienceForProperty(declaration) {
     name = _getName();
@@ -40,7 +40,7 @@ class PropertyBuilder {
   final Relate? relate;
   final Column? column;
 
-  List<ValidatorBuilder?> get validators => _validators;
+  List<ValidatorBuilder> get validators => _validators;
   Serialize? serialize;
 
   ManagedAttributeDescription? attribute;
@@ -61,7 +61,7 @@ class PropertyBuilder {
   bool indexed = false;
   bool autoincrement = false;
   DeleteRule? deleteRule;
-  List<ValidatorBuilder?> _validators = [];
+  List<ValidatorBuilder> _validators = [];
 
   void compile(List<EntityBuilder>? entityBuilders) {
     if (type == null) {
@@ -87,7 +87,7 @@ class PropertyBuilder {
       autoincrement = column?.autoincrement ?? false;
     }
 
-    validators.forEach((vb) => vb?.compile(entityBuilders));
+    validators.forEach((vb) => vb.compile(entityBuilders));
   }
 
   void validate(List<EntityBuilder> entityBuilders) {
@@ -125,11 +125,11 @@ class PropertyBuilder {
           parent.tableDefinitionTypeName, declaration.simpleName);
     }
 
-    validators.forEach((vb) => vb?.validate(entityBuilders));
+    validators.forEach((vb) => vb.validate(entityBuilders));
   }
 
   void link(List<ManagedEntity> others) {
-    validators.forEach((v) => v?.link(others));
+    validators.forEach((v) => v.link(others));
     if (isRelationship) {
       var destinationEntity =
           others.firstWhere((e) => e == relatedProperty?.parent.entity);
@@ -149,7 +149,7 @@ class PropertyBuilder {
           indexed: true,
           nullable: nullable,
           includedInDefaultResultSet: includeInDefaultResultSet,
-          validators: validators.map((v) => v?.managedValidator).toList());
+          validators: validators.map((v) => v.managedValidator).toList());
     } else {
       final dartType = getDeclarationType().reflectedType;
       attribute = ManagedAttributeDescription(
@@ -162,7 +162,7 @@ class PropertyBuilder {
           nullable: nullable,
           includedInDefaultResultSet: includeInDefaultResultSet,
           autoincrement: autoincrement,
-          validators: validators.map((v) => v?.managedValidator).toList());
+          validators: validators.map((v) => v.managedValidator).toList());
     }
   }
 

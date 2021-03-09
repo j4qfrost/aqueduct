@@ -15,11 +15,15 @@ List<AuthScope>? getMethodScopes(DeclarationMirror m) {
   }
 
   final method = m as MethodMirror;
-  final metadata = method.metadata
-      .firstWhere((im) => im.reflectee is Scope)
-      .reflectee as Scope;
+  try {
+    final metadata = method.metadata
+        .firstWhere((im) => im.reflectee is Scope)
+        .reflectee as Scope;
 
-  return metadata.scopes.map((scope) => AuthScope(scope)).toList();
+    return metadata.scopes.map((scope) => AuthScope(scope)).toList();
+  } on StateError {
+    return null;
+  }
 }
 
 Operation? getMethodOperationMetadata(DeclarationMirror m) {
@@ -32,9 +36,11 @@ Operation? getMethodOperationMetadata(DeclarationMirror m) {
     return null;
   }
 
-  final metadata = method.metadata
-      .firstWhere((im) => im.reflectee is Operation)
-      .reflectee as Operation;
-
-  return metadata;
+  try {
+    return method.metadata
+        .firstWhere((im) => im.reflectee is Operation)
+        .reflectee as Operation;
+  } on StateError {
+    return null;
+  }
 }

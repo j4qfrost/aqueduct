@@ -51,9 +51,13 @@ abstract class CLICommand {
   args.ArgResults? get command => _argumentValues?.command;
 
   StoppableProcess? get runningProcess {
-    return _commandMap.values
-        .firstWhere((cmd) => cmd?.runningProcess != null, orElse: () => null)
-        ?.runningProcess;
+    try {
+      return _commandMap.values
+          .firstWhere((cmd) => cmd.runningProcess != null)
+          .runningProcess;
+    } on StateError {
+      return null;
+    }
   }
 
   @Flag("version", help: "Prints version of this tool", negatable: false)
@@ -75,7 +79,7 @@ abstract class CLICommand {
       defaultsTo: false)
   bool get isMachineOutput => decode("machine") ?? false;
 
-  final Map<String, CLICommand?> _commandMap = {};
+  final Map<String, CLICommand> _commandMap = {};
 
   StringSink _outputSink = stdout;
 
@@ -84,7 +88,7 @@ abstract class CLICommand {
   set outputSink(StringSink sink) {
     _outputSink = sink;
     _commandMap.values.forEach((cmd) {
-      cmd?.outputSink = sink;
+      cmd.outputSink = sink;
     });
   }
 

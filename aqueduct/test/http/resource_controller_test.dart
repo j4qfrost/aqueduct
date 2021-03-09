@@ -585,7 +585,7 @@ class TController extends ResourceController {
 
   @Operation.post()
   Future<Response> post() async {
-    Map<String, dynamic> body = request.body.as();
+    Map<String, dynamic>? body = request.body.as();
 
     return Response.ok(body);
   }

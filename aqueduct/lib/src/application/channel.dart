@@ -172,8 +172,8 @@ abstract class ApplicationChannel implements APIComponentDocumenter {
     doc.paths = root.documentPaths(context);
 
     doc.info = APIInfo(
-        projectSpec["name"] as String, projectSpec["version"] as String,
-        description: projectSpec["description"] as String);
+        projectSpec["name"] as String?, projectSpec["version"] as String?,
+        description: projectSpec["description"] as String?);
 
     await context.finalize();
 

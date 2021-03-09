@@ -135,10 +135,10 @@ class AuthController extends ResourceController {
   }
 
   @override
-  List<APIParameter?> documentOperationParameters(
+  List<APIParameter?>? documentOperationParameters(
       APIDocumentContext context, Operation operation) {
     final parameters = super.documentOperationParameters(context, operation);
-    parameters.removeWhere((p) => p?.name == HttpHeaders.authorizationHeader);
+    parameters?.removeWhere((p) => p?.name == HttpHeaders.authorizationHeader);
     return parameters;
   }
 
@@ -155,11 +155,11 @@ class AuthController extends ResourceController {
   }
 
   @override
-  Map<String, APIOperation> documentOperations(
+  Map<String, APIOperation>? documentOperations(
       APIDocumentContext context, String route, APIPath path) {
     final operations = super.documentOperations(context, route, path);
 
-    operations.forEach((_, op) {
+    operations?.forEach((_, op) {
       op.security = [
         APISecurityRequirement({"oauth2-client-authentication": []})
       ];

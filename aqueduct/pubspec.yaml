@@ -38,6 +38,7 @@ dev_dependencies:
     git: https://github.com/j4qfrost/dart-test-terminal
   aqueduct_test:
     path: ../aqueduct_test
+  mockito: ^5.0.0
 
 executables:
   aqueduct: aqueduct

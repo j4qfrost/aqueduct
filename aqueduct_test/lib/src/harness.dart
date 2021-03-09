@@ -45,7 +45,7 @@ class TestHarness<T extends ApplicationChannel> {
   /// The channel of the running application.
   ///
   /// Use this property to access the channel and its properties during startup or tests.
-  T get channel => application!.channel;
+  T get channel => application!.channel!;
 
   /// The default [Agent] that makes requests to the application being tested.
   Agent? agent;

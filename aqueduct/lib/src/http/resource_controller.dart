@@ -67,15 +67,19 @@ import 'http.dart';
 abstract class ResourceController extends Controller
     implements Recyclable<Null> {
   ResourceController() {
-    _runtime =
-        (RuntimeContext.current.runtimes[runtimeType] as ControllerRuntime)
-            .resourceController!;
+    try {
+      _runtime =
+          (RuntimeContext.current.runtimes?[runtimeType] as ControllerRuntime?)
+              ?.resourceController!;
+    } on StateError {
+      _runtime = null;
+    }
   }
 
   @override
   Null get recycledState => null;
 
-  late ResourceControllerRuntime _runtime;
+  ResourceControllerRuntime? _runtime;
 
   /// The request being processed by this [ResourceController].
   ///
@@ -155,9 +159,9 @@ abstract class ResourceController extends Controller
   /// this method. When overriding this method, call the superclass' implementation and add the additional parameters
   /// to the returned list before returning the combined list.
   @mustCallSuper
-  List<APIParameter?> documentOperationParameters(
+  List<APIParameter?>? documentOperationParameters(
       APIDocumentContext context, Operation operation) {
-    return _runtime.documenter!
+    return _runtime?.documenter!
         .documentOperationParameters(this, context, operation);
   }
 
@@ -186,7 +190,7 @@ abstract class ResourceController extends Controller
   /// automatically generated request body documentation.
   APIRequestBody? documentOperationRequestBody(
       APIDocumentContext context, Operation operation) {
-    return _runtime.documenter!
+    return _runtime?.documenter!
         .documentOperationRequestBody(this, context, operation);
   }
 
@@ -213,14 +217,14 @@ abstract class ResourceController extends Controller
   }
 
   @override
-  Map<String, APIOperation> documentOperations(
+  Map<String, APIOperation>? documentOperations(
       APIDocumentContext context, String route, APIPath path) {
-    return _runtime.documenter!.documentOperations(this, context, route, path);
+    return _runtime?.documenter!.documentOperations(this, context, route, path);
   }
 
   @override
   void documentComponents(APIDocumentContext context) {
-    _runtime.documenter!.documentComponents(this, context);
+    _runtime?.documenter!.documentComponents(this, context);
   }
 
   bool _requestContentTypeIsSupported(Request req) {
@@ -232,8 +236,9 @@ abstract class ResourceController extends Controller
         null;
   }
 
-  List<String> _allowedMethodsForPathVariables(Iterable<String> pathVariables) {
-    return _runtime.operations!
+  List<String>? _allowedMethodsForPathVariables(
+      Iterable<String> pathVariables) {
+    return _runtime?.operations!
         .where((op) =>
             op?.isSuitableForRequest(null, pathVariables.toList()) ?? false)
         .map((op) => op!.httpMethod)
@@ -247,14 +252,14 @@ abstract class ResourceController extends Controller
       }
     }
 
-    final operation = _runtime.getOperationRuntime(
+    final operation = _runtime?.getOperationRuntime(
         request.raw.method, request.path.variables.keys.toList());
     if (operation == null) {
       throw Response(
           405,
           {
             "Allow":
-                _allowedMethodsForPathVariables(request.path.variables.keys)
+                _allowedMethodsForPathVariables(request.path.variables.keys)!
                     .join(", ")
           },
           null);
@@ -336,7 +341,7 @@ abstract class ResourceController extends Controller
 
     args.namedArguments = Map<String, dynamic>.fromEntries(namedEntries);
 
-    final ivarEntries = _runtime.ivarParameters!
+    final ivarEntries = _runtime?.ivarParameters!
         .map((p) {
           return errorCatchWrapper(p, () {
             final value = p.decode(request);
@@ -349,7 +354,7 @@ abstract class ResourceController extends Controller
         .where((e) => e != null)
         .cast<MapEntry<String, dynamic>>();
 
-    args.instanceVariables = Map<String, dynamic>.fromEntries(ivarEntries);
+    args.instanceVariables = Map<String, dynamic>.fromEntries(ivarEntries!);
 
     /* finished decoding bindings, checking for errors */
 
@@ -358,7 +363,7 @@ abstract class ResourceController extends Controller
     }
 
     /* bind and invoke */
-    _runtime.applyRequestProperties(this, args);
+    _runtime?.applyRequestProperties(this, args);
     final response = await operation.invoker(this, args);
     if (!response.hasExplicitlySetContentType) {
       response.contentType = responseContentType;

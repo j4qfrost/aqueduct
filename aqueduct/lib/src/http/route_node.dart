@@ -116,7 +116,7 @@ class RouteNode {
           (spec) => spec?.segments[depth].isRemainingMatcher ?? false);
     }
 
-    Set<String> childPatternedSegments = Set.from(remainingSpecifications
+    Set<String?> childPatternedSegments = Set.from(remainingSpecifications
         .map((spec) => spec?.segments[depth].matcher?.pattern));
 
     patternedChildren = childPatternedSegments.map((pattern) {

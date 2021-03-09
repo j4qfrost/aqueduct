@@ -26,9 +26,10 @@ class EntityBuilder {
     runtime = ManagedEntityRuntimeImpl(instanceType, entity);
 
     properties = _getProperties();
-    primaryKeyProperty =
-        properties.firstWhere((p) => p.column?.isPrimaryKey ?? false);
-    if (primaryKeyProperty == null) {
+    try {
+      primaryKeyProperty =
+          properties.firstWhere((p) => p?.column?.isPrimaryKey ?? false);
+    } catch (err) {
       throw ManagedDataModelErrorImpl.noPrimaryKey(entity);
     }
   }
@@ -43,7 +44,7 @@ class EntityBuilder {
   late ManagedEntity entity;
   List<String>? uniquePropertySet;
   PropertyBuilder? primaryKeyProperty;
-  List<PropertyBuilder> properties = [];
+  List<PropertyBuilder?> properties = [];
   Map<String, ManagedAttributeDescription?> attributes = {};
   Map<String, ManagedRelationshipDescription?> relationships = {};
 
@@ -54,7 +55,7 @@ class EntityBuilder {
 
   void compile(List<EntityBuilder>? entityBuilders) {
     properties.forEach((p) {
-      p.compile(entityBuilders);
+      p!.compile(entityBuilders);
     });
 
     uniquePropertySet =
@@ -68,7 +69,7 @@ class EntityBuilder {
     }
 
     // Check that we only have one primary key
-    if (properties.where((pb) => pb.primaryKey).length != 1) {
+    if (properties.where((pb) => pb!.primaryKey).length != 1) {
       throw ManagedDataModelErrorImpl.noPrimaryKey(entity);
     }
 
@@ -83,12 +84,12 @@ class EntityBuilder {
       }
 
       uniquePropertySet!.forEach((key) {
-        final prop = properties.firstWhere((p) => p.name == key, orElse: () {
+        final prop = properties.firstWhere((p) => p?.name == key, orElse: () {
           throw ManagedDataModelErrorImpl.invalidEntityUniqueProperty(
               tableDefinitionTypeName, Symbol(key));
         });
 
-        if (prop.isRelationship &&
+        if (prop!.isRelationship &&
             prop.relationshipType != ManagedRelationshipType.belongsTo) {
           throw ManagedDataModelErrorImpl.relationshipEntityUniqueProperty(
               tableDefinitionTypeName, Symbol(key));
@@ -97,28 +98,28 @@ class EntityBuilder {
     }
 
     // Check that relationships are unique, i.e. two Relates point to the same property
-    properties.where((p) => p.isRelationship).forEach((p) {
+    properties.where((p) => p!.isRelationship).forEach((p) {
       final relationshipsWithThisInverse = properties
           .where((check) =>
-              check.isRelationship &&
-              check.relatedProperty == p.relatedProperty)
+              check!.isRelationship &&
+              check.relatedProperty == p!.relatedProperty)
           .toList();
       if (relationshipsWithThisInverse.length > 1) {
         throw ManagedDataModelErrorImpl.duplicateInverse(
             tableDefinitionTypeName,
-            p.relatedProperty!.name,
-            relationshipsWithThisInverse.map((r) => r.name).toList());
+            p!.relatedProperty!.name,
+            relationshipsWithThisInverse.map((r) => r!.name).toList());
       }
     });
 
     // Check each property
-    properties.forEach((p) => p.validate(entityBuilders));
+    properties.forEach((p) => p?.validate(entityBuilders));
   }
 
   void link(List<ManagedEntity> entities) {
     entity.symbolMap = {};
     properties.forEach((p) {
-      p.link(entities);
+      p!.link(entities);
 
       entity.symbolMap?[Symbol(p.name)] = p.name;
       entity.symbolMap?[Symbol("${p.name}=")] = p.name;
@@ -148,10 +149,10 @@ class EntityBuilder {
   PropertyBuilder getInverseOf(PropertyBuilder foreignKey) {
     final expectedSymbol = foreignKey.relate!.inversePropertyName;
     var finder =
-        (PropertyBuilder p) => p.declaration.simpleName == expectedSymbol;
+        (PropertyBuilder? p) => p?.declaration.simpleName == expectedSymbol;
     if (foreignKey.relate!.isDeferred) {
       finder = (p) {
-        final propertyType = p.getDeclarationType();
+        final propertyType = p!.getDeclarationType();
         if (propertyType.isSubtypeOf(reflectType(ManagedSet))) {
           return propertyType.typeArguments.first
               .isSubtypeOf(foreignKey.parent.tableDefinitionType);
@@ -162,7 +163,7 @@ class EntityBuilder {
 
     final candidates = properties.where(finder).toList();
     if (candidates.length == 1) {
-      return candidates.first;
+      return candidates.first!;
     } else if (candidates.isEmpty) {
       throw ManagedDataModelErrorImpl.missingInverse(
           foreignKey.parent.tableDefinitionTypeName,
@@ -176,7 +177,7 @@ class EntityBuilder {
         "The relationship '${foreignKey.name}' on '${foreignKey.parent.tableDefinitionTypeName}' "
         "has multiple inverse candidates. There must be exactly one property that is a subclass of the expected type "
         "('${MirrorSystem.getName(foreignKey.getDeclarationType().simpleName)}'), but the following are all possible:"
-        " ${candidates.map((p) => p.name).join(", ")}");
+        " ${candidates.map((p) => p?.name).join(", ")}");
   }
 
   String _getName() {
@@ -197,7 +198,7 @@ class EntityBuilder {
     return declaredTableNameClass.invoke(#tableName, []).reflectee as String;
   }
 
-  List<PropertyBuilder> _getProperties() {
+  List<PropertyBuilder?> _getProperties() {
     final transientProperties = _getTransientAttributes();
     final persistentProperties = instanceVariablesFromClass(tableDefinitionType)
         .map((p) => PropertyBuilder(this, p))
@@ -208,7 +209,7 @@ class EntityBuilder {
         .toList();
   }
 
-  Iterable<PropertyBuilder> _getTransientAttributes() {
+  Iterable<PropertyBuilder?> _getTransientAttributes() {
     final attributes = instanceType.declarations.values
         .where(isTransientPropertyOrAccessor)
         .map((declaration) => PropertyBuilder(this, declaration))
@@ -235,7 +236,7 @@ class EntityBuilder {
       }
     });
 
-    return out as List<PropertyBuilder>;
+    return out;
   }
 
   static ClassMirror getTableDefinitionForType(Type instanceType) {

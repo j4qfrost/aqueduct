@@ -458,11 +458,10 @@ class AuthScope {
   bool isExactlyScope(AuthScope scope) {
     final incomingIterator = scope._segments.iterator;
     for (var segment in _segments) {
-      incomingIterator.moveNext();
-      final incomingSegment = incomingIterator.current;
-      if (incomingSegment == null) {
+      if (!incomingIterator.moveNext()) {
         return false;
       }
+      final incomingSegment = incomingIterator.current;
 
       if (incomingSegment.name != segment.name ||
           incomingSegment.modifier != segment.modifier) {

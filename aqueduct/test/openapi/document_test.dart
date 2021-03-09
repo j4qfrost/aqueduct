@@ -361,7 +361,7 @@ void main() {
     });
 
     test("Non-string key map throws error", () {
-      final schema = (RuntimeContext.current.runtimes[InvalidMapKey]
+      final schema = (RuntimeContext.current.runtimes![InvalidMapKey]
               as SerializableRuntime)
           .documentSchema(ctx!);
       expect(schema.properties!.isEmpty, true);
@@ -372,7 +372,7 @@ void main() {
     });
 
     test("List that contains non-serializble types throws", () {
-      final schema = (RuntimeContext.current.runtimes[InvalidListValue]
+      final schema = (RuntimeContext.current.runtimes![InvalidListValue]
               as SerializableRuntime)
           .documentSchema(ctx!);
       expect(schema.properties!.isEmpty, true);
@@ -383,7 +383,7 @@ void main() {
     });
 
     test("Map that contains values that aren't serializable throws", () {
-      final schema = (RuntimeContext.current.runtimes[InvalidMapValue]
+      final schema = (RuntimeContext.current.runtimes![InvalidMapValue]
               as SerializableRuntime)
           .documentSchema(ctx!);
       expect(schema.properties!.isEmpty, true);
@@ -394,9 +394,9 @@ void main() {
     });
 
     test("Type documentation for complex types", () {
-      final schema =
-          (RuntimeContext.current.runtimes[ComplexTypes] as SerializableRuntime)
-              .documentSchema(ctx!);
+      final schema = (RuntimeContext.current.runtimes![ComplexTypes]
+              as SerializableRuntime)
+          .documentSchema(ctx!);
 
       expect(schema.properties!["a"]!.type, APIType.object);
       expect(schema.properties!["a"]!.additionalPropertySchema!.type,
@@ -454,7 +454,7 @@ class ComplexTypes extends Serializable {
   bool? boolean;
 
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 
   @override
   Map<String, dynamic>? asMap() {
@@ -465,7 +465,7 @@ class ComplexTypes extends Serializable {
 class InvalidMapKey extends Serializable {
   Map<int, String>? x;
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 
   @override
   Map<String, dynamic>? asMap() {
@@ -476,7 +476,7 @@ class InvalidMapKey extends Serializable {
 class InvalidListValue extends Serializable {
   List<DefaultChannel>? y;
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 
   @override
   Map<String, dynamic>? asMap() {
@@ -487,7 +487,7 @@ class InvalidListValue extends Serializable {
 class InvalidMapValue extends Serializable {
   Map<String, DefaultChannel>? z;
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 
   @override
   Map<String, dynamic>? asMap() {
@@ -499,7 +499,7 @@ class Serial extends Serializable {
   int? x;
 
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 
   @override
   Map<String, dynamic>? asMap() {

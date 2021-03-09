@@ -88,11 +88,19 @@ class ResourceControllerDocumenterImpl extends ResourceControllerDocumenter {
         rc.acceptedContentTypes.any((ct) =>
             ct?.primaryType == "application" &&
             ct?.subType == "x-www-form-urlencoded");
-    final boundBody = op?.positionalParameters.firstWhere(
-            (p) => p?.location == BindingType.body,
-            orElse: () => null) ??
-        op?.namedParameters.firstWhere((p) => p?.location == BindingType.body,
-            orElse: () => null);
+
+    ResourceControllerParameter? boundBody;
+    try {
+      boundBody = op?.positionalParameters
+          .firstWhere((p) => p?.location == BindingType.body);
+    } on StateError {
+      try {
+        boundBody = op?.namedParameters
+            .firstWhere((p) => p?.location == BindingType.body);
+      } on StateError {
+        boundBody = null;
+      }
+    }
 
     if (boundBody != null) {
       final ref = getSchemaObjectReference(context, boundBody.type);
@@ -160,19 +168,19 @@ class ResourceControllerDocumenterImpl extends ResourceControllerDocumenter {
   }
 
   List<ResourceControllerParameter?> parametersForOperation(Operation op) {
-    final operation = runtime.operations?.firstWhere(
+    try {
+      final operation = runtime.operations?.firstWhere(
         (b) => b!.isSuitableForRequest(op.method, op.pathVariables),
-        orElse: () => null);
+      );
 
-    if (operation == null) {
+      return [
+        runtime.ivarParameters,
+        operation!.positionalParameters,
+        operation.namedParameters
+      ].expand((i) => i!).toList();
+    } on StateError {
       return [];
     }
-
-    return [
-      runtime.ivarParameters,
-      operation.positionalParameters,
-      operation.namedParameters
-    ].expand((i) => i!).toList();
   }
 
   void _mergeScopes(

@@ -47,8 +47,8 @@ void main() {
   });
 
   setUp(() async {
-    (application!.channel.authServer!.delegate as InMemoryAuthStorage).reset();
-    (application!.channel.authServer!.delegate as InMemoryAuthStorage)
+    (application!.channel!.authServer!.delegate as InMemoryAuthStorage).reset();
+    (application!.channel!.authServer!.delegate as InMemoryAuthStorage)
         .createUsers(2);
   });
 
@@ -74,7 +74,7 @@ void main() {
               headers: {"content-type": "text/html; charset=utf-8"}));
 
       // The data is actually JSON for purposes of this test, just makes it easier to validate here.
-      expect(json.decode(resp!.body.as<String>()), {
+      expect(json.decode(resp!.body.as<String>()!), {
         "response_type": "code",
         "client_id": "com.stablekernel.redirect",
         "state": null,
@@ -100,7 +100,7 @@ void main() {
               headers: {"content-type": "text/html; charset=utf-8"}));
 
       // The data is actually JSON for purposes of this test, just makes it easier to validate here.
-      expect(json.decode(resp!.body.as<String>()), {
+      expect(json.decode(resp!.body.as<String>()!), {
         "response_type": "token",
         "client_id": "com.stablekernel.public.redirect",
         "state": null,
@@ -122,7 +122,7 @@ void main() {
       final resp = await req.get();
       expect(resp, hasStatus(200));
       expect(resp, hasHeaders({"content-type": "text/html; charset=utf-8"}));
-      expect(json.decode(resp!.body.as<String>()), {
+      expect(json.decode(resp!.body.as<String>()!), {
         "response_type": "code",
         "client_id": "com.stablekernel.redirect",
         "state": "Alaska",
@@ -144,7 +144,7 @@ void main() {
       final resp = await req.get();
       expect(resp, hasStatus(200));
       expect(resp, hasHeaders({"content-type": "text/html; charset=utf-8"}));
-      expect(json.decode(resp!.body.as<String>()), {
+      expect(json.decode(resp!.body.as<String>()!), {
         "response_type": "token",
         "client_id": "com.stablekernel.public.redirect",
         "state": "Alaska",
@@ -229,7 +229,7 @@ void main() {
 
       final redirectURI = Uri.parse(resp.headers["location"]!.first);
       final codeParam = redirectURI.queryParameters["code"];
-      final token = await application!.channel.authServer!
+      final token = await application!.channel!.authServer!
           .exchange(codeParam, "com.stablekernel.scoped", "kilimanjaro");
       expect(token.scopes!.length, 1);
       expect(token.scopes!.first.isExactly("user"), true);
@@ -249,7 +249,7 @@ void main() {
 
       final redirectURI = Uri.parse(resp.headers["location"]!.first);
       final codeParam = redirectURI.queryParameters["code"];
-      final token = await application!.channel.authServer!
+      final token = await application!.channel!.authServer!
           .exchange(codeParam, "com.stablekernel.scoped", "kilimanjaro");
       expect(token.scopes!.length, 2);
       expect(token.scopes!.any((s) => s.isExactly("user")), true);

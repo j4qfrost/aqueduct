@@ -243,7 +243,7 @@ class AModel extends Serializable {
   double? key;
 
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 
   @override
   Map<String, dynamic> asMap() {
@@ -280,7 +280,7 @@ class OverrideGeneration extends Serializable {
   late int id;
 
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 
   @override
   Map<String, dynamic> asMap() {

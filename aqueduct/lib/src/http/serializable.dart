@@ -24,7 +24,7 @@ abstract class Serializable {
   /// This method is used by implementors to assign and use values from [object] for its own
   /// purposes. [SerializableException]s should be thrown when [object] violates a constraint
   /// of the receiver.
-  void readFromMap(Map<String, dynamic> object);
+  void readFromMap(Map<String, dynamic>? object);
 
   /// Reads values from [object], after applying filters.
   ///
@@ -42,7 +42,7 @@ abstract class Serializable {
   ///     var values = json.decode(await request.body.decode());
   ///     var user = User()
   ///       ..read(values, ignore: ["id"]);
-  void read(Map<String, dynamic> object,
+  void read(Map<String, dynamic>? object,
       {Iterable<String>? accept,
       Iterable<String>? ignore,
       Iterable<String>? reject,
@@ -52,7 +52,7 @@ abstract class Serializable {
       return;
     }
 
-    final copy = Map<String, dynamic>.from(object);
+    final copy = Map<String, dynamic>.from(object!);
     final stillRequired = require?.toList();
     object.keys.forEach((key) {
       if (reject?.contains(key) ?? false) {

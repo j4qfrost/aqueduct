@@ -35,7 +35,7 @@ class Application<T extends ApplicationChannel> {
   ///
   /// This property is only valid when an application is started via [startOnCurrentIsolate]. You use
   /// this value to access elements of your application channel during testing.
-  T get channel => server?.channel as T;
+  T? get channel => server?.channel as T?;
 
   /// The logger that this application will write messages to.
   ///

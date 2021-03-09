@@ -170,10 +170,10 @@ class AuthCodeController extends ResourceController {
   }
 
   @override
-  List<APIParameter?> documentOperationParameters(
+  List<APIParameter?>? documentOperationParameters(
       APIDocumentContext context, Operation operation) {
     final params = super.documentOperationParameters(context, operation);
-    params.where((p) => p?.name != "scope").forEach((p) {
+    params?.where((p) => p?.name != "scope").forEach((p) {
       p?.isRequired = true;
     });
     return params;
@@ -208,7 +208,7 @@ class AuthCodeController extends ResourceController {
   }
 
   @override
-  Map<String, APIOperation> documentOperations(
+  Map<String, APIOperation>? documentOperations(
       APIDocumentContext context, String route, APIPath path) {
     final ops = super.documentOperations(context, route, path);
     authServer.documentedAuthorizationCodeFlow.authorizationURL =

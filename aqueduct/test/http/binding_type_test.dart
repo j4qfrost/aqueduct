@@ -150,7 +150,7 @@ class BodyListBindWithFilters extends ResourceController {
 
 class Serial extends Serializable {
   @override
-  void readFromMap(Map<String, dynamic> requestBody) {}
+  void readFromMap(Map<String, dynamic>? requestBody) {}
 
   @override
   Map<String, dynamic> asMap() {

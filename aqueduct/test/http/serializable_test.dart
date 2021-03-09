@@ -145,7 +145,7 @@ class TestSerializable extends Serializable {
   Map<String, dynamic>? contents;
 
   @override
-  void readFromMap(Map<String, dynamic> object) {
+  void readFromMap(Map<String, dynamic>? object) {
     contents = object;
   }
 
