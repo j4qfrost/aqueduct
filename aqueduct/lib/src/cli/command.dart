@@ -99,7 +99,7 @@ abstract class CLICommand {
   static const _tabs = "    ";
   static const _errorDelimiter = "*** ";
 
-  T? decode<T>(String key) {
+  T decode<T>(String key) {
     final val = _argumentValues?[key];
     if (T == int && val is String) {
       return int.parse(val) as T;
