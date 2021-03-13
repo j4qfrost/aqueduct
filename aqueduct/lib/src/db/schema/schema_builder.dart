@@ -89,7 +89,7 @@ class SchemaBuilder {
     if (store != null) {
       commands.addAll(store!.renameTable(table, newName));
     } else {
-      commands.add("database.renameTable('$currentTableName', '$newName');");
+      commands.add("database?.renameTable('$currentTableName', '$newName');");
     }
   }
 
@@ -105,7 +105,7 @@ class SchemaBuilder {
     if (store != null) {
       commands.addAll(store!.deleteTable(table));
     } else {
-      commands.add('database.deleteTable("${tableName}");');
+      commands.add('database?.deleteTable("${tableName}");');
     }
   }
 
@@ -158,7 +158,7 @@ class SchemaBuilder {
 
     if (store == null && innerCommands.isNotEmpty) {
       commands.add(
-          "database.alterTable(\"$tableName\", (t) {${innerCommands.join(";")};});");
+          "database?.alterTable(\"$tableName\", (t) {${innerCommands.join(";")};});");
     }
   }
 
@@ -176,7 +176,7 @@ class SchemaBuilder {
           unencodedInitialValue: unencodedInitialValue));
     } else {
       commands.add(
-          'database.addColumn("${column.table?.name}", ${_getNewColumnExpression(column)});');
+          'database?.addColumn("${column.table?.name}", ${_getNewColumnExpression(column)});');
     }
   }
 
@@ -197,12 +197,12 @@ class SchemaBuilder {
     if (store != null) {
       commands.addAll(store!.deleteColumn(table, column));
     } else {
-      commands.add('database.deleteColumn("${tableName}", "${columnName}");');
+      commands.add('database?.deleteColumn("${tableName}", "${columnName}");');
     }
   }
 
   /// Validates and renames a column in a table in [schema].
-  void renameColumn(String? tableName, String columnName, String newName) {
+  void renameColumn(String? tableName, String? columnName, String? newName) {
     var table = schema.tableForName(tableName);
     if (table == null) {
       throw SchemaException("Table $tableName does not exist.");
@@ -219,7 +219,7 @@ class SchemaBuilder {
       commands.addAll(store!.renameColumn(table, column, newName));
     } else {
       commands.add(
-          "database.renameColumn('$tableName', '$columnName', '$newName');");
+          "database?.renameColumn('$tableName', '$columnName', '$newName');");
     }
   }
 
@@ -231,7 +231,7 @@ class SchemaBuilder {
   ///
   /// Example:
   ///
-  ///         database.alterColumn("table", "column", (c) {
+  ///         database?.alterColumn("table", "column", (c) {
   ///           c.isIndexed = true;
   ///           c.isNullable = false;
   ///         }), unencodedInitialValue: "0");
@@ -333,7 +333,7 @@ class SchemaBuilder {
 
     if (store == null && innerCommands.isNotEmpty) {
       commands.add(
-          "database.alterColumn(\"$tableName\", \"$columnName\", (c) {${innerCommands.join(";")};});");
+          "database?.alterColumn(\"$tableName\", \"$columnName\", (c) {${innerCommands.join(";")};});");
     }
   }
 
@@ -351,9 +351,7 @@ class SchemaBuilder {
       if (copy.hasForeignKeyInUniqueSet) {
         copy.uniqueColumnSet = null;
       }
-      copy.columns
-          .where((c) => c?.isForeignKey ?? false)
-          .forEach(copy.removeColumn);
+      copy.columns.where((c) => c.isForeignKey).forEach(copy.removeColumn);
 
       changeList?.add("Adding table '${copy.name}'");
       createTable(copy);
@@ -385,7 +383,7 @@ class SchemaBuilder {
       if (!c.isNullable && c.defaultValue == null) {
         changeList?.add(
             "WARNING: This migration may fail if table '${difference.actualTable?.name}' already has rows. "
-            "Add an 'unencodedInitialValue' to the statement 'database.addColumn(\"${difference.actualTable?.name}\", "
+            "Add an 'unencodedInitialValue' to the statement 'database?.addColumn(\"${difference.actualTable?.name}\", "
             "SchemaColumn(\"${c.name}\", ...)'.");
       }
     });
@@ -413,7 +411,7 @@ class SchemaBuilder {
           columnDiff.actualColumn!.defaultValue == null) {
         changeList?.add(
             "WARNING: This migration may fail if table '${difference.actualTable!.name}' already has rows. "
-            "Add an 'unencodedInitialValue' to the statement 'database.addColumn(\"${difference.actualTable!.name}\", "
+            "Add an 'unencodedInitialValue' to the statement 'database?.addColumn(\"${difference.actualTable!.name}\", "
             "SchemaColumn(\"${columnDiff.actualColumn!.name}\", ...)'.");
       }
     });
@@ -433,7 +431,7 @@ class SchemaBuilder {
 
   static String _getNewTableExpression(SchemaTable table) {
     var builder = StringBuffer();
-    builder.write('database.createTable(SchemaTable("${table.name}", [');
+    builder.write('database?.createTable(SchemaTable("${table.name}", [');
     builder.write(table.columns.map(_getNewColumnExpression).join(","));
     builder.write("]");
 

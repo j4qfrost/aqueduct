@@ -38,8 +38,9 @@ class Schema {
   ///
   /// [map] is typically created from [asMap].
   Schema.fromMap(Map<String, dynamic> map) {
-    _tables = (map["tables"] as List<Map<String, dynamic>>)
-        .map((t) => SchemaTable.fromMap(t))
+    _tables = (map["tables"] as List<Map<String, dynamic>?>)
+        .where((t) => t != null)
+        .map((t) => SchemaTable.fromMap(t!))
         .toList();
   }
 
@@ -51,7 +52,7 @@ class Schema {
   /// The tables in this database.
   ///
   /// Returns an immutable list of tables in this schema.
-  List<SchemaTable?> get tables => List.unmodifiable(_tableStorage ?? []);
+  List<SchemaTable> get tables => List.unmodifiable(_tableStorage ?? []);
 
   // Do not set this directly. Use _tables= instead.
   List<SchemaTable>? _tableStorage;
@@ -137,13 +138,16 @@ class Schema {
   SchemaTable? tableForName(String? name) {
     var lowercaseName = name?.toLowerCase();
 
-    return tables.firstWhere((t) => t?.name?.toLowerCase() == lowercaseName,
-        orElse: () => null);
+    try {
+      return tables.firstWhere((t) => t.name?.toLowerCase() == lowercaseName);
+    } on StateError {
+      return null;
+    }
   }
 
   /// Emits this instance as a transportable [Map].
   Map<String, dynamic> asMap() {
-    return {"tables": tables.map((t) => t?.asMap()).toList()};
+    return {"tables": tables.map((t) => t.asMap()).toList()};
   }
 }
 
@@ -155,11 +159,11 @@ class SchemaDifference {
   ///
   SchemaDifference(this.expectedSchema, this.actualSchema) {
     for (var expectedTable in expectedSchema.tables) {
-      var actualTable = actualSchema[expectedTable?.name];
+      var actualTable = actualSchema[expectedTable.name];
       if (actualTable == null) {
         _differingTables.add(SchemaTableDifference(expectedTable, null));
       } else {
-        var diff = expectedTable!.differenceFrom(actualTable);
+        var diff = expectedTable.differenceFrom(actualTable);
         if (diff.hasDifferences) {
           _differingTables.add(diff);
         }
@@ -167,7 +171,7 @@ class SchemaDifference {
     }
 
     _differingTables.addAll(actualSchema.tables
-        .where((t) => expectedSchema[t?.name] == null)
+        .where((t) => expectedSchema[t.name] == null)
         .map((unexpectedTable) {
       return SchemaTableDifference(null, unexpectedTable);
     }));
@@ -193,11 +197,14 @@ class SchemaDifference {
   /// The differences, if any, between tables in [expectedSchema] and [actualSchema].
   List<SchemaTableDifference> get tableDifferences => _differingTables;
 
-  List<SchemaTable?> get tablesToAdd {
-    return _differingTables
-        .where((diff) => diff.expectedTable == null && diff.actualTable != null)
-        .map((d) => d.actualTable)
-        .toList();
+  List<SchemaTable> get tablesToAdd {
+    List<SchemaTable> acc = [];
+    _differingTables.forEach((diff) {
+      if (diff.expectedTable == null && diff.actualTable != null) {
+        acc.add(diff.actualTable!);
+      }
+    });
+    return acc;
   }
 
   List<SchemaTable?> get tablesToDelete {

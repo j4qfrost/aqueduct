@@ -32,11 +32,10 @@ class SchemaTable {
   }
 
   /// Creates a deep copy of [otherTable].
-  SchemaTable.from(SchemaTable? otherTable) {
-    name = otherTable?.name;
-    _columns =
-        otherTable?.columns.map((col) => SchemaColumn.from(col!)).toList();
-    _uniqueColumnSet = otherTable?._uniqueColumnSet;
+  SchemaTable.from(SchemaTable otherTable) {
+    name = otherTable.name;
+    _columns = otherTable.columns.map((col) => SchemaColumn.from(col)).toList();
+    _uniqueColumnSet = otherTable._uniqueColumnSet;
   }
 
   /// Creates an empty table.
@@ -47,10 +46,11 @@ class SchemaTable {
   /// This [map] is typically generated from [asMap];
   SchemaTable.fromMap(Map<String, dynamic> map) {
     name = map["name"] as String;
-    _columns = (map["columns"] as List<Map<String, dynamic>>)
-        .map((c) => SchemaColumn.fromMap(c))
+    _columns = (map["columns"] as List<Map<String, dynamic>?>)
+        .where((c) => c != null)
+        .map((c) => SchemaColumn.fromMap(c!))
         .toList();
-    uniqueColumnSet = (map["unique"] as List).cast();
+    uniqueColumnSet = (map["unique"] as List? ?? []).cast();
   }
 
   /// The [Schema] this table belongs to.
@@ -77,11 +77,11 @@ class SchemaTable {
   }
 
   /// An unmodifiable list of [SchemaColumn]s in this table.
-  List<SchemaColumn?> get columns => List.unmodifiable(_columnStorage ?? []);
+  List<SchemaColumn> get columns => List.unmodifiable(_columnStorage ?? []);
 
   bool get hasForeignKeyInUniqueSet => columns
-      .where((c) => c?.isForeignKey ?? false)
-      .any((c) => uniqueColumnSet?.contains(c?.name) ?? false);
+      .where((c) => c.isForeignKey)
+      .any((c) => uniqueColumnSet?.contains(c.name) ?? false);
 
   List<SchemaColumn>? _columnStorage;
   List<String>? _uniqueColumnSet;
@@ -114,7 +114,7 @@ class SchemaTable {
     column.table = this;
   }
 
-  void renameColumn(SchemaColumn column, String newName) {
+  void renameColumn(SchemaColumn? column, String? newName) {
     throw SchemaException("Renaming a column not yet implemented!");
 
 //    if (!columns.contains(column)) {
@@ -165,15 +165,19 @@ class SchemaTable {
   /// with [name].
   SchemaColumn? columnForName(String? name) {
     var lowercaseName = name?.toLowerCase();
-    return columns.firstWhere((col) => col?.name.toLowerCase() == lowercaseName,
-        orElse: () => null);
+    try {
+      return columns
+          .firstWhere((col) => col.name.toLowerCase() == lowercaseName);
+    } on StateError {
+      return null;
+    }
   }
 
   /// Returns portable representation of this table.
   Map<String, dynamic> asMap() {
     return {
       "name": name,
-      "columns": columns.map((c) => c?.asMap()).toList(),
+      "columns": columns.map((c) => c.asMap()).toList(),
       "unique": uniqueColumnSet
     };
   }
@@ -191,11 +195,11 @@ class SchemaTableDifference {
     if (expectedTable != null && actualTable != null) {
       for (var expectedColumn in expectedTable!.columns) {
         final actualColumn =
-            actualTable != null ? actualTable![expectedColumn!.name] : null;
+            actualTable != null ? actualTable![expectedColumn.name] : null;
         if (actualColumn == null) {
           _differingColumns.add(SchemaColumnDifference(expectedColumn, null));
         } else {
-          var diff = expectedColumn!.differenceFrom(actualColumn);
+          var diff = expectedColumn.differenceFrom(actualColumn);
           if (diff.hasDifferences) {
             _differingColumns.add(diff);
           }
@@ -203,7 +207,7 @@ class SchemaTableDifference {
       }
 
       _differingColumns.addAll(actualTable!.columns
-          .where((t) => expectedTable![t?.name] == null)
+          .where((t) => expectedTable![t.name] == null)
           .map((unexpectedColumn) {
         return SchemaColumnDifference(null, unexpectedColumn);
       }));

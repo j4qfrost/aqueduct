@@ -271,9 +271,10 @@ void main() {
       var childJoin = q.join(object: (p) => p.child!)
         ..join(object: (c) => c.toy!);
       childJoin
-          .join(set: (c) => c.vaccinations!)
-          .where((o) => o.kind!)
+          .join(set: (c) => c.vaccinations)
+          .where((o) => o.kind)
           .equalTo("V1");
+
       var results = await q.fetch();
       expect(results.length, 0);
     });
@@ -447,7 +448,7 @@ class Parent extends ManagedObject<_Parent> implements _Parent {}
 
 class _Parent {
   @primaryKey
-  late int pid;
+  int? pid;
   String? name;
 
   Child? child;
@@ -457,7 +458,7 @@ class Child extends ManagedObject<_Child> implements _Child {}
 
 class _Child {
   @primaryKey
-  late int cid;
+  int? cid;
   String? name;
 
   @Relate(Symbol('child'))
@@ -472,7 +473,7 @@ class Toy extends ManagedObject<_Toy> implements _Toy {}
 
 class _Toy {
   @primaryKey
-  late int tid;
+  int? tid;
 
   String? name;
 
@@ -484,7 +485,7 @@ class Vaccine extends ManagedObject<_Vaccine> implements _Vaccine {}
 
 class _Vaccine {
   @primaryKey
-  late int vid;
+  int? vid;
   String? kind;
 
   @Relate(Symbol('vaccinations'))

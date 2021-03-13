@@ -61,7 +61,7 @@ void main() {
   });
 
   test("Can view error stacktrace when failing to doc", () async {
-    terminal!.agent!.modifyFile("lib/controller/identity_controller.dart",
+    terminal!.agent.modifyFile("lib/controller/identity_controller.dart",
         (contents) {
       final lastCurly = contents.lastIndexOf("}");
       return contents.replaceRange(lastCurly, lastCurly, """

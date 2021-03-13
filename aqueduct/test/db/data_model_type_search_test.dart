@@ -46,7 +46,7 @@ class Mixin extends ManagedObject<_Mixin> with MixinEntity implements _Mixin {
 
 class _Mixin {
   @primaryKey
-  late int id;
+  int? id;
 }
 
 abstract class MixinEntity {

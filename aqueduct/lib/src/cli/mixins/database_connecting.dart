@@ -16,7 +16,7 @@ abstract class CLIDatabaseConnectingCommand implements CLICommand, CLIProject {
   @Flag("use-ssl",
       help: "Whether or not the database connection should use SSL",
       defaultsTo: false)
-  bool get useSSL => decode("use-ssl") ?? false;
+  bool get useSSL => decode("use-ssl", orElse: () => false);
 
   @Option("connect",
       abbr: "c",

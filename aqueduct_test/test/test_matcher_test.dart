@@ -163,20 +163,21 @@ void main() {
       expect(
           response,
           hasHeaders({
-            "x-timestamp": isAfter(xTimestamp.subtract(Duration(seconds: 10)))
+            "x-timestamp":
+                isAfter(xTimestamp.subtract(const Duration(seconds: 10)))
           }));
       expect(
           response,
           hasHeaders({
-            "x-timestamp": isBefore(xTimestamp.add(Duration(seconds: 10)))
+            "x-timestamp": isBefore(xTimestamp.add(const Duration(seconds: 10)))
           }));
       expect(response,
           hasHeaders({"x-timestamp": isBeforeOrSameMomentAs(xTimestamp)}));
       expect(
           response,
           hasHeaders({
-            "x-timestamp":
-                isBeforeOrSameMomentAs(xTimestamp.add(Duration(seconds: 10)))
+            "x-timestamp": isBeforeOrSameMomentAs(
+                xTimestamp.add(const Duration(seconds: 10)))
           }));
       expect(response,
           hasHeaders({"x-timestamp": isAfterOrSameMomentAs(xTimestamp)}));
@@ -184,7 +185,7 @@ void main() {
           response,
           hasHeaders({
             "x-timestamp": isAfterOrSameMomentAs(
-                xTimestamp.subtract(Duration(seconds: 10)))
+                xTimestamp.subtract(const Duration(seconds: 10)))
           }));
       expect(response, hasHeaders({"x-timestamp": isSameMomentAs(xTimestamp)}));
 
@@ -192,12 +193,13 @@ void main() {
         expect(
             response,
             hasHeaders({
-              "x-timestamp": isAfter(xTimestamp.add(Duration(seconds: 10)))
+              "x-timestamp":
+                  isAfter(xTimestamp.add(const Duration(seconds: 10)))
             }));
       },
           allOf([
             contains(
-                "must be after ${xTimestamp.add(Duration(seconds: 10)).toIso8601String()}")
+                "must be after ${xTimestamp.add(const Duration(seconds: 10)).toIso8601String()}")
           ]));
 
       expectFailureFor(() {
@@ -205,12 +207,12 @@ void main() {
             response,
             hasHeaders({
               "x-timestamp":
-                  isBefore(xTimestamp.subtract(Duration(seconds: 10)))
+                  isBefore(xTimestamp.subtract(const Duration(seconds: 10)))
             }));
       },
           allOf([
             contains(
-                "must be before ${xTimestamp.subtract(Duration(seconds: 10)).toIso8601String()}")
+                "must be before ${xTimestamp.subtract(const Duration(seconds: 10)).toIso8601String()}")
           ]));
 
       expectFailureFor(() {
@@ -218,12 +220,25 @@ void main() {
             response,
             hasHeaders({
               "x-timestamp": isBeforeOrSameMomentAs(
-                  xTimestamp.subtract(Duration(seconds: 10)))
+                  xTimestamp.subtract(const Duration(seconds: 10)))
             }));
       },
           allOf([
             contains(
-                "must be before or same moment as ${xTimestamp.subtract(Duration(seconds: 10)).toIso8601String()}")
+                "must be before or same moment as ${xTimestamp.subtract(const Duration(seconds: 10)).toIso8601String()}")
+          ]));
+
+      expectFailureFor(() {
+        expect(
+            response,
+            hasHeaders({
+              "x-timestamp": isAfterOrSameMomentAs(
+                  xTimestamp.add(const Duration(seconds: 10)))
+            }));
+      },
+          allOf([
+            contains(
+                "must be after or same moment as ${xTimestamp.add(const Duration(seconds: 10)).toIso8601String()}")
           ]));
 
       expectFailureFor(() {
@@ -231,25 +246,12 @@ void main() {
             response,
             hasHeaders({
               "x-timestamp":
-                  isAfterOrSameMomentAs(xTimestamp.add(Duration(seconds: 10)))
+                  isSameMomentAs(xTimestamp.add(const Duration(seconds: 10)))
             }));
       },
           allOf([
             contains(
-                "must be after or same moment as ${xTimestamp.add(Duration(seconds: 10)).toIso8601String()}")
-          ]));
-
-      expectFailureFor(() {
-        expect(
-            response,
-            hasHeaders({
-              "x-timestamp":
-                  isSameMomentAs(xTimestamp.add(Duration(seconds: 10)))
-            }));
-      },
-          allOf([
-            contains(
-                "must be same moment as ${xTimestamp.add(Duration(seconds: 10)).toIso8601String()}")
+                "must be same moment as ${xTimestamp.add(const Duration(seconds: 10)).toIso8601String()}")
           ]));
     });
 

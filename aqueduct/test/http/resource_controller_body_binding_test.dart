@@ -238,14 +238,12 @@ Future<http.Response> postJSON(dynamic body) {
   if (body == null) {
     return http.post(Uri.parse("http://localhost:4040"), headers: {
       "Content-Type": "application/json"
-      // ignore: return_of_invalid_type_from_catch_error
     }).catchError((err) => Future.value(http.Response('', 500)));
   }
   return http
       .post(Uri.parse("http://localhost:4040"),
           headers: {"Content-Type": "application/json"},
           body: json.encode(body))
-      // ignore: return_of_invalid_type_from_catch_error
       .catchError((err) => Future.value(http.Response('', 500)));
 }
 
@@ -253,7 +251,7 @@ class TestModel extends ManagedObject<_TestModel> implements _TestModel {}
 
 class _TestModel {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 }

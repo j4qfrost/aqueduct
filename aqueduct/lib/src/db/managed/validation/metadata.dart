@@ -61,10 +61,10 @@ class ValidateCompilationError extends Error {
 ///         class Person extends ManagedObject<_Person> implements _Person {}
 ///         class _Person {
 ///           @primaryKey
-///           int id;
+///           int? id;
 ///
 ///           @Validate.length(greaterThan: 10)
-///           String name;
+///           String? name;
 ///         }
 ///
 /// Properties may have more than one metadata of this type. All validations must pass
@@ -195,13 +195,13 @@ class Validate {
   /// only uses one argument:
   ///
   ///         @Validate.length(lessThan: 10)
-  ///         String foo;
+  ///         String? foo;
   ///
   /// All provided arguments are evaluated. Therefore, the following
   /// requires an input string to have a length to be between 6 and 10:
   ///
   ///         @Validate.length(greaterThanEqualTo: 6, lessThanEqualTo: 10)
-  ///         String foo;
+  ///         String? foo;
   ///
   /// If [onUpdate] is true (the default), this validation is run on update queries.
   /// If [onInsert] is true (the default), this validation is run on insert queries.
@@ -266,7 +266,7 @@ class Validate {
   /// This validator can be used for [String] and [int] properties.
   ///
   ///         @Validate.oneOf(const ["A", "B", "C")
-  ///         String foo;
+  ///         String? foo;
   ///
   /// If [onUpdate] is true (the default), this validation is run on update queries.
   /// If [onInsert] is true (the default), this validation is run on insert queries.

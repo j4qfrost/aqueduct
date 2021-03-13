@@ -14,7 +14,8 @@ class CLIBuild extends CLICommand with CLIProject {
       help:
           "Whether or not the 'build' directory should be left intact after the application is compiled.",
       defaultsTo: false)
-  bool get retainBuildArtifacts => decode("retain-build-artifacts") ?? false;
+  bool get retainBuildArtifacts =>
+      decode("retain-build-artifacts", orElse: () => false);
 
   @Option("build-directory",
       help:

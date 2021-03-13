@@ -112,7 +112,7 @@ class MockHTTPServer extends MockServer<Request> {
   /// the response to simulate long-running tasks or network issues.
   void queueResponse(Response resp, {Duration? delay}) {
     _responseQueue
-        .add(_MockServerResponse(object: resp, delay: delay ?? defaultDelay!));
+        .add(_MockServerResponse(object: resp, delay: delay ?? defaultDelay));
   }
 
   /// Enqueues a function that creates a response for the next request.
@@ -124,7 +124,7 @@ class MockHTTPServer extends MockServer<Request> {
   /// Optionally includes a [delay] before sending the response to simulate long-running tasks or network issues.
   void queueHandler(Response handler(Request request), {Duration? delay}) {
     _responseQueue.add(
-        _MockServerResponse(handler: handler, delay: delay ?? defaultDelay!));
+        _MockServerResponse(handler: handler, delay: delay ?? defaultDelay));
   }
 
   /// Enqueues an outage; the next request will not receive a response.

@@ -17,12 +17,12 @@ class RootObject extends ManagedObject<_RootObject> implements _RootObject {
   }
 
   @override
-  int get hashCode => rid;
+  int get hashCode => rid!;
 }
 
 class _RootObject {
   @primaryKey
-  late int rid;
+  int? rid;
 
   int? value1;
   int? value2;
@@ -48,12 +48,12 @@ class ChildObject extends ManagedObject<_ChildObject> implements _ChildObject {
   }
 
   @override
-  int get hashCode => cid;
+  int get hashCode => cid!;
 }
 
 class _ChildObject {
   @primaryKey
-  late int cid;
+  int? cid;
 
   int? value1;
   int? value2;
@@ -84,12 +84,12 @@ class GrandChildObject extends ManagedObject<_GrandChildObject>
   }
 
   @override
-  int get hashCode => gid;
+  int get hashCode => gid!;
 }
 
 class _GrandChildObject {
   @primaryKey
-  late int gid;
+  int? gid;
 
   int? value1;
   int? value2;
@@ -117,12 +117,12 @@ class OtherRootObject extends ManagedObject<_OtherRootObject>
   }
 
   @override
-  int get hashCode => id;
+  int get hashCode => id!;
 }
 
 class _OtherRootObject {
   @primaryKey
-  late int id;
+  int? id;
 
   int? value1;
   int? value2;
@@ -138,12 +138,12 @@ class RootJoinObject extends ManagedObject<_RootJoinObject>
   }
 
   @override
-  int get hashCode => id;
+  int get hashCode => id!;
 }
 
 class _RootJoinObject {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('join'))
   OtherRootObject? other;

@@ -61,8 +61,8 @@ void main() {
     });
 
     test("Relationships aren't attributes and vice versa", () {
-      expect(dataModel!.entityForType(User)!.relationships!["id"]!, isNull);
-      expect(dataModel!.entityForType(User)!.attributes["id"]!, isNotNull);
+      expect(dataModel!.entityForType(User)!.relationships!["id"], isNull);
+      expect(dataModel!.entityForType(User)!.attributes["id"], isNotNull);
 
       expect(dataModel!.entityForType(User)!.attributes["manager"], isNull);
       expect(
@@ -109,8 +109,8 @@ void main() {
     });
 
     test("Default properties contain belongsTo relationship", () {
-      var entity = dataModel!.entityForType(Item);
-      expect(entity!.defaultProperties, ["name", "user"]);
+      var entity = dataModel!.entityForType(Item)!;
+      expect(entity.defaultProperties, ["name", "user"]);
     });
 
     test("Attributes have appropriate value set", () {
@@ -128,8 +128,8 @@ void main() {
     });
 
     test("Relationships have appropriate values set", () {
-      var entity = dataModel!.entityForType(Item);
-      var relDesc = entity!.relationships!["user"]!;
+      var entity = dataModel!.entityForType(Item)!;
+      var relDesc = entity.relationships!["user"]!;
       expect(relDesc is ManagedRelationshipDescription, true);
       expect(relDesc.isNullable, false);
       expect(relDesc.inverseKey, "items");
@@ -144,8 +144,8 @@ void main() {
           relDesc.destinationEntity == dataModel!.entityForType(User)!, true);
       expect(relDesc.relationshipType, ManagedRelationshipType.belongsTo);
 
-      entity = dataModel!.entityForType(Manager);
-      relDesc = entity!.relationships!["worker"]!;
+      entity = dataModel!.entityForType(Manager)!;
+      relDesc = entity.relationships!["worker"]!;
       expect(relDesc is ManagedRelationshipDescription, true);
       expect(relDesc.isNullable, true);
       expect(relDesc.inverseKey, "manager");
@@ -170,8 +170,8 @@ void main() {
                   .entityForType(Manager)!
                   .relationships![relDesc.inverseKey],
           true);
-      expect(
-          relDesc.destinationEntity == dataModel!.entityForType(Manager), true);
+      expect(relDesc.destinationEntity == dataModel!.entityForType(Manager)!,
+          true);
       expect(relDesc.relationshipType, ManagedRelationshipType.hasOne);
 
       expect(entity.relationships!["items"]!.relationshipType!,
@@ -179,14 +179,14 @@ void main() {
     });
 
     test("Enums are string attributes in table definition", () {
-      var entity = dataModel!.entityForType(EnumObject);
-      expect(entity!.attributes["enumValues"]!.type!.kind,
+      var entity = dataModel!.entityForType(EnumObject)!;
+      expect(entity.attributes["enumValues"]!.type!.kind,
           ManagedPropertyType.string);
     });
 
     test("Document properties are .document", () {
-      final entity = dataModel!.entityForType(DocumentObject);
-      expect(entity!.attributes["document"]!.type!.kind,
+      final entity = dataModel!.entityForType(DocumentObject)!;
+      expect(entity.attributes["document"]!.type!.kind,
           ManagedPropertyType.document);
     });
 
@@ -355,10 +355,10 @@ void main() {
 
       expect(dataModel.entities.length, 2);
 
-      var totalEntity = dataModel.entityForType(TotalModel);
-      var referenceEntity = dataModel.entityForType(PartialReferenceModel);
+      var totalEntity = dataModel.entityForType(TotalModel)!;
+      var referenceEntity = dataModel.entityForType(PartialReferenceModel)!;
 
-      expect(totalEntity!.properties.length, 5);
+      expect(totalEntity.properties.length, 5);
       expect(totalEntity.primaryKey, "id");
       expect(totalEntity.attributes["transient"]!.isTransient, true);
       expect(totalEntity.attributes["addedField"]!.name, isNotNull);
@@ -367,7 +367,7 @@ void main() {
       expect(
           totalEntity.relationships!["hasManyRelationship"]!.destinationEntity
               .tableName,
-          referenceEntity!.tableName);
+          referenceEntity.tableName);
       expect(
           totalEntity.relationships!["hasManyRelationship"]!.relationshipType,
           ManagedRelationshipType.hasMany);
@@ -441,9 +441,9 @@ void main() {
       () {
     var model = ManagedDataModel([LeftMany, JoinMany, RightMany]);
 
-    var joinEntity = model.entityForType(JoinMany);
+    var joinEntity = model.entityForType(JoinMany)!;
     expect(
-        joinEntity!.relationships!["left"]!.destinationEntity.instanceType ==
+        joinEntity.relationships!["left"]!.destinationEntity.instanceType ==
             LeftMany,
         true);
     expect(
@@ -513,7 +513,7 @@ class User extends ManagedObject<_User> implements _User {
 
 class _User {
   @primaryKey
-  late int id;
+  int? id;
 
   String? username;
   bool? flag;
@@ -545,7 +545,7 @@ class Manager extends ManagedObject<_Manager> implements _Manager {}
 
 class _Manager {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -614,7 +614,7 @@ class TransientTest extends ManagedObject<_TransientTest>
 
 class _TransientTest {
   @primaryKey
-  late int id;
+  int? id;
 
   String? text;
 }
@@ -630,7 +630,7 @@ class _TotalModel extends PartialModel {
 
 class PartialModel {
   @primaryKey
-  late int id;
+  int? id;
 
   @Column(indexed: true)
   String? field;
@@ -647,7 +647,7 @@ class PartialReferenceModel extends ManagedObject<_PartialReferenceModel>
 
 class _PartialReferenceModel {
   @primaryKey
-  late int id;
+  int? id;
 
   String? field;
 
@@ -661,7 +661,7 @@ class DoubleRelationshipForeignKeyModel
 
 class _DoubleRelationshipForeignKeyModel {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('hasManyOf'))
   DoubleRelationshipHasModel? isManyOf;
@@ -679,7 +679,7 @@ class DoubleRelationshipHasModel
 
 class _DoubleRelationshipHasModel {
   @primaryKey
-  late int id;
+  int? id;
 
   ManagedSet<DoubleRelationshipForeignKeyModel>? hasManyOf;
   DoubleRelationshipForeignKeyModel? hasOneOf;
@@ -690,7 +690,7 @@ class SomeOtherRelationshipModel
 
 class _SomeOtherRelationshipModel extends SomeOtherPartialModel {
   @primaryKey
-  late int id;
+  int? id;
 }
 
 class SomeOtherPartialModel {
@@ -701,7 +701,7 @@ class LeftMany extends ManagedObject<_LeftMany> implements _LeftMany {}
 
 class _LeftMany {
   @primaryKey
-  late int id;
+  int? id;
 
   ManagedSet<JoinMany>? join;
 }
@@ -710,7 +710,7 @@ class RightMany extends ManagedObject<_RightMany> implements _RightMany {}
 
 class _RightMany {
   @primaryKey
-  late int id;
+  int? id;
 
   ManagedSet<JoinMany>? join;
 }
@@ -719,7 +719,7 @@ class JoinMany extends ManagedObject<_JoinMany> implements _JoinMany {}
 
 class _JoinMany {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('join'))
   LeftMany? left;
@@ -732,7 +732,7 @@ class CyclicLeft extends ManagedObject<_CyclicLeft> {}
 
 class _CyclicLeft {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('from'))
   CyclicRight? leftRef;
@@ -744,7 +744,7 @@ class CyclicRight extends ManagedObject<_CyclicRight> {}
 
 class _CyclicRight {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('from'))
   CyclicLeft? rightRef;
@@ -756,7 +756,7 @@ class EnumObject extends ManagedObject<_EnumObject> implements _EnumObject {}
 
 class _EnumObject {
   @primaryKey
-  late int id;
+  int? id;
 
   EnumValues? enumValues;
 }
@@ -768,7 +768,7 @@ class MultiUnique extends ManagedObject<_MultiUnique> {}
 @Table.unique([Symbol('a'), Symbol('b')])
 class _MultiUnique {
   @primaryKey
-  late int id;
+  int? id;
 
   int? a;
   int? b;
@@ -779,7 +779,7 @@ class MultiUniqueBelongsTo extends ManagedObject<_MultiUniqueBelongsTo> {}
 @Table.unique([Symbol('rel'), Symbol('b')])
 class _MultiUniqueBelongsTo {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('a'))
   MultiUniqueHasA? rel;
@@ -791,7 +791,7 @@ class MultiUniqueHasA extends ManagedObject<_MultiUniqueHasA> {}
 
 class _MultiUniqueHasA {
   @primaryKey
-  late int id;
+  int? id;
 
   MultiUniqueBelongsTo? a;
 }
@@ -800,7 +800,7 @@ class DocumentObject extends ManagedObject<_DocumentObject> {}
 
 class _DocumentObject {
   @primaryKey
-  late int id;
+  int? id;
 
   Document? document;
 }
@@ -810,7 +810,7 @@ class AnnotatedTable extends ManagedObject<_AnnotatedTable> {}
 @Table(name: "foobar")
 class _AnnotatedTable {
   @primaryKey
-  late int id;
+  int? id;
 }
 
 class SelfReferential extends ManagedObject<_SelfReferential>
@@ -818,7 +818,7 @@ class SelfReferential extends ManagedObject<_SelfReferential>
 
 class _SelfReferential {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 

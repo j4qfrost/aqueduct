@@ -17,12 +17,12 @@ class CLITemplateCreator extends CLICommand with CLIAqueductGlobal {
 
   @Option("template",
       abbr: "t", help: "Name of the template to use", defaultsTo: "default")
-  String get templateName => decode("template") ?? "default";
+  String get templateName => decode("template", orElse: () => "default");
 
   @Flag("offline",
       negatable: false,
       help: "Will fetch dependencies from a local cache if they exist.")
-  bool get offline => decode("offline") ?? false;
+  bool get offline => decode("offline", orElse: () => false);
 
   String? get projectName =>
       remainingArguments!.isNotEmpty ? remainingArguments!.first : null;

@@ -150,7 +150,7 @@ void main() {
 
 class _Model {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 }

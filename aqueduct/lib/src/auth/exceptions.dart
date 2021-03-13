@@ -6,7 +6,7 @@ class AuthServerException implements Exception {
 
   /// Returns a string suitable to be included in a query string or JSON response body
   /// to indicate the error during processing an OAuth 2.0 request.
-  static String? errorString(AuthRequestError error) {
+  static String errorString(AuthRequestError error) {
     switch (error) {
       case AuthRequestError.invalidRequest:
         return "invalid_request";
@@ -34,14 +34,14 @@ class AuthServerException implements Exception {
       case AuthRequestError.temporarilyUnavailable:
         return "temporarily_unavailable";
       default:
-        return null;
+        return "error_unknown";
     }
   }
 
   AuthRequestError reason;
   AuthClient? client;
 
-  String? get reasonString {
+  String get reasonString {
     return errorString(reason);
   }
 

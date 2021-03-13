@@ -23,7 +23,7 @@ abstract class ResourceOwner {
   ///
   /// This unique identifier is used by [AuthServer] to associate authorization codes and access tokens with
   /// this resource owner.
-  int get id;
+  int? get id;
 }
 
 /// The methods used by an [AuthServer] to store information and customize behavior related to authorization.
@@ -53,7 +53,7 @@ abstract class AuthServerDelegate {
   ///
   /// This method must return an instance of [AuthClient] if one exists for [clientID]. Otherwise, it must return null.
   /// [server] is the [AuthServer] requesting the [AuthClient].
-  FutureOr<AuthClient?> getClient(AuthServer server, String clientID);
+  FutureOr<AuthClient?> getClient(AuthServer server, String? clientID);
 
   /// Removes an [AuthClient] for a client ID.
   ///

@@ -173,7 +173,7 @@ class TestModel extends ManagedObject<_TestModel> implements _TestModel {}
 
 class _TestModel {
   @Column(primaryKey: true)
-  late int id;
+  int? id;
 
   String? name;
   String? email;

@@ -44,7 +44,6 @@ void main() {
 
     var m = TestModel(name: "Joe", email: "b@a.com");
     var req = Query<TestModel>(context)..values = m;
-
     var item = await req.insert();
     var id = item.id;
 
@@ -106,7 +105,7 @@ void main() {
 
     int idIndex = 0;
     for (TestModel m in result) {
-      int next = m.id;
+      int next = m.id!;
       expect(next, greaterThan(idIndex));
       idIndex = next;
     }
@@ -492,7 +491,7 @@ class TestModel extends ManagedObject<_TestModel> implements _TestModel {
 
 class _TestModel {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -514,7 +513,7 @@ class GenUser extends ManagedObject<_GenUser> implements _GenUser {}
 
 class _GenUser {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -530,7 +529,7 @@ class GenPost extends ManagedObject<_GenPost> implements _GenPost {}
 
 class _GenPost {
   @primaryKey
-  late int id;
+  int? id;
 
   String? text;
 
@@ -542,7 +541,7 @@ class Omit extends ManagedObject<_Omit> implements _Omit {}
 
 class _Omit {
   @primaryKey
-  late int id;
+  int? id;
 
   @Column(omitByDefault: true)
   String? text;
@@ -563,7 +562,7 @@ class PrivateField extends ManagedObject<_PrivateField>
 
 class _PrivateField {
   @primaryKey
-  late int id;
+  int? id;
 
   String? _private;
 }
@@ -572,7 +571,7 @@ class EnumObject extends ManagedObject<_EnumObject> implements _EnumObject {}
 
 class _EnumObject {
   @primaryKey
-  late int id;
+  int? id;
 
   @Column(nullable: true)
   EnumValues? enumValues;

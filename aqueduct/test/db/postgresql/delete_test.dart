@@ -190,7 +190,7 @@ class TestModel extends ManagedObject<_TestModel> implements _TestModel {}
 
 class _TestModel {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -214,7 +214,7 @@ class RefModel extends ManagedObject<_RefModel> implements _RefModel {}
 
 class _RefModel {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('ref'), isRequired: false, onDelete: DeleteRule.nullify)
   TestModel? test;
@@ -225,7 +225,7 @@ class GRestrictInverse extends ManagedObject<_GRestrictInverse>
 
 class _GRestrictInverse {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -236,7 +236,7 @@ class GRestrict extends ManagedObject<_GRestrict> implements _GRestrict {}
 
 class _GRestrict {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('test'), isRequired: false, onDelete: DeleteRule.restrict)
   GRestrictInverse? test;
@@ -247,7 +247,7 @@ class GCascadeInverse extends ManagedObject<_GCascadeInverse>
 
 class _GCascadeInverse {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -258,7 +258,7 @@ class GCascade extends ManagedObject<_GCascade> implements _GCascade {}
 
 class _GCascade {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('test'), isRequired: false, onDelete: DeleteRule.cascade)
   GCascadeInverse? test;

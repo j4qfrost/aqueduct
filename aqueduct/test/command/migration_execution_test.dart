@@ -23,7 +23,7 @@ void main() {
   setUpAll(() async {
     final t = CLIClient(CommandLineAgent(ProjectAgent.projectsDirectory));
     cli = await t.createProject();
-    await cli!.agent!.getDependencies(offline: true);
+    await cli!.agent.getDependencies(offline: true);
   });
 
   setUp(() async {

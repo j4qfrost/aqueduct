@@ -23,7 +23,7 @@ void main() {
         "--connect",
         "postgres://dart:dart@localhost:5432/dart_test"
       ];
-    await cli!.agent!.getDependencies();
+    await cli!.agent.getDependencies();
   });
 
   setUp(() async {

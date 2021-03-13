@@ -62,7 +62,7 @@ class ChannelRuntimeImpl extends ChannelRuntime implements SourceCompiler {
         .map((dm) {
       return reflect(channel).getField(dm.simpleName).reflectee
           as APIComponentDocumenter;
-    }).where((o) => o != null);
+    });
   }
 
   @override
@@ -99,7 +99,7 @@ class ChannelRuntimeImpl extends ChannelRuntime {
   IsolateEntryFunction get isolateEntryPoint => entryPoint;
   
   @override
-  Uri get libraryUri => null;
+  Uri? get libraryUri => null;
 
   @override
   Type get channelType => $className;
@@ -188,8 +188,8 @@ class ControllerRuntimeImpl extends ControllerRuntime {
   @override
   bool get isMutable => ${isMutable};
 
-  ResourceControllerRuntime get resourceController => _resourceController;
-  ResourceControllerRuntime _resourceController;
+  ResourceControllerRuntime? get resourceController => _resourceController;
+  ResourceControllerRuntime? _resourceController;
 }
 
 ${(resourceController as ResourceControllerRuntimeImpl).compile(ctx)}

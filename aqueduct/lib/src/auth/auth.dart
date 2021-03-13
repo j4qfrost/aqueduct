@@ -50,9 +50,8 @@ class AuthUtility {
       int hashLength = 32,
       int hashRounds = 1000,
       Hash? hashFunction}) {
-    final id = clientID ?? "";
     if (secret == null) {
-      return AuthClient.withRedirectURI(id, null, null, redirectURI);
+      return AuthClient.withRedirectURI(clientID, null, null, redirectURI);
     }
 
     final salt = generateRandomSalt(hashLength: hashLength);
@@ -61,7 +60,7 @@ class AuthUtility {
         hashLength: hashLength,
         hashFunction: hashFunction);
 
-    return AuthClient.withRedirectURI(id, hashed, salt, redirectURI);
+    return AuthClient.withRedirectURI(clientID, hashed, salt, redirectURI);
   }
 }
 

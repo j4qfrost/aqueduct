@@ -490,7 +490,7 @@ class Game extends ManagedObject<_Game> implements _Game {}
 
 class _Game {
   @primaryKey
-  late int id;
+  int? id;
 
   int? homeScore;
   int? awayScore;
@@ -506,7 +506,7 @@ class Team extends ManagedObject<_Team> implements _Team {}
 
 class _Team {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 

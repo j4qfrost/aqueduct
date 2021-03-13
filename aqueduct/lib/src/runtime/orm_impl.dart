@@ -429,10 +429,10 @@ class ManagedEntityRuntimeImpl extends ManagedEntityRuntime {
    _entity = $entityConstructor;
   }
 
-  ManagedEntity _entity;
+  ManagedEntity? _entity;
 
   @override
-  ManagedEntity get entity => _entity; 
+  ManagedEntity? get entity => _entity; 
 
   @override
   void finalize(ManagedDataModel dataModel) {
@@ -479,7 +479,7 @@ class ManagedEntityRuntimeImpl extends ManagedEntityRuntime {
   }
   
   @override
-  String getPropertyName(Invocation invocation, ManagedEntity entity) {
+  String? getPropertyName(Invocation invocation, ManagedEntity entity) {
     ${_getGetPropertyNameImpl(ctx)}    
   }
   

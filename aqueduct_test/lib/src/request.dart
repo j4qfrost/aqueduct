@@ -34,7 +34,7 @@ class TestRequest {
   /// [body] will be encoded according to the codec in [CodecRegistry] that matches this value.
   ///
   /// Defaults to [ContentType.json].
-  ContentType contentType = ContentType.json;
+  ContentType? contentType = ContentType.json;
 
   /// The body of the this request.
   ///

@@ -389,7 +389,7 @@ class T extends ManagedObject<_T> implements _T {}
 
 class _T {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.matches(r"^[A-Z]+$")
   String? regex;
@@ -457,7 +457,7 @@ class U extends ManagedObject<_U> implements _U {}
 
 class _U {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.present()
   int? present;
@@ -495,7 +495,7 @@ class Constant extends ManagedObject<_Constant> implements _Constant {}
 
 class _Constant {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.constant()
   String? constantString;
@@ -509,14 +509,14 @@ class ConstantRef extends ManagedObject<_ConstantRef> implements _ConstantRef {}
 
 class _ConstantRef {
   @primaryKey
-  late int id;
+  int? id;
 
   Constant? constant;
 }
 
 class _V {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.oneOf(["a", "b"])
   String? aOrbButReallyOnlyA;
@@ -526,7 +526,7 @@ class EnumObject extends ManagedObject<_EnumObject> implements _EnumObject {}
 
 class _EnumObject {
   @primaryKey
-  late int id;
+  int? id;
 
   EnumValues? enumValues;
 }
@@ -537,7 +537,7 @@ class FK extends ManagedObject<_FK> implements _FK {}
 
 class _FK {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.compare(greaterThan: 1)
   @Relate(#fk)
@@ -549,7 +549,7 @@ class Parent extends ManagedObject<_Parent> implements _Parent {}
 class _Parent {
   @Validate.compare(greaterThan: 100)
   @primaryKey
-  late int id;
+  int? id;
 
   FK? fk;
 }
@@ -558,7 +558,7 @@ class PresenceHas extends ManagedObject<_PresenceHas> implements _PresenceHas {}
 
 class _PresenceHas {
   @primaryKey
-  late int id;
+  int? id;
 
   ManagedSet<PresenceBelongsTo>? present;
 }
@@ -568,7 +568,7 @@ class PresenceBelongsTo extends ManagedObject<_PresenceBelongsTo>
 
 class _PresenceBelongsTo {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.present(onInsert: true)
   @Relate(#present)
@@ -579,7 +579,7 @@ class AbsenceHas extends ManagedObject<_AbsenceHas> implements _AbsenceHas {}
 
 class _AbsenceHas {
   @primaryKey
-  late int id;
+  int? id;
 
   ManagedSet<AbsenceBelongsTo>? absent;
 }
@@ -589,7 +589,7 @@ class AbsenceBelongsTo extends ManagedObject<_AbsenceBelongsTo>
 
 class _AbsenceBelongsTo {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.absent(onInsert: true)
   @Relate(#absent)
@@ -604,7 +604,7 @@ class _NonDefaultPK {
       primaryKey: true,
       databaseType: ManagedPropertyType.bigInteger,
       autoincrement: true)
-  late int id;
+  int? id;
 
   String? name;
 }
@@ -616,7 +616,7 @@ const validateReference = Validate.compare(lessThan: 100);
 
 class _MultiValidate {
   @primaryKey
-  late int id;
+  int? id;
 
   @validateReference
   @Validate.compare(lessThan: 5)

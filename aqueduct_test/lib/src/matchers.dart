@@ -120,7 +120,7 @@ Matcher isSameMomentAs(DateTime date) {
 ///         expect(response, hasResponse(200, {"createdDate": isTimestamp}));
 Matcher isTimestamp = predicate((String str) {
   try {
-    return DateTime.parse(str) != null;
+    return DateTime.tryParse(str) != null;
   } catch (e) {
     return false;
   }

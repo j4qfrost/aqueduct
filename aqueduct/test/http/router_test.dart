@@ -47,7 +47,7 @@ void main() {
     });
 
     test("Router 404 but does not accept html, no body", () async {
-      Router router = Router();
+      Router? router = Router();
 
       router.route("/player").linkFunction((req) async {
         return Response.ok("");
@@ -107,12 +107,12 @@ void main() {
       router.route("/a/[:id]").linkFunction((req) async {
         // ignore: unawaited_futures
         req.respond(Response(200, null, null));
-        return Future.value();
+        return null;
       });
       router.route("/a/:id/f").linkFunction((req) async {
         // ignore: unawaited_futures
         req.respond(Response(201, null, null));
-        return Future.value();
+        return null;
       });
 
       server = await enableRouter(router);

@@ -54,7 +54,7 @@ abstract class PersistentStore {
   List<String> deleteColumn(SchemaTable table, SchemaColumn column);
 
   List<String> renameColumn(
-      SchemaTable table, SchemaColumn column, String name);
+      SchemaTable table, SchemaColumn column, String? name);
 
   List<String> alterColumnNullability(
       SchemaTable table, SchemaColumn column, String? unencodedInitialValue);

@@ -37,7 +37,7 @@ class AuthClient {
   List<AuthScope>? _allowedScopes;
 
   /// The ID of the client.
-  String id;
+  String? id;
 
   /// The hashed secret of the client.
   ///

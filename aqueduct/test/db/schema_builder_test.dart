@@ -18,7 +18,7 @@ void main() {
 
     test("Adding a table", () {
       builder!.createTable(SchemaTable("foobar", []));
-      expect(builder!.schema.tables.firstWhere((st) => st!.name == "foobar"),
+      expect(builder!.schema.tables.firstWhere((st) => st.name == "foobar"),
           isNotNull);
 
       try {
@@ -45,16 +45,18 @@ void main() {
       }
 
       builder!.deleteTable("_DefaultItem");
-      expect(
-          builder!.schema.tables.firstWhere((st) => st!.name == "_DefaultItem",
-              orElse: () => null),
-          isNull);
+      try {
+        builder!.schema.tables.firstWhere((st) => st.name == "_DefaultItem");
+        fail("unreachable");
+        // ignore: empty_catches
+      } on StateError {}
 
       builder!.deleteTable("_cONTAINER");
-      expect(
-          builder!.schema.tables
-              .firstWhere((st) => st!.name == "_Container", orElse: () => null),
-          isNull);
+      try {
+        builder!.schema.tables.firstWhere((st) => st.name == "_Container");
+        fail("unreachable");
+        // ignore: empty_catches
+      } on StateError {}
     });
 
     test("Adding a unique set", () {
@@ -106,13 +108,13 @@ void main() {
           builder!.schema
               .tableForName("_DefaultItem")!
               .columns
-              .firstWhere((sc) => sc!.name == "col1"),
+              .firstWhere((sc) => sc.name == "col1"),
           isNotNull);
       expect(
           builder!.schema
               .tableForName("_DefaultItem")!
               .columns
-              .firstWhere((sc) => sc!.name == "col2"),
+              .firstWhere((sc) => sc.name == "col2"),
           isNotNull);
 
       try {
@@ -134,12 +136,14 @@ void main() {
 
     test("Deleting column", () {
       builder!.deleteColumn("_DefaultItem", "id");
-      expect(
-          builder!.schema
-              .tableForName("_DefaultItem")!
-              .columns
-              .firstWhere((sc) => sc!.name == "id", orElse: () => null),
-          isNull);
+      try {
+        builder!.schema
+            .tableForName("_DefaultItem")!
+            .columns
+            .firstWhere((sc) => sc.name == "id");
+        fail("unreachable");
+        // ignore: empty_catches
+      } on StateError {}
 
       try {
         builder!.deleteColumn("_DefaultItem", "col1");
@@ -261,7 +265,7 @@ class Container extends ManagedObject<_Container> implements _Container {}
 
 class _Container {
   @primaryKey
-  late int id;
+  int? id;
 
   ManagedSet<DefaultItem>? defaultItems;
   ManagedSet<LoadedItem>? loadedItems;
@@ -271,7 +275,7 @@ class DefaultItem extends ManagedObject<_DefaultItem> implements _DefaultItem {}
 
 class _DefaultItem {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('defaultItems'))
   Container? container;
@@ -281,7 +285,7 @@ class LoadedItem extends ManagedObject<_LoadedItem> {}
 
 class _LoadedItem {
   @primaryKey
-  late int id;
+  int? id;
 
   @Column(indexed: true)
   String? someIndexedThing;
@@ -297,7 +301,7 @@ class LoadedSingleItem extends ManagedObject<_LoadedSingleItem> {}
 
 class _LoadedSingleItem {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('loadedSingleItem'),
       onDelete: DeleteRule.cascade, isRequired: true)
@@ -308,7 +312,7 @@ class SimpleModel extends ManagedObject<_SimpleModel> implements _SimpleModel {}
 
 class _SimpleModel {
   @primaryKey
-  late int id;
+  int? id;
 }
 
 class ExtensiveModel extends ManagedObject<_ExtensiveModel>
@@ -319,7 +323,7 @@ class ExtensiveModel extends ManagedObject<_ExtensiveModel>
 
 class _ExtensiveModel {
   @Column(primaryKey: true, databaseType: ManagedPropertyType.string)
-  late String id;
+  String? id;
 
   DateTime? startDate;
 

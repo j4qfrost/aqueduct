@@ -5,7 +5,7 @@ class FailingHeterogenous extends ManagedObject<_FH> {}
 
 class _FH {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.oneOf(["x", 1])
   int? d;

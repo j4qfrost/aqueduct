@@ -21,5 +21,5 @@ class DefaultConstructorHasRequiredArgs
 
 class _ConstructorTableDef {
   @primaryKey
-  late int id;
+  int? id;
 }

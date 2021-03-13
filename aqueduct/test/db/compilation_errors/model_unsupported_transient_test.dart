@@ -9,7 +9,7 @@ class InvalidTransientModel extends ManagedObject<_InvalidTransientModel>
 
 class _InvalidTransientModel {
   @primaryKey
-  late int id;
+  int? id;
 }
 
 void main() {

@@ -497,7 +497,7 @@ class CrashingStorage extends InMemoryAuthStorage {
   }
 
   @override
-  Future<AuthClient> getClient(AuthServer? server, String? id) async {
+  Future<AuthClient> getClient(AuthServer server, String? id) async {
     throw Response(504, null, "ok");
   }
 }

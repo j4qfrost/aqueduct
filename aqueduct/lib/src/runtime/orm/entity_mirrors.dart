@@ -89,7 +89,7 @@ bool isTransientAccessorMethod(DeclarationMirror declMir) {
     return false;
   }
 
-  var methodMirror = declMir as MethodMirror;
+  var methodMirror = declMir;
   if (methodMirror.isStatic) {
     return false;
   }

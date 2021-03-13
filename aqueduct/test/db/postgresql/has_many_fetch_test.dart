@@ -85,7 +85,6 @@ void main() {
         "Fetch has-many relationship, include has-one and has-many in that has-many, where bottom of graph has valid object for hasmany but not for hasone",
         () async {
       var q = Query<Parent>(context)..where((o) => o.name).equalTo("B");
-
       q.join(set: (p) => p.children!)
         ..sortBy((c) => c.cid, QuerySortOrder.ascending)
         ..join(object: (c) => c.toy!)
@@ -203,21 +202,18 @@ void main() {
         ..join(set: (c) => c.vaccinations!);
 
       var all = await q.fetch();
-
       var originalIterator = truth!.iterator;
       for (var p in all) {
         originalIterator.moveNext();
         expect(p.pid, originalIterator.current.pid);
         expect(p.name, originalIterator.current.name);
-
         var originalChildrenIterator = p.children!.iterator;
         p.children!.forEach((child) {
           originalChildrenIterator.moveNext();
           expect(child.cid, originalChildrenIterator.current.cid);
           expect(child.name, originalChildrenIterator.current.name);
-          expect(child.toy!.tid, originalChildrenIterator.current.toy!.tid);
-          expect(child.toy!.name, originalChildrenIterator.current.toy!.name);
-
+          expect(child.toy?.tid, originalChildrenIterator.current.toy?.tid);
+          expect(child.toy?.name, originalChildrenIterator.current.toy?.name);
           var vacIter = originalChildrenIterator.current.vaccinations!.iterator;
           child.vaccinations!.forEach((v) {
             vacIter.moveNext();
@@ -227,6 +223,7 @@ void main() {
           expect(vacIter.moveNext(), false);
         });
       }
+
       expect(originalIterator.moveNext(), false);
     });
   });
@@ -392,8 +389,8 @@ void main() {
           originalChildrenIterator.moveNext();
           expect(child.cid, originalChildrenIterator.current.cid);
           expect(child.name, originalChildrenIterator.current.name);
-          expect(child.toy!.tid, originalChildrenIterator.current.toy!.tid);
-          expect(child.toy!.name, originalChildrenIterator.current.toy!.name);
+          expect(child.toy?.tid, originalChildrenIterator.current.toy?.tid);
+          expect(child.toy?.name, originalChildrenIterator.current.toy?.name);
 
           var vacIter = originalChildrenIterator.current.vaccinations!.iterator;
           child.vaccinations!.forEach((v) {
@@ -480,7 +477,7 @@ class Parent extends ManagedObject<_Parent> implements _Parent {}
 
 class _Parent {
   @primaryKey
-  late int pid;
+  int? pid;
   String? name;
 
   ManagedSet<Child>? children;
@@ -490,7 +487,7 @@ class Child extends ManagedObject<_Child> implements _Child {}
 
 class _Child {
   @primaryKey
-  late int cid;
+  int? cid;
   String? name;
 
   @Relate(Symbol('children'))
@@ -505,7 +502,7 @@ class Toy extends ManagedObject<_Toy> implements _Toy {}
 
 class _Toy {
   @primaryKey
-  late int tid;
+  int? tid;
 
   String? name;
 
@@ -517,7 +514,7 @@ class Vaccine extends ManagedObject<_Vaccine> implements _Vaccine {}
 
 class _Vaccine {
   @primaryKey
-  late int vid;
+  int? vid;
   String? kind;
 
   @Relate(Symbol('vaccinations'))

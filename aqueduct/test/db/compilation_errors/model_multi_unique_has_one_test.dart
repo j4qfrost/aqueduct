@@ -23,7 +23,7 @@ class MultiUniqueFailureRelationship
 @Table.unique([Symbol('a'), Symbol('b')])
 class _MultiUniqueFailureRelationship {
   @primaryKey
-  late int id;
+  int? id;
 
   MultiUniqueFailureRelationshipInverse? a;
   int? b;
@@ -34,7 +34,7 @@ class MultiUniqueFailureRelationshipInverse
 
 class _MultiUniqueFailureRelationshipInverse {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('a'))
   MultiUniqueFailureRelationship? rel;

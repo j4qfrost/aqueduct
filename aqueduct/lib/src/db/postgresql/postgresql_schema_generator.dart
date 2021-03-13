@@ -14,15 +14,14 @@ class PostgreSQLSchemaGenerator {
 
     var indexCommands = table.columns
         .where((col) =>
-            col!.isIndexed &&
-            !col.isPrimaryKey) // primary keys are auto-indexed
-        .map((col) => addIndexToColumn(table, col!))
+            col.isIndexed && !col.isPrimaryKey) // primary keys are auto-indexed
+        .map((col) => addIndexToColumn(table, col))
         .expand((commands) => commands);
     commands.addAll(indexCommands);
 
     commands.addAll(table.columns
-        .where((sc) => sc!.isForeignKey)
-        .map((col) => _addConstraintsForColumn(table.name, col!))
+        .where((sc) => sc.isForeignKey)
+        .map((col) => _addConstraintsForColumn(table.name, col))
         .expand((commands) => commands));
 
     if (table.uniqueColumnSet != null) {
@@ -32,7 +31,7 @@ class PostgreSQLSchemaGenerator {
     return commands;
   }
 
-  List<String> renameTable(SchemaTable table, String name) {
+  List<String> renameTable(SchemaTable table, String? name) {
     // Must rename indices, constraints, etc.
     throw UnsupportedError("renameTable is not yet supported.");
   }
@@ -88,7 +87,7 @@ class PostgreSQLSchemaGenerator {
   }
 
   List<String> renameColumn(
-      SchemaTable table, SchemaColumn column, String name) {
+      SchemaTable table, SchemaColumn column, String? name) {
     // Must rename indices, constraints, etc.
     throw UnsupportedError("renameColumn is not yet supported.");
   }

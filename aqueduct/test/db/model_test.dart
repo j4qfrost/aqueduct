@@ -678,8 +678,8 @@ void main() {
 
   group("Private fields", () {
     test("Private fields on entity", () {
-      var entity = context!.dataModel.entityForType(PrivateField);
-      expect(entity!.attributes["_private"], isNotNull);
+      var entity = context!.dataModel.entityForType(PrivateField)!;
+      expect(entity.attributes["_private"], isNotNull);
     });
 
     test("Can get/set value of private field", () {
@@ -781,7 +781,7 @@ class _User {
   String? name;
 
   @Column(primaryKey: true)
-  late int id;
+  int? id;
 
   DateTime? dateCreated;
 
@@ -792,7 +792,7 @@ class Post extends ManagedObject<_Post> implements _Post {}
 
 class _Post {
   @primaryKey
-  late int id;
+  int? id;
 
   String? text;
 
@@ -966,7 +966,7 @@ class TransientTypeTest extends ManagedObject<_TransientTypeTest>
 class _TransientTypeTest {
   // All of the types - ManagedPropertyType
   @primaryKey
-  late int id;
+  int? id;
 
   int? backingInt;
 
@@ -999,7 +999,7 @@ class PrivateField extends ManagedObject<_PrivateField>
 
 class _PrivateField {
   @primaryKey
-  late int id;
+  int? id;
 
   String? _private;
 }
@@ -1008,7 +1008,7 @@ class EnumObject extends ManagedObject<_EnumObject> implements _EnumObject {}
 
 class _EnumObject {
   @primaryKey
-  late int id;
+  int? id;
 
   EnumValues? enumValues;
 }
@@ -1023,7 +1023,7 @@ class TransientOwner extends ManagedObject<_TransientOwner>
 
 class _TransientOwner {
   @primaryKey
-  late int id;
+  int? id;
 
   TransientBelongsTo? t;
 }
@@ -1033,7 +1033,7 @@ class TransientBelongsTo extends ManagedObject<_TransientBelongsTo>
 
 class _TransientBelongsTo {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('t'))
   TransientOwner? owner;
@@ -1048,7 +1048,7 @@ class DocumentTest extends ManagedObject<_DocumentTest>
 
 class _DocumentTest {
   @primaryKey
-  late int id;
+  int? id;
 
   Document? document;
 }
@@ -1062,7 +1062,7 @@ class ConstructorOverride extends ManagedObject<_ConstructorOverride>
 
 class _ConstructorOverride {
   @primaryKey
-  late int id;
+  int? id;
 
   String? value;
 }
@@ -1075,14 +1075,14 @@ class DefaultConstructorHasOptionalArgs
 
 class _ConstructorTableDef {
   @primaryKey
-  late int id;
+  int? id;
 }
 
 class Top extends ManagedObject<_Top> implements _Top {}
 
 class _Top {
   @Column(primaryKey: true)
-  late int id;
+  int? id;
 
   ManagedSet<Middle>? middles;
 }
@@ -1091,7 +1091,7 @@ class Middle extends ManagedObject<_Middle> implements _Middle {}
 
 class _Middle {
   @Column(primaryKey: true)
-  late int id;
+  int? id;
 
   @Relate(#middles)
   Top? top;
@@ -1104,7 +1104,7 @@ class Bottom extends ManagedObject<_Bottom> implements _Bottom {}
 
 class _Bottom {
   @Column(primaryKey: true)
-  late int id;
+  int? id;
 
   @Relate(#bottom)
   Middle? middle;
@@ -1121,7 +1121,7 @@ class OverrideField extends ManagedObject<_OverrideField>
 
 class _OverrideField {
   @primaryKey
-  late int id;
+  int? id;
 
   String? field;
 }

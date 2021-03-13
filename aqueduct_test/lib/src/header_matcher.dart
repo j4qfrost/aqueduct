@@ -35,7 +35,7 @@ class HTTPHeaderMatcher extends Matcher {
           "Invalid input to HTTPHeaderMatcher.matches. Value is not HttpHeaders.");
     }
 
-    final HttpHeaders input = item as HttpHeaders;
+    final HttpHeaders input = item;
     final mismatches = <String>[];
     matchState["HTTPHeaderMatcher.mismatches"] = mismatches;
 

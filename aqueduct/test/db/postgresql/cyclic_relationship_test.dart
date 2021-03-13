@@ -708,7 +708,7 @@ class SelfRef extends ManagedObject<_SelfRef> implements _SelfRef {}
 
 class _SelfRef {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -722,7 +722,7 @@ class Left extends ManagedObject<_Left> implements _Left {}
 
 class _Left {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -736,7 +736,7 @@ class Right extends ManagedObject<_Right> implements _Right {}
 
 class _Right {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 

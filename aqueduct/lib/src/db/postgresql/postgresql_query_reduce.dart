@@ -13,7 +13,7 @@ class PostgresQueryReduce<T extends ManagedObject>
   final PostgresQuery<T> query;
 
   @override
-  Future<double> average(num selector(T object)) {
+  Future<double> average(num? selector(T object)) {
     return _execute("avg(${_columnName(selector)})::float");
   }
 
@@ -23,17 +23,17 @@ class PostgresQueryReduce<T extends ManagedObject>
   }
 
   @override
-  Future<U> maximum<U>(U selector(T object)) {
+  Future<U> maximum<U>(U? selector(T object)) {
     return _execute("max(${_columnName(selector)})");
   }
 
   @override
-  Future<U> minimum<U>(U selector(T object)) {
+  Future<U> minimum<U>(U? selector(T object)) {
     return _execute("min(${_columnName(selector)})");
   }
 
   @override
-  Future<U> sum<U extends num>(U selector(T object)) {
+  Future<U> sum<U extends num>(U? selector(T object)) {
     return _execute("sum(${_columnName(selector)})");
   }
 

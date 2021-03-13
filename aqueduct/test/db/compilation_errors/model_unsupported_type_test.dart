@@ -6,7 +6,7 @@ class InvalidModel extends ManagedObject<_InvalidModel>
 
 class _InvalidModel {
   @primaryKey
-  late int id;
+  int? id;
 
   Uri? uri;
 }

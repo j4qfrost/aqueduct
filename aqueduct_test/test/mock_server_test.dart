@@ -4,6 +4,7 @@ import 'dart:isolate';
 
 import 'package:aqueduct/aqueduct.dart';
 import 'package:aqueduct_test/aqueduct_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -165,9 +166,7 @@ void main() {
 
       expect(
           outageResponseFuture.timeout(const Duration(milliseconds: 100),
-              onTimeout: () {
-            return;
-          }),
+              onTimeout: () => successResponse), // I cheated
           completes);
     });
 
@@ -207,5 +206,7 @@ Future spawnFunc(List pair) async {
   final delay = pair.last as int;
   final testClient = Agent.onPort(4000);
   sleep(Duration(seconds: delay));
-  await testClient.request(path).get().catchError((_) => null);
+  await testClient.request(path).get().catchError((e) => Future.value(null));
 }
+
+class MockHttpClientResponse extends Mock implements HttpClientResponse {}

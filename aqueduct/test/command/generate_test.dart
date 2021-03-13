@@ -13,7 +13,7 @@ void main() {
     templateCli =
         await CLIClient(CommandLineAgent(ProjectAgent.projectsDirectory))
             .createProject();
-    await templateCli!.agent!.getDependencies(offline: true);
+    await templateCli!.agent.getDependencies(offline: true);
   });
 
   tearDownAll(ProjectAgent.tearDownAll);
@@ -27,9 +27,9 @@ class TestObject extends ManagedObject<_TestObject> {}
 
 class _TestObject {
   @primaryKey
-  int id;
+  int? id;
 
-  String foo;
+  String? foo;
 }
       """);
   });
@@ -39,10 +39,10 @@ class _TestObject {
   });
 
   test("Run without pub get yields error", () async {
-    File.fromUri(projectUnderTestCli!.agent!.workingDirectory.uri
+    File.fromUri(projectUnderTestCli!.agent.workingDirectory.uri
             .resolve("pubspec.lock"))
         .deleteSync();
-    File.fromUri(projectUnderTestCli!.agent!.workingDirectory.uri
+    File.fromUri(projectUnderTestCli!.agent.workingDirectory.uri
             .resolve(".packages"))
         .deleteSync();
 
@@ -62,7 +62,7 @@ class _TestObject {
       () async {
     // Putting a non-migration file in there to ensure that this doesn't prevent from being ugpraded
     projectUnderTestCli!.defaultMigrationDirectory.createSync();
-    projectUnderTestCli!.agent!
+    projectUnderTestCli!.agent
         .addOrReplaceFile("migrations/notmigration.dart", " ");
 
     var res = await projectUnderTestCli!.run("db", ["generate"]);
@@ -81,9 +81,9 @@ class _TestObject {
     projectUnderTestCli!.clearOutput();
 
     // Let's add an index
-    projectUnderTestCli!.agent!.modifyFile("lib/application_test.dart", (prev) {
+    projectUnderTestCli!.agent.modifyFile("lib/application_test.dart", (prev) {
       return prev.replaceFirst(
-          "String foo;", "@Column(indexed: true) String foo;");
+          "String? foo;", "@Column(indexed: true) String? foo;");
     });
 
     res = await projectUnderTestCli!.run("db", ["generate"]);
@@ -117,9 +117,9 @@ class _TestObject {
     projectUnderTestCli!.clearOutput();
 
     // Let's add an index
-    projectUnderTestCli!.agent!.modifyFile("lib/application_test.dart", (prev) {
+    projectUnderTestCli!.agent.modifyFile("lib/application_test.dart", (prev) {
       return prev.replaceFirst(
-          "String foo;", "@Column(indexed: true) String foo;");
+          "String? foo;", "@Column(indexed: true) String? foo;");
     });
 
     res = await projectUnderTestCli!
@@ -154,7 +154,7 @@ class _TestObject {
     expect(res, 0);
 
     final migDir = Directory.fromUri(
-        projectUnderTestCli!.agent!.workingDirectory.uri.resolve("foobar/"));
+        projectUnderTestCli!.agent.workingDirectory.uri.resolve("foobar/"));
     final files = migDir.listSync();
     expect(
         files.any((fse) => fse is File && fse.path.endsWith("migration.dart")),
@@ -164,7 +164,7 @@ class _TestObject {
   test("Can specify migration directory other than default, absolute path",
       () async {
     final migDir = Directory.fromUri(
-        projectUnderTestCli!.agent!.workingDirectory.uri.resolve("foobar/"));
+        projectUnderTestCli!.agent.workingDirectory.uri.resolve("foobar/"));
     var res = await projectUnderTestCli!.run("db", [
       "generate",
       "--migration-directory",
@@ -184,8 +184,8 @@ class _TestObject {
     expect(res, 0);
     projectUnderTestCli!.clearOutput();
 
-    projectUnderTestCli!.agent!.modifyFile("lib/application_test.dart", (prev) {
-      return prev.replaceFirst("String foo;", "String foo;\nString bar;");
+    projectUnderTestCli!.agent.modifyFile("lib/application_test.dart", (prev) {
+      return prev.replaceFirst("String? foo;", "String? foo;\nString? bar;");
     });
     res = await projectUnderTestCli!.run("db", ["generate"]);
     expect(res, 0);

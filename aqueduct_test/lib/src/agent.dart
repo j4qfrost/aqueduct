@@ -35,32 +35,32 @@ part 'response.dart';
 ///           });
 ///         }
 class Agent {
-  /// Configures a agent that sends requests to [app].
+  /// Configures a new agent that sends requests to [app].
   Agent(Application? app)
       : _application = app,
         _host = null,
         _port = null,
         _scheme = null;
 
-  /// Configures a agent that sends requests to 'http://localhost:[_port]'.
+  /// Configures a new agent that sends requests to 'http://localhost:[_port]'.
   Agent.onPort(this._port)
       : _scheme = "http",
         _host = "localhost",
         _application = null;
 
-  /// Configures a agent that sends requests to a server configured by [config].
+  /// Configures a new agent that sends requests to a server configured by [config].
   Agent.fromOptions(ApplicationOptions config, {bool useHTTPS = false})
       : _scheme = useHTTPS ? "https" : "http",
         _host = "localhost",
         _port = config.port,
         _application = null;
 
-  /// Configures a agent with the same properties as [original].
+  /// Configures a new agent with the same properties as [original].
   Agent.from(Agent? original)
       : _scheme = original?._scheme,
         _host = original?._host,
         _port = original?._port,
-        contentType = original?.contentType ?? ContentType.json,
+        contentType = original?.contentType,
         _application = original?._application {
     headers.addAll(original?.headers ?? {});
   }
@@ -88,7 +88,7 @@ class Agent {
   /// Defaults to 'application/json; charset=utf-8'. A request created
   /// by this agent will have its [TestRequest.contentType] set
   /// to this value.
-  ContentType contentType = ContentType.json;
+  ContentType? contentType = ContentType.json;
 
   /// The base URL that this agent's requests will be made against.
   String get baseURL {
@@ -96,7 +96,7 @@ class Agent {
       if (!_application!.isRunning) {
         throw StateError("Application under test is not running.");
       }
-      return "${_application!.server!.requiresHTTPS ? "https" : "http"}://localhost:${_application!.channel!.server!.server!.port}";
+      return "${_application!.server!.requiresHTTPS ? "https" : "http"}://localhost:${_application!.channel?.server?.server?.port}";
     }
 
     return "$_scheme://$_host:$_port";

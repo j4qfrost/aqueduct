@@ -10,23 +10,23 @@ import 'package:yaml/yaml.dart';
 
 class OpenAPIBuilder extends Executable<Map<String, dynamic>> {
   OpenAPIBuilder(Map<String, dynamic> message)
-      : pubspecContents = message["pubspec"] as String,
-        configPath = message["configPath"] as String,
-        title = message["title"] as String,
-        description = message["description"] as String,
-        version = message["version"] as String,
+      : pubspecContents = message["pubspec"] as String?,
+        configPath = message["configPath"] as String?,
+        title = message["title"] as String?,
+        description = message["description"] as String?,
+        version = message["version"] as String?,
         termsOfServiceURL = message["termsOfServiceURL"] != null
             ? Uri.parse(message["termsOfServiceURL"] as String)
             : null,
-        contactEmail = message["contactEmail"] as String,
-        contactName = message["contactName"] as String,
+        contactEmail = message["contactEmail"] as String?,
+        contactName = message["contactName"] as String?,
         contactURL = message["contactURL"] != null
             ? Uri.parse(message["contactURL"] as String)
             : null,
         licenseURL = message["licenseURL"] != null
             ? Uri.parse(message["licenseURL"] as String)
             : null,
-        licenseName = message["licenseName"] as String,
+        licenseName = message["licenseName"] as String?,
         hosts = (message["hosts"] as List<String>)
             .map((uri) => APIServerDescription(Uri.parse(uri)))
             .toList(),

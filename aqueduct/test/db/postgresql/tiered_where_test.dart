@@ -223,7 +223,7 @@ void main() {
 
       for (var r in results) {
         expect(r.children, isNotNull);
-        expect(r.children!.any((c) => c.cid <= 5), false);
+        expect(r.children!.any((c) => c.cid! <= 5), false);
       }
 
       expect(results.firstWhere((r) => r.rid == 2).children!.length, 1);

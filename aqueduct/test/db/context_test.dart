@@ -94,7 +94,7 @@ void main() {
 
 class _T {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 }
@@ -103,7 +103,7 @@ class T extends ManagedObject<_T> implements _T {}
 
 class _U {
   @primaryKey
-  late int id;
+  int? id;
   String? name;
 }
 

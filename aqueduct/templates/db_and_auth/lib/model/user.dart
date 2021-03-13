@@ -10,17 +10,17 @@ class _User extends ResourceOwnerTableDefinition {
 /* This class inherits the following from ManagedAuthenticatable:
 
   @primaryKey
-  int id;
+  int? id;
 
   @Column(unique: true, indexed: true)
-  String username;
+  String? username;
 
   @Column(omitByDefault: true)
-  String hashedPassword;
+  String? hashedPassword;
 
   @Column(omitByDefault: true)
-  String salt;
+  String? salt;
 
-  ManagedSet<ManagedAuthToken> tokens;
+  ManagedSet<ManagedAuthToken>? tokens;
  */
 }

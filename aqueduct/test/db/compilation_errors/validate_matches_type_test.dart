@@ -5,7 +5,7 @@ class FailingRegex extends ManagedObject<_FRX> {}
 
 class _FRX {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.matches("xyz")
   int? d;

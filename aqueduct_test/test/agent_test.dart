@@ -35,7 +35,7 @@ void main() {
       final tc = Agent(app);
       try {
         await tc.request("/").get();
-        expect(true, false);
+        fail("unreachable");
       } on StateError catch (e) {
         expect(e.toString(), contains("Application under test is not running"));
       }
@@ -45,7 +45,6 @@ void main() {
       app = Application<SomeChannel>()..options.port = 0;
       final tc = Agent(app);
       await app!.startOnCurrentIsolate();
-
       expectResponse(await tc.request("/").get(), 200);
     });
 

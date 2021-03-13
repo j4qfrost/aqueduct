@@ -61,23 +61,23 @@ abstract class CLICommand {
   }
 
   @Flag("version", help: "Prints version of this tool", negatable: false)
-  bool get showVersion => decode("version") ?? false;
+  bool get showVersion => decode("version", orElse: () => false);
 
   @Flag("color", help: "Toggles ANSI color", negatable: true, defaultsTo: true)
-  bool get showColors => decode("color") ?? true;
+  bool get showColors => decode("color", orElse: () => true);
 
   @Flag("help", abbr: "h", help: "Shows this", negatable: false)
-  bool get helpMeItsScary => decode("help") ?? false;
+  bool get helpMeItsScary => decode("help", orElse: () => false);
 
   @Flag("stacktrace",
       help: "Shows the stacktrace if an error occurs", defaultsTo: false)
-  bool get showStacktrace => decode("stacktrace") ?? false;
+  bool get showStacktrace => decode("stacktrace", orElse: () => false);
 
   @Flag("machine",
       help:
           "Output is machine-readable, usable for creating tools on top of this CLI. Behavior varies by command.",
       defaultsTo: false)
-  bool get isMachineOutput => decode("machine") ?? false;
+  bool get isMachineOutput => decode("machine", orElse: () => false);
 
   final Map<String, CLICommand> _commandMap = {};
 
@@ -99,12 +99,19 @@ abstract class CLICommand {
   static const _tabs = "    ";
   static const _errorDelimiter = "*** ";
 
-  T decode<T>(String key) {
-    final val = _argumentValues?[key];
-    if (T == int && val is String) {
-      return int.parse(val) as T;
+  T decode<T>(String key, {T Function()? orElse}) {
+    try {
+      final val = _argumentValues?[key];
+      if (T == int && val is String) {
+        return int.parse(val) as T;
+      }
+      return RuntimeContext.current.coerce<T>(val);
+    } catch (e) {
+      if (orElse != null) {
+        return orElse();
+      }
+      rethrow;
     }
-    return RuntimeContext.current.coerce(val);
   }
 
   void registerCommand(CLICommand cmd) {
@@ -140,7 +147,6 @@ abstract class CLICommand {
 
     try {
       _argumentValues = results;
-
       await determineToolVersion();
 
       if (showVersion) {

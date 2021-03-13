@@ -92,7 +92,7 @@ abstract class ResourceController extends Controller
   /// These values are attached by a [Router] instance that precedes this [Controller]. Is null
   /// if no [Router] preceded the controller and is the empty map if there are no values. The keys
   /// are the case-sensitive name of the path variables as defined by [Router.route].
-  Map<String, String>? get pathVariables => request.path.variables;
+  Map<String, String?>? get pathVariables => request.path.variables;
 
   /// Types of content this [ResourceController] will accept.
   ///

@@ -110,7 +110,7 @@ abstract class Query<InstanceType extends ManagedObject> {
   ///
   /// This mechanism only works on [fetch] and [fetchOne] execution methods. You *must not* execute a subquery created by this method.
   Query<T> join<T extends ManagedObject>(
-      {T object(InstanceType x)?, ManagedSet<T> set(InstanceType x)?});
+      {T object(InstanceType x)?, ManagedSet<T>? set(InstanceType x)?});
 
   /// Configures this instance to fetch a section of a larger result set.
   ///

@@ -16,9 +16,9 @@ class PassthruController extends Controller {
 }
 
 class TestUser extends ResourceOwner {
-  int get uniqueIdentifier => id;
+  int? get uniqueIdentifier => id;
   @override
-  late int id;
+  int? id;
 }
 
 class TestToken implements AuthToken, AuthCode {
@@ -114,7 +114,7 @@ class InMemoryAuthStorage extends AuthServerDelegate {
 
   static const String defaultPassword = "foobaraxegrind21%";
 
-  Map<String, AuthClient>? clients;
+  Map<String?, AuthClient>? clients;
   Map<int, TestUser?> users = {};
   List<TestToken?> tokens = [];
   late List<AuthScope> allowedScopes;
@@ -348,7 +348,7 @@ class DefaultPersistentStore extends PersistentStore {
 
   @override
   List<String> renameColumn(
-          SchemaTable table, SchemaColumn column, String name) =>
+          SchemaTable table, SchemaColumn column, String? name) =>
       [];
 
   @override

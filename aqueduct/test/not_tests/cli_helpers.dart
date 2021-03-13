@@ -10,7 +10,7 @@ import 'package:command_line_agent/command_line_agent.dart';
 class CLIClient {
   CLIClient(this.agent);
 
-  final CommandLineAgent? agent;
+  final CommandLineAgent agent;
 
   ProjectAgent get projectAgent {
     if (agent is ProjectAgent) {
@@ -41,16 +41,15 @@ class CLIClient {
   }
 
   Directory get defaultMigrationDirectory {
-    return Directory.fromUri(
-        agent!.workingDirectory.uri.resolve("migrations/"));
+    return Directory.fromUri(agent.workingDirectory.uri.resolve("migrations/"));
   }
 
   Directory get libraryDirectory {
-    return Directory.fromUri(agent!.workingDirectory.uri.resolve("lib/"));
+    return Directory.fromUri(agent.workingDirectory.uri.resolve("lib/"));
   }
 
   void delete() {
-    agent!.workingDirectory.deleteSync(recursive: true);
+    agent.workingDirectory.deleteSync(recursive: true);
   }
 
   CLIClient replicate(Uri uri) {
@@ -64,7 +63,7 @@ class CLIClient {
       dstDirectory.deleteSync(recursive: true);
     }
     CommandLineAgent.copyDirectory(
-        src: agent!.workingDirectory.uri, dst: dstUri);
+        src: agent.workingDirectory.uri, dst: dstUri);
     return CLIClient(ProjectAgent.existing(dstUri));
   }
 
@@ -80,7 +79,7 @@ class CLIClient {
       final client = CLIClient(ProjectAgent(name, dependencies: {
         "aqueduct": {"path": "../.."}
       }, devDependencies: {
-        "test": "^1.0.0"
+        "test": "^1.6.7"
       }));
 
       client.projectAgent.addLibraryFile("channel", """
@@ -92,7 +91,7 @@ import '$name.dart';
 
 class TestChannel extends ApplicationChannel {
   Controller get entryPoint {
-    final router = Router();
+    final router = new Router();
     router
       .route("/example")
       .linkFunction((request) async {
@@ -168,7 +167,7 @@ class TestChannel extends ApplicationChannel {
 
     print("Running 'aqueduct ${args.join(" ")}'");
     final saved = Directory.current;
-    Directory.current = agent!.workingDirectory;
+    Directory.current = agent.workingDirectory;
 
     var cmd = Runner()..outputSink = _output;
     var results = cmd.options.parse(args);
@@ -190,7 +189,7 @@ class TestChannel extends ApplicationChannel {
 
     print("Starting 'aqueduct ${args.join(" ")}'");
     final saved = Directory.current;
-    Directory.current = agent!.workingDirectory;
+    Directory.current = agent.workingDirectory;
 
     var cmd = Runner()..outputSink = _output;
     var results = cmd.options.parse(args);
@@ -201,7 +200,7 @@ class TestChannel extends ApplicationChannel {
       if (cmd.runningProcess != null) {
         t.cancel();
         Directory.current = saved;
-        task.process = cmd.runningProcess!;
+        task.process = cmd.runningProcess;
         task._processStarted.complete(true);
       } else {
         elapsed += 100;

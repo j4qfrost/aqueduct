@@ -60,27 +60,27 @@ abstract class QueryMixin<InstanceType extends ManagedObject>
       return;
     }
 
-    _valueObject = entity?.instanceOf(
-        backing: ManagedBuilderBacking.from(entity, obj.backing));
+    _valueObject = entity!
+        .instanceOf(backing: ManagedBuilderBacking.from(entity, obj.backing));
   }
 
   @override
   QueryExpression<T, InstanceType> where<T>(
       T propertyIdentifier(InstanceType x)) {
-    final properties = entity?.identifyProperties(propertyIdentifier);
-    if (properties?.length != 1) {
+    final properties = entity!.identifyProperties(propertyIdentifier);
+    if (properties.length != 1) {
       throw ArgumentError(
           "Invalid property selector. Must reference a single property only.");
     }
 
-    final expr = QueryExpression<T, InstanceType>(properties!.first);
+    final expr = QueryExpression<T, InstanceType>(properties.first);
     expressions.add(expr);
     return expr;
   }
 
   @override
   Query<T> join<T extends ManagedObject>(
-      {T object(InstanceType x)?, ManagedSet<T> set(InstanceType x)?}) {
+      {T object(InstanceType x)?, ManagedSet<T>? set(InstanceType x)?}) {
     final desc = entity?.identifyRelationship(object ?? set);
 
     return _createSubquery<T>(desc);

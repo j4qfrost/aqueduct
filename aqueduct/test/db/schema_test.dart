@@ -7,13 +7,12 @@ void main() {
       var dataModel = ManagedDataModel([SimpleModel]);
       var schema = Schema.fromDataModel(dataModel);
       expect(schema.tables.length, 1);
-      var t = schema.tables.first!;
-
+      var t = schema.tables.first;
       expect(t.name, "_SimpleModel");
       expect(t.uniqueColumnSet, isNull);
       var tableColumns = t.columns;
       expect(tableColumns.length, 1);
-      expect(tableColumns.first!.asMap(), {
+      expect(tableColumns.first.asMap(), {
         "name": "id",
         "type": "bigInteger",
         "nullable": false,
@@ -26,7 +25,6 @@ void main() {
         "deleteRule": null,
         "indexed": false
       });
-
       expect(
           Schema.fromMap(schema.asMap()).differenceFrom(schema).hasDifferences,
           false);
@@ -37,14 +35,14 @@ void main() {
       var schema = Schema.fromDataModel(dataModel);
       expect(schema.tables.length, 1);
 
-      var table = schema.tables.first!;
+      var table = schema.tables.first;
       expect(table.name, "_ExtensiveModel");
       expect(table.uniqueColumnSet, isNull);
 
       var columns = table.columns;
       expect(columns.length, 8);
 
-      expect(columns.firstWhere((c) => c!.name == "id")!.asMap(), {
+      expect(columns.firstWhere((c) => c.name == "id").asMap(), {
         "name": "id",
         "type": "string",
         "nullable": false,
@@ -58,7 +56,7 @@ void main() {
         "indexed": false
       });
 
-      expect(columns.firstWhere((c) => c!.name == "startDate")!.asMap(), {
+      expect(columns.firstWhere((c) => c.name == "startDate").asMap(), {
         "name": "startDate",
         "type": "datetime",
         "nullable": false,
@@ -72,7 +70,7 @@ void main() {
         "indexed": false
       });
 
-      expect(columns.firstWhere((c) => c!.name == "indexedValue")!.asMap(), {
+      expect(columns.firstWhere((c) => c.name == "indexedValue").asMap(), {
         "name": "indexedValue",
         "type": "integer",
         "nullable": false,
@@ -87,7 +85,7 @@ void main() {
       });
 
       expect(
-          columns.firstWhere((c) => c!.name == "autoincrementValue")!.asMap(), {
+          columns.firstWhere((c) => c.name == "autoincrementValue").asMap(), {
         "name": "autoincrementValue",
         "type": "integer",
         "nullable": false,
@@ -101,7 +99,7 @@ void main() {
         "indexed": false
       });
 
-      expect(columns.firstWhere((c) => c!.name == "uniqueValue")!.asMap(), {
+      expect(columns.firstWhere((c) => c.name == "uniqueValue").asMap(), {
         "name": "uniqueValue",
         "type": "string",
         "nullable": false,
@@ -115,7 +113,7 @@ void main() {
         "indexed": false
       });
 
-      expect(columns.firstWhere((c) => c!.name == "defaultItem")!.asMap(), {
+      expect(columns.firstWhere((c) => c.name == "defaultItem").asMap(), {
         "name": "defaultItem",
         "type": "string",
         "nullable": false,
@@ -129,7 +127,7 @@ void main() {
         "indexed": false
       });
 
-      expect(columns.firstWhere((c) => c!.name == "nullableValue")!.asMap(), {
+      expect(columns.firstWhere((c) => c.name == "nullableValue").asMap(), {
         "name": "nullableValue",
         "type": "boolean",
         "nullable": true,
@@ -143,7 +141,7 @@ void main() {
         "indexed": false
       });
 
-      expect(columns.firstWhere((c) => c!.name == "loadedValue")!.asMap(), {
+      expect(columns.firstWhere((c) => c.name == "loadedValue").asMap(), {
         "name": "loadedValue",
         "type": "bigInteger",
         "nullable": true,
@@ -174,17 +172,17 @@ void main() {
 
       expect(schema.tables.length, 4);
       expect(
-          schema.tables.map((t) => t!.name).toList()
+          schema.tables.map((t) => t.name).toList()
             ..sort((s1, s2) => s1!.compareTo(s2!)),
           ["_Container", "_DefaultItem", "_LoadedItem", "_LoadedSingleItem"]);
 
       var containerTable =
-          schema.tables.firstWhere((t) => t!.name == "_Container");
-      expect(containerTable!.name, "_Container");
+          schema.tables.firstWhere((t) => t.name == "_Container");
+      expect(containerTable.name, "_Container");
       expect(containerTable.uniqueColumnSet, isNull);
       var containerColumns = containerTable.columns;
       expect(containerColumns.length, 1);
-      expect(containerColumns.first!.asMap(), {
+      expect(containerColumns.first.asMap(), {
         "name": "id",
         "type": "bigInteger",
         "nullable": false,
@@ -199,12 +197,12 @@ void main() {
       });
 
       var defaultItemTable =
-          schema.tables.firstWhere((t) => t!.name == "_DefaultItem");
-      expect(defaultItemTable!.name, "_DefaultItem");
+          schema.tables.firstWhere((t) => t.name == "_DefaultItem");
+      expect(defaultItemTable.name, "_DefaultItem");
       expect(defaultItemTable.uniqueColumnSet, isNull);
       var defaultItemColumns = defaultItemTable.columns;
       expect(defaultItemColumns.length, 2);
-      expect(defaultItemColumns.first!.asMap(), {
+      expect(defaultItemColumns.first.asMap(), {
         "name": "id",
         "type": "bigInteger",
         "nullable": false,
@@ -217,7 +215,7 @@ void main() {
         "deleteRule": null,
         "indexed": false
       });
-      expect(defaultItemColumns.last!.asMap(), {
+      expect(defaultItemColumns.last.asMap(), {
         "name": "container",
         "type": "bigInteger",
         "nullable": true,
@@ -232,12 +230,12 @@ void main() {
       });
 
       var loadedItemTable =
-          schema.tables.firstWhere((t) => t!.name == "_LoadedItem");
-      expect(loadedItemTable!.uniqueColumnSet, isNull);
+          schema.tables.firstWhere((t) => t.name == "_LoadedItem");
+      expect(loadedItemTable.uniqueColumnSet, isNull);
       expect(loadedItemTable.name, "_LoadedItem");
       var loadedColumns = loadedItemTable.columns;
       expect(loadedColumns.length, 3);
-      expect(loadedColumns[0]!.asMap(), {
+      expect(loadedColumns[0].asMap(), {
         "name": "id",
         "type": "bigInteger",
         "nullable": false,
@@ -250,7 +248,7 @@ void main() {
         "deleteRule": null,
         "indexed": false
       });
-      expect(loadedColumns[1]!.asMap(), {
+      expect(loadedColumns[1].asMap(), {
         "name": "someIndexedThing",
         "type": "string",
         "nullable": false,
@@ -263,7 +261,7 @@ void main() {
         "deleteRule": null,
         "indexed": true
       });
-      expect(loadedColumns[2]!.asMap(), {
+      expect(loadedColumns[2].asMap(), {
         "name": "container",
         "type": "bigInteger",
         "nullable": true,
@@ -278,12 +276,12 @@ void main() {
       });
 
       var loadedSingleItemTable =
-          schema.tables.firstWhere((t) => t!.name == "_LoadedSingleItem");
-      expect(loadedSingleItemTable!.uniqueColumnSet, isNull);
+          schema.tables.firstWhere((t) => t.name == "_LoadedSingleItem");
+      expect(loadedSingleItemTable.uniqueColumnSet, isNull);
       expect(loadedSingleItemTable.name, "_LoadedSingleItem");
       var loadedSingleColumns = loadedSingleItemTable.columns;
       expect(loadedSingleColumns.length, 2);
-      expect(loadedSingleColumns[0]!.asMap(), {
+      expect(loadedSingleColumns[0].asMap(), {
         "name": "id",
         "type": "bigInteger",
         "nullable": false,
@@ -296,7 +294,7 @@ void main() {
         "deleteRule": null,
         "indexed": false
       });
-      expect(loadedSingleColumns[1]!.asMap(), {
+      expect(loadedSingleColumns[1].asMap(), {
         "name": "loadedItem",
         "type": "bigInteger",
         "nullable": false,
@@ -319,15 +317,15 @@ void main() {
       var dataModel = ManagedDataModel([Unique]);
       var schema = Schema.fromDataModel(dataModel);
       expect(schema.tables.length, 1);
-      expect(schema.tables.first!.name, "_Unique");
-      expect(schema.tables.first!.uniqueColumnSet, ["a", "b"]);
+      expect(schema.tables.first.name, "_Unique");
+      expect(schema.tables.first.uniqueColumnSet, ["a", "b"]);
 
       var tableMap = schema.asMap()["tables"].first as Map<String, dynamic>;
       expect(tableMap["name"], "_Unique");
       expect(tableMap["unique"], ["a", "b"]);
 
       var tableFromMap = SchemaTable.fromMap(tableMap);
-      expect(tableFromMap.differenceFrom(schema.tables.first!).hasDifferences,
+      expect(tableFromMap.differenceFrom(schema.tables.first).hasDifferences,
           false);
     });
   });
@@ -435,7 +433,7 @@ void main() {
     test("Missing table show up as error", () {
       var newSchema = Schema.from(baseSchema);
       newSchema.removeTable(
-          newSchema.tables.firstWhere((t) => t!.name == "_DefaultItem")!);
+          newSchema.tables.firstWhere((t) => t.name == "_DefaultItem"));
 
       var diff = baseSchema!.differenceFrom(newSchema);
       expect(diff.hasDifferences, true);
@@ -445,7 +443,7 @@ void main() {
 
     test("Same table but renamed shows up as error", () {
       var newSchema = Schema.from(baseSchema);
-      newSchema.tables.firstWhere((t) => t!.name == "_DefaultItem")!.name =
+      newSchema.tables.firstWhere((t) => t.name == "_DefaultItem").name =
           "DefaultItem";
 
       var diff = baseSchema!.differenceFrom(newSchema);
@@ -511,8 +509,8 @@ void main() {
 
     test("Missing column shows up as error", () {
       var newSchema = Schema.from(baseSchema);
-      var t = newSchema.tables.firstWhere((t) => t!.name == "_DefaultItem");
-      var c = t!.columnForName("id");
+      var t = newSchema.tables.firstWhere((t) => t.name == "_DefaultItem");
+      var c = t.columnForName("id");
       t.removeColumn(c);
 
       var diff = baseSchema!.differenceFrom(newSchema);
@@ -525,7 +523,7 @@ void main() {
     test("Additional column shows up as error", () {
       var newSchema = Schema.from(baseSchema);
       newSchema.tables
-          .firstWhere((t) => t!.name == "_DefaultItem")!
+          .firstWhere((t) => t.name == "_DefaultItem")
           .addColumn(SchemaColumn("foo", ManagedPropertyType.integer));
 
       var diff = baseSchema!.differenceFrom(newSchema);
@@ -538,9 +536,9 @@ void main() {
     test("Same column but with wrong name shows up as error", () {
       var newSchema = Schema.from(baseSchema);
       newSchema.tables
-          .firstWhere((t) => t!.name == "_DefaultItem")!
+          .firstWhere((t) => t.name == "_DefaultItem")
           .columns
-          .firstWhere((c) => c!.name == "id")!
+          .firstWhere((c) => c.name == "id")
           .name = "idd";
 
       var diff = baseSchema!.differenceFrom(newSchema);
@@ -559,9 +557,9 @@ void main() {
     test("Column differences show up as errors", () {
       var newSchema = Schema.from(baseSchema);
       var column = newSchema.tables
-          .firstWhere((t) => t!.name == "_DefaultItem")!
+          .firstWhere((t) => t.name == "_DefaultItem")
           .columns
-          .firstWhere((c) => c!.name == "id")!;
+          .firstWhere((c) => c.name == "id");
 
       /*
         Note that some properties cannot be diffed because they cannot be changed:
@@ -617,12 +615,12 @@ void main() {
     test("Multiple reasons all show up", () {
       var newSchema = Schema.from(baseSchema);
       newSchema.addTable(SchemaTable("foo", []));
-      var df = newSchema.tables.firstWhere((t) => t!.name == "_DefaultItem");
-      df!.addColumn(SchemaColumn("foobar", ManagedPropertyType.integer));
+      var df = newSchema.tables.firstWhere((t) => t.name == "_DefaultItem");
+      df.addColumn(SchemaColumn("foobar", ManagedPropertyType.integer));
       newSchema
           .tableForName("_LoadedItem")!
           .columns
-          .firstWhere((sc) => sc!.name == "someIndexedThing")!
+          .firstWhere((sc) => sc.name == "someIndexedThing")
           .isIndexed = false;
 
       var diff = baseSchema!.differenceFrom(newSchema);
@@ -663,10 +661,10 @@ void main() {
       expect(schema.tables.length, 1);
       var t = schema.tables.first;
 
-      expect(t!.name, "_OverriddenModel");
+      expect(t.name, "_OverriddenModel");
       var tableColumns = t.columns;
       expect(tableColumns.length, 2);
-      expect(tableColumns.firstWhere((sc) => sc!.name == "id")!.asMap(), {
+      expect(tableColumns.firstWhere((sc) => sc.name == "id").asMap(), {
         "name": "id",
         "type": "bigInteger",
         "nullable": false,
@@ -679,7 +677,7 @@ void main() {
         "deleteRule": null,
         "indexed": false
       });
-      expect(tableColumns.firstWhere((sc) => sc!.name == "field")!.asMap(), {
+      expect(tableColumns.firstWhere((sc) => sc.name == "field").asMap(), {
         "name": "field",
         "type": "string",
         "nullable": false,
@@ -700,7 +698,7 @@ class Container extends ManagedObject<_Container> implements _Container {}
 
 class _Container {
   @primaryKey
-  late int id;
+  int? id;
 
   ManagedSet<DefaultItem>? defaultItems;
   ManagedSet<LoadedItem>? loadedItems;
@@ -710,7 +708,7 @@ class DefaultItem extends ManagedObject<_DefaultItem> implements _DefaultItem {}
 
 class _DefaultItem {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('defaultItems'))
   Container? container;
@@ -720,7 +718,7 @@ class LoadedItem extends ManagedObject<_LoadedItem> {}
 
 class _LoadedItem {
   @primaryKey
-  late int id;
+  int? id;
 
   @Column(indexed: true)
   String? someIndexedThing;
@@ -736,7 +734,7 @@ class LoadedSingleItem extends ManagedObject<_LoadedSingleItem> {}
 
 class _LoadedSingleItem {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('loadedSingleItem'),
       onDelete: DeleteRule.cascade, isRequired: true)
@@ -747,7 +745,7 @@ class SimpleModel extends ManagedObject<_SimpleModel> implements _SimpleModel {}
 
 class _SimpleModel {
   @primaryKey
-  late int id;
+  int? id;
 }
 
 class ExtensiveModel extends ManagedObject<_ExtensiveModel>
@@ -758,7 +756,7 @@ class ExtensiveModel extends ManagedObject<_ExtensiveModel>
 
 class _ExtensiveModel {
   @Column(primaryKey: true, databaseType: ManagedPropertyType.string)
-  late String id;
+  String? id;
 
   DateTime? startDate;
 
@@ -798,7 +796,7 @@ class _OverriddenModel extends PartialModel {
 
 class PartialModel {
   @primaryKey
-  late int id;
+  int? id;
 
   @Column(indexed: true)
   String? field;
@@ -809,7 +807,7 @@ class Unique extends ManagedObject<_Unique> implements _Unique {}
 @Table.unique([Symbol('a'), Symbol('b')])
 class _Unique {
   @primaryKey
-  late int id;
+  int? id;
 
   String? a;
   String? b;
@@ -820,7 +818,7 @@ class SelfRef extends ManagedObject<_SelfRef> implements _SelfRef {}
 
 class _SelfRef {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -834,7 +832,7 @@ class Left extends ManagedObject<_Left> implements _Left {}
 
 class _Left {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -848,7 +846,7 @@ class Right extends ManagedObject<_Right> implements _Right {}
 
 class _Right {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 

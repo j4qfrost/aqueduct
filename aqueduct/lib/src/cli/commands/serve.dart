@@ -9,12 +9,12 @@ import 'package:aqueduct/src/cli/mixins/project.dart';
 import 'package:aqueduct/src/cli/running_process.dart';
 
 class CLIServer extends CLICommand with CLIProject {
-  String? derivedChannelType;
+  String derivedChannelType = "";
 
   @Option("timeout",
       help: "Number of seconds to wait to ensure startup succeeded.",
       defaultsTo: "45")
-  int get startupTimeout => decode("timeout") ?? 45;
+  int get startupTimeout => decode("timeout", orElse: () => 45);
 
   @Option("ssl-key-path",
       help:
@@ -27,22 +27,22 @@ class CLIServer extends CLICommand with CLIProject {
   String? get certificatePath => decode("ssl-certificate-path");
 
   @Flag("observe", help: "Enables Dart Observatory", defaultsTo: false)
-  bool get shouldRunObservatory => decode("observe") ?? false;
+  bool get shouldRunObservatory => decode("observe", orElse: () => false);
 
   @Flag("ipv6-only",
       help: "Limits listening to IPv6 connections only.",
       negatable: false,
       defaultsTo: false)
-  bool get ipv6Only => decode("ipv6-only") ?? false;
+  bool get ipv6Only => decode("ipv6-only", orElse: () => false);
 
   @Option("port",
       abbr: "p",
       help: "The port number to listen for HTTP requests on.",
       defaultsTo: "8888")
-  int get port => decode("port") ?? 8888;
+  int get port => decode("port", orElse: () => 8888);
 
   @Option("isolates", abbr: "n", help: "Number of isolates processing requests")
-  int get numberOfIsolates => decode("isolates") ?? 0;
+  int get numberOfIsolates => decode("isolates", orElse: () => 0);
 
   @Option("address",
       abbr: "a",
@@ -56,7 +56,7 @@ class CLIServer extends CLICommand with CLIProject {
       help:
           "The name of the ApplicationChannel subclass to be instantiated to serve requests. "
           "By default, this subclass is determined by reflecting on the application library in the [directory] being served.")
-  String? get channelType => decode("channel") ?? derivedChannelType;
+  String get channelType => decode("channel", orElse: () => derivedChannelType);
 
   @Option("config-path",
       abbr: "c",
@@ -64,7 +64,8 @@ class CLIServer extends CLICommand with CLIProject {
           "The path to a configuration file. This File is available in the ApplicationOptions"
           "for a ApplicationChannel to use to read application-specific configuration values. Relative paths are relative to [directory].",
       defaultsTo: "config.yaml")
-  File get configurationFile => File(decode("config-path") ?? "").absolute;
+  File get configurationFile =>
+      File(decode("config-path", orElse: () => "")).absolute;
 
   ReceivePort? messagePort;
   ReceivePort? errorPort;
@@ -122,20 +123,19 @@ class CLIServer extends CLICommand with CLIProject {
         "data:application/dart;charset=utf-8,${Uri.encodeComponent(generatedStartScript)}");
     final startupCompleter = Completer<SendPort>();
 
-    final isolate = await Isolate.spawnUri(dataUri, [], messagePort?.sendPort,
+    final isolate = await Isolate.spawnUri(dataUri, [], messagePort!.sendPort,
         errorsAreFatal: true,
-        onError: errorPort?.sendPort,
+        onError: errorPort!.sendPort,
         packageConfig: fileInProjectDirectory(".packages").uri,
         paused: true);
-
-    errorPort?.listen((msg) {
+    errorPort!.listen((msg) {
       if (msg is List) {
         startupCompleter.completeError(
             msg.first as Object, StackTrace.fromString(msg.last as String));
       }
     });
 
-    messagePort?.listen((msg) {
+    messagePort!.listen((msg) {
       final message = msg as Map<dynamic, dynamic>;
       switch (message["status"] as String) {
         case "ok":

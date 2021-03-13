@@ -76,7 +76,7 @@ class ManagedDataModelErrorImpl extends ManagedDataModelError {
     return ManagedDataModelErrorImpl(
         "Class '${_getPersistentClassName(entity)}'"
         " doesn't declare a primary key property or declares more than one primary key. All 'ManagedObject' subclasses "
-        "must have a primary key. Usually, this means you want to add '@primaryKey int id;' "
+        "must have a primary key. Usually, this means you want to add '@primaryKey int? id;' "
         "to ${_getPersistentClassName(entity)}, but if you want more control over "
         "the type of primary key, declare the property as one of "
         "${ManagedType.supportedDartTypes.join(", ")} and "

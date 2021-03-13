@@ -15,7 +15,7 @@ void main() {
     templateCli =
         await CLIClient(CommandLineAgent(ProjectAgent.projectsDirectory))
             .createProject();
-    await templateCli!.agent!.getDependencies(offline: true);
+    await templateCli!.agent.getDependencies(offline: true);
   });
 
   tearDownAll(ProjectAgent.tearDownAll);
@@ -29,9 +29,9 @@ class TestObject extends ManagedObject<_TestObject> {}
 
 class _TestObject {
   @primaryKey
-  int id;
+  int? id;
 
-  String foo;
+  String? foo;
 }
       """);
   });
@@ -61,13 +61,13 @@ class _TestObject {
     var res = await projectUnderTestCli!.run("db", ["generate"]);
     expect(res, 0);
 
-    projectUnderTestCli!.agent!
+    projectUnderTestCli!.agent
         .modifyFile("migrations/00000001_initial.migration.dart", (contents) {
       const upgradeLocation = "upgrade()";
       final nextLine =
           contents.indexOf("\n", contents.indexOf(upgradeLocation));
       return contents.replaceRange(nextLine, nextLine + 1, """
-        database.createTable(SchemaTable(\"foo\", []));
+        database?.createTable(SchemaTable(\"foo\", []));
         """);
     });
 
@@ -82,13 +82,13 @@ class _TestObject {
     var res = await projectUnderTestCli!.run("db", ["generate"]);
     expect(res, 0);
 
-    projectUnderTestCli!.agent!
+    projectUnderTestCli!.agent
         .modifyFile("migrations/00000001_initial.migration.dart", (contents) {
       const upgradeLocation = "upgrade()";
       final nextLine =
           contents.indexOf("\n", contents.indexOf(upgradeLocation));
       return contents.replaceRange(nextLine, nextLine + 1, """
-        database.createTable(SchemaTable(\"foo\", []));
+        database?.createTable(SchemaTable(\"foo\", []));
         """);
     });
 
@@ -103,7 +103,7 @@ class _TestObject {
         .defaultMigrationDirectory.uri
         .resolve("00000002_unnamed.migration.dart"));
     expect(secondMigrationFile.readAsStringSync(),
-        contains("database.deleteTable(\"foo\")"));
+        contains("database?.deleteTable(\"foo\")"));
 
     res = await projectUnderTestCli!.run("db", ["validate"]);
     expect(res, 0);

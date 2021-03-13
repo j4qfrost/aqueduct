@@ -78,13 +78,14 @@ class Operation {
 
   /// Returns a list of all path variables required for this operation.
   List<String> get pathVariables {
-    return [_pathVariable1, _pathVariable2, _pathVariable3, _pathVariable4]
-        .fold([], (List<String> acc, pathVar) {
+    List<String> acc = [];
+    [_pathVariable1, _pathVariable2, _pathVariable3, _pathVariable4]
+        .forEach((pathVar) {
       if (pathVar != null) {
         acc.add(pathVar);
       }
-      return acc;
     });
+    return acc;
   }
 }
 
@@ -99,7 +100,7 @@ class Bind {
   /// the request /users?foo=bar would bind the value `bar` to the variable `foo`:
   ///
   ///         @Operation.get()
-  ///         Future<Response> getUsers(@Bind.query("foo") String foo) async => ...;
+  ///         Future<Response> getUsers(@Bind.query("foo") String? foo) async => ...;
   ///
   /// [name] is compared case-sensitively, i.e. `Foo` and `foo` are different.
   ///

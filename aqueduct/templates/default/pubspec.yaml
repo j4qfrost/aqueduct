@@ -10,11 +10,5 @@ dependencies:
   aqueduct: ^4.0.0-b1
 
 dev_dependencies:
-  test: ^1.0.0
+  test: ^1.16.5
   aqueduct_test: ^2.0.0-b1
-
-dependency_overrides:
-  aqueduct:
-    path: ../../
-  aqueduct_test:
-    path: ../../../aqueduct_test

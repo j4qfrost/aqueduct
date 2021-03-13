@@ -39,8 +39,8 @@ void main() {
 
     test("Schema object contains all persistent attributes with correct types",
         () {
-      final entity = doc!.components!.schemas!["Model1"];
-      expect(entity!.properties!["string"]!.type, APIType.string);
+      final entity = doc!.components!.schemas!["Model1"]!;
+      expect(entity.properties!["string"]!.type, APIType.string);
       expect(entity.properties!["dateTime"]!.type!, APIType.string);
       expect(entity.properties!["dateTime"]!.format, "date-time");
       expect(entity.properties!["id"]!.type, APIType.integer);
@@ -270,7 +270,7 @@ class Model1 extends ManagedObject<_Model1> implements _Model1 {
 @Table(uniquePropertySet: [Symbol('string'), Symbol('dateTime')])
 class _Model1 {
   @primaryKey
-  late int id;
+  int? id;
 
   /// title
   ///
@@ -294,7 +294,7 @@ class Model2 extends ManagedObject<_Model2> implements _Model2 {}
 
 class _Model2 {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('model2s'))
   Model1? model1;
@@ -305,7 +305,7 @@ class Model3 extends ManagedObject<_Model3> implements _Model3 {}
 @Table(uniquePropertySet: [Symbol('matches'), Symbol('lessThan')])
 class _Model3 {
   @primaryKey
-  late int id;
+  int? id;
 
   @Column(omitByDefault: true)
   String? notIncluded;

@@ -218,7 +218,7 @@ void main() {
     q = Query<TestModel>(context)..where((o) => o.id).not.lessThan(3);
     results = await q.fetch();
     expect(results.length, 4);
-    expect(results.every((tm) => tm.id >= 3), true);
+    expect(results.every((tm) => tm.id! >= 3), true);
   });
 
   test("Less than equal to matcher", () async {
@@ -232,7 +232,7 @@ void main() {
     q = Query<TestModel>(context)..where((o) => o.id).not.lessThanEqualTo(3);
     results = await q.fetch();
     expect(results.length, 3);
-    expect(results.every((tm) => tm.id > 3), true);
+    expect(results.every((tm) => tm.id! > 3), true);
   });
 
   test("Greater than matcher", () async {
@@ -245,7 +245,7 @@ void main() {
     q = Query<TestModel>(context)..where((o) => o.id).not.greaterThan(4);
     results = await q.fetch();
     expect(results.length, 4);
-    expect(results.every((tm) => tm.id <= 4), true);
+    expect(results.every((tm) => tm.id! <= 4), true);
   });
 
   test("Greater than equal to matcher", () async {
@@ -259,7 +259,7 @@ void main() {
     q = Query<TestModel>(context)..where((o) => o.id).not.greaterThanEqualTo(4);
     results = await q.fetch();
     expect(results.length, 3);
-    expect(results.every((tm) => tm.id < 4), true);
+    expect(results.every((tm) => tm.id! < 4), true);
   });
 
   group("Not equal matcher", () {
@@ -347,7 +347,7 @@ void main() {
     results = await q.fetch();
     expect(results.length, 3);
 
-    results.sort((t1, t2) => t1.id.compareTo(t2.id));
+    results.sort((t1, t2) => t1.id!.compareTo(t2.id!));
     expect(results[0].id, 1);
     expect(results[1].id, 5);
     expect(results[2].id, 6);
@@ -365,7 +365,7 @@ void main() {
     results = await q.fetch();
     expect(results.length, 3);
 
-    results.sort((t1, t2) => t1.id.compareTo(t2.id));
+    results.sort((t1, t2) => t1.id!.compareTo(t2.id!));
     expect(results[0].id, 2);
     expect(results[1].id, 3);
     expect(results[2].id, 4);
@@ -509,7 +509,7 @@ class TestModel extends ManagedObject<_TestModel> implements _TestModel {}
 
 class _TestModel {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -523,7 +523,7 @@ class InnerModel extends ManagedObject<_InnerModel> implements _InnerModel {}
 
 class _InnerModel {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 

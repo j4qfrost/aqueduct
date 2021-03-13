@@ -185,18 +185,18 @@ class ManagedEntity implements APIComponentDocumenter {
   ManagedAttributeDescription identifyAttribute<T, U extends ManagedObject>(
       T propertyIdentifier(U x)) {
     final keyPaths = identifyProperties(propertyIdentifier);
-    if (keyPaths?.length != 1) {
+    if (keyPaths.length != 1) {
       throw ArgumentError(
           "Invalid property selector. Cannot access more than one property for this operation.");
     }
 
-    final firstKeyPath = keyPaths?.first;
-    if (firstKeyPath?.dynamicElements != null) {
+    final firstKeyPath = keyPaths.first;
+    if (firstKeyPath.dynamicElements != null) {
       throw ArgumentError(
           "Invalid property selector. Cannot access subdocuments for this operation.");
     }
 
-    final elements = firstKeyPath!.path;
+    final elements = firstKeyPath.path;
     if (elements.length > 1) {
       throw ArgumentError(
           "Invalid property selector. Cannot use relationships for this operation.");
@@ -228,12 +228,12 @@ class ManagedEntity implements APIComponentDocumenter {
       identifyRelationship<T, U extends ManagedObject>(
           T propertyIdentifier(U x)?) {
     final keyPaths = identifyProperties(propertyIdentifier);
-    if (keyPaths?.length != 1) {
+    if (keyPaths.length != 1) {
       throw ArgumentError(
           "Invalid property selector. Cannot access more than one property for this operation.");
     }
 
-    final firstKeyPath = keyPaths!.first;
+    final firstKeyPath = keyPaths.first;
     if (firstKeyPath.dynamicElements != null) {
       throw ArgumentError(
           "Invalid property selector. Cannot access subdocuments for this operation.");
@@ -262,19 +262,19 @@ class ManagedEntity implements APIComponentDocumenter {
   KeyPath identifyProperty<T, U extends ManagedObject>(
       T propertyIdentifier(U x)) {
     final properties = identifyProperties(propertyIdentifier);
-    if (properties?.length != 1) {
+    if (properties.length != 1) {
       throw ArgumentError(
           "Invalid property selector. Must reference a single property only.");
     }
 
-    return properties!.first;
+    return properties.first;
   }
 
   /// Returns a list of properties selected by [propertiesIdentifier].
   ///
   /// Each selected property in [propertiesIdentifier] is returned in a [KeyPath] object that fully identifies the
   /// property relative to this entity.
-  List<KeyPath>? identifyProperties<T, U extends ManagedObject>(
+  List<KeyPath> identifyProperties<T, U extends ManagedObject>(
       T propertiesIdentifier(U x)?) {
     final tracker = ManagedAccessTrackingBacking();
     var obj = instanceOf<U>(backing: tracker);
@@ -347,7 +347,7 @@ class ManagedEntity implements APIComponentDocumenter {
 abstract class ManagedEntityRuntime {
   void finalize(ManagedDataModel dataModel) {}
 
-  ManagedEntity get entity;
+  ManagedEntity? get entity;
 
   ManagedObject instanceOfImplementation({ManagedBacking backing});
 

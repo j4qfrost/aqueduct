@@ -5,7 +5,7 @@ class FailingEmptyOneOf extends ManagedObject<_FEO> {}
 
 class _FEO {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.oneOf([])
   int? d;

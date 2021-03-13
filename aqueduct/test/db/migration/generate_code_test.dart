@@ -42,7 +42,7 @@ void main() {
       expect(builder!.commands.length, 1);
       expect(
           builder!.commands.first,
-          "database.createTable(SchemaTable(\"foo\", ["
+          "database?.createTable(SchemaTable(\"foo\", ["
           "${dartExpressionForColumnsWithAllAttributeOptions[0]},${dartExpressionForColumnsWithAllAttributeOptions[1]}]));");
     });
 
@@ -58,7 +58,7 @@ void main() {
       expect(builder!.commands.length, 1);
       expect(
           builder!.commands.first,
-          "database.createTable(SchemaTable(\"foo\", ["
+          "database?.createTable(SchemaTable(\"foo\", ["
           "SchemaColumn(\"id\", ManagedPropertyType.integer, isPrimaryKey: false, autoincrement: false, isIndexed: false, isNullable: false, isUnique: false),"
           "SchemaColumn(\"x\", ManagedPropertyType.integer, isPrimaryKey: false, autoincrement: false, isIndexed: false, isNullable: false, isUnique: false)"
           "], uniqueColumnSetNames: [\"id\",\"x\"]));");
@@ -70,7 +70,7 @@ void main() {
         SchemaTable("foo", [SchemaColumn("id", ManagedPropertyType.integer)]));
     builder!.deleteTable("foo");
     expect(builder!.commands.length, 2);
-    expect(builder!.commands.last, "database.deleteTable(\"foo\");");
+    expect(builder!.commands.last, "database?.deleteTable(\"foo\");");
   });
 
   test("Rename table", () {
@@ -78,7 +78,7 @@ void main() {
         SchemaTable("foo", [SchemaColumn("id", ManagedPropertyType.integer)]));
     builder!.renameTable("foo", "bar");
     expect(builder!.commands.length, 2);
-    expect(builder!.commands.last, "database.renameTable(\"foo\", \"bar\");");
+    expect(builder!.commands.last, "database?.renameTable(\"foo\", \"bar\");");
   }, skip: "not yet implemented");
 
   group("Alter table", () {
@@ -96,7 +96,7 @@ void main() {
       });
       expect(builder!.commands.length, 2);
       expect(builder!.commands.last,
-          "database.alterTable(\"foo\", (t) {t.uniqueColumnSet = [\"x\",\"y\"];});");
+          "database?.alterTable(\"foo\", (t) {t.uniqueColumnSet = [\"x\",\"y\"];});");
     });
 
     test("Alter table; add unique", () {
@@ -110,7 +110,7 @@ void main() {
       });
       expect(builder!.commands.length, 2);
       expect(builder!.commands.last,
-          "database.alterTable(\"foo\", (t) {t.uniqueColumnSet = [\"x\",\"y\"];});");
+          "database?.alterTable(\"foo\", (t) {t.uniqueColumnSet = [\"x\",\"y\"];});");
     });
 
     test("Alter table; delete unique", () {
@@ -127,7 +127,7 @@ void main() {
       });
       expect(builder!.commands.length, 2);
       expect(builder!.commands.last,
-          "database.alterTable(\"foo\", (t) {t.uniqueColumnSet = null;});");
+          "database?.alterTable(\"foo\", (t) {t.uniqueColumnSet = null;});");
     });
   });
 
@@ -140,7 +140,7 @@ void main() {
       expect(builder!.commands.length, 2);
       expect(
           builder!.commands.last,
-          "database.addColumn(\"foo\", "
+          "database?.addColumn(\"foo\", "
           "SchemaColumn(\"x\", ManagedPropertyType.integer, isPrimaryKey: false, autoincrement: false, "
           "isIndexed: false, isNullable: true, isUnique: false));");
     });
@@ -154,12 +154,12 @@ void main() {
       expect(builder!.commands.length, 3);
       expect(
           builder!.commands[1],
-          "database.addColumn(\"foo\", "
+          "database?.addColumn(\"foo\", "
           "SchemaColumn(\"x\", ManagedPropertyType.integer, isPrimaryKey: false, autoincrement: false, "
           "isIndexed: false, isNullable: false, isUnique: false));");
       expect(
           builder!.commands[2],
-          "database.addColumn(\"foo\", "
+          "database?.addColumn(\"foo\", "
           "SchemaColumn(\"y\", ManagedPropertyType.integer, isPrimaryKey: false, autoincrement: false, "
           "defaultValue: \"2\", isIndexed: false, isNullable: false, isUnique: false));");
     });
@@ -176,7 +176,7 @@ void main() {
       expect(builder!.commands.length, 3);
       expect(
           builder!.commands.last,
-          "database.addColumn(\"bar\", "
+          "database?.addColumn(\"bar\", "
           "SchemaColumn.relationship(\"foo_id\", ManagedPropertyType.integer, relatedTableName: \"foo\", relatedColumnName: \"id\", rule: DeleteRule.nullify, isNullable: true, isUnique: false));");
     });
   });
@@ -187,7 +187,7 @@ void main() {
     builder!.addColumn("foo", SchemaColumn("x", ManagedPropertyType.integer));
     builder!.deleteColumn("foo", "x");
     expect(builder!.commands.length, 3);
-    expect(builder!.commands.last, "database.deleteColumn(\"foo\", \"x\");");
+    expect(builder!.commands.last, "database?.deleteColumn(\"foo\", \"x\");");
   });
 
   test("Rename column", () {}, skip: "not yet implemented");
@@ -201,14 +201,14 @@ void main() {
       });
       expect(builder!.commands.length, 2);
       expect(builder!.commands.last,
-          "database.alterColumn(\"foo\", \"id\", (c) {c.isIndexed = true;});");
+          "database?.alterColumn(\"foo\", \"id\", (c) {c.isIndexed = true;});");
 
       builder!.alterColumn("foo", "id", (c) {
         c.isIndexed = false;
       });
       expect(builder!.commands.length, 3);
       expect(builder!.commands.last,
-          "database.alterColumn(\"foo\", \"id\", (c) {c.isIndexed = false;});");
+          "database?.alterColumn(\"foo\", \"id\", (c) {c.isIndexed = false;});");
 
       builder!.alterColumn("foo", "id", (c) {
         c.isIndexed = false;
@@ -225,7 +225,7 @@ void main() {
       });
       expect(builder!.commands.length, 2);
       expect(builder!.commands.last,
-          'database.alterColumn("foo", "id", (c) {c.defaultValue = "\'foobar\'";});');
+          'database?.alterColumn("foo", "id", (c) {c.defaultValue = "\'foobar\'";});');
 
       builder!.alterColumn("foo", "id", (c) {
         c.defaultValue = "'foobar'";
@@ -237,7 +237,7 @@ void main() {
       });
       expect(builder!.commands.length, 3);
       expect(builder!.commands.last,
-          "database.alterColumn(\"foo\", \"id\", (c) {c.defaultValue = null;});");
+          "database?.alterColumn(\"foo\", \"id\", (c) {c.defaultValue = null;});");
 
       builder!.alterColumn("foo", "id", (c) {
         c.defaultValue = null;
@@ -253,14 +253,14 @@ void main() {
       });
       expect(builder!.commands.length, 2);
       expect(builder!.commands.last,
-          "database.alterColumn(\"foo\", \"id\", (c) {c.isUnique = true;});");
+          "database?.alterColumn(\"foo\", \"id\", (c) {c.isUnique = true;});");
 
       builder!.alterColumn("foo", "id", (c) {
         c.isUnique = false;
       });
       expect(builder!.commands.length, 3);
       expect(builder!.commands.last,
-          "database.alterColumn(\"foo\", \"id\", (c) {c.isUnique = false;});");
+          "database?.alterColumn(\"foo\", \"id\", (c) {c.isUnique = false;});");
 
       builder!.alterColumn("foo", "id", (c) {
         c.isUnique = false;
@@ -277,14 +277,14 @@ void main() {
       });
       expect(builder!.commands.length, 2);
       expect(builder!.commands.last,
-          "database.alterColumn(\"foo\", \"id\", (c) {c.isNullable = true;});");
+          "database?.alterColumn(\"foo\", \"id\", (c) {c.isNullable = true;});");
 
       builder!.alterColumn("foo", "id", (c) {
         c.isNullable = false;
       });
       expect(builder!.commands.length, 3);
       expect(builder!.commands.last,
-          "database.alterColumn(\"foo\", \"id\", (c) {c.isNullable = false;});");
+          "database?.alterColumn(\"foo\", \"id\", (c) {c.isNullable = false;});");
 
       builder!.alterColumn("foo", "id", (c) {
         c.isNullable = false;
@@ -306,14 +306,14 @@ void main() {
       });
       expect(builder!.commands.length, 3);
       expect(builder!.commands.last,
-          "database.alterColumn(\"bar\", \"foo_id\", (c) {c.isNullable = true;});");
+          "database?.alterColumn(\"bar\", \"foo_id\", (c) {c.isNullable = true;});");
 
       builder!.alterColumn("bar", "foo_id", (c) {
         c.isNullable = false;
       });
       expect(builder!.commands.length, 4);
       expect(builder!.commands.last,
-          "database.alterColumn(\"bar\", \"foo_id\", (c) {c.isNullable = false;});");
+          "database?.alterColumn(\"bar\", \"foo_id\", (c) {c.isNullable = false;});");
 
       builder!.alterColumn("bar", "foo_id", (c) {
         c.isNullable = false;
@@ -337,14 +337,14 @@ void main() {
       });
       expect(builder!.commands.length, 3);
       expect(builder!.commands.last,
-          "database.alterColumn(\"bar\", \"foo_id\", (c) {c.deleteRule = DeleteRule.nullify;});");
+          "database?.alterColumn(\"bar\", \"foo_id\", (c) {c.deleteRule = DeleteRule.nullify;});");
 
       builder!.alterColumn("bar", "foo_id", (c) {
         c.deleteRule = DeleteRule.cascade;
       });
       expect(builder!.commands.length, 4);
       expect(builder!.commands.last,
-          "database.alterColumn(\"bar\", \"foo_id\", (c) {c.deleteRule = DeleteRule.cascade;});");
+          "database?.alterColumn(\"bar\", \"foo_id\", (c) {c.deleteRule = DeleteRule.cascade;});");
 
       builder!.alterColumn("bar", "foo_id", (c) {
         c.deleteRule = DeleteRule.cascade;
@@ -363,7 +363,7 @@ void main() {
       });
       expect(builder!.commands.length, 2);
       expect(builder!.commands.last,
-          "database.alterColumn(\"foo\", \"id\", (c) {c.isIndexed = true;c.isUnique = true;});");
+          "database?.alterColumn(\"foo\", \"id\", (c) {c.isIndexed = true;c.isUnique = true;});");
     });
   });
 }

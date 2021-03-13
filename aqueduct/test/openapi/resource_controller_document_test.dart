@@ -277,7 +277,7 @@ class BSubclass extends B {
 }
 
 class OverrideGeneration extends Serializable {
-  late int id;
+  int? id;
 
   @override
   void readFromMap(Map<String, dynamic>? requestBody) {}

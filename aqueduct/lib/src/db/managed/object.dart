@@ -49,14 +49,14 @@ abstract class ManagedBacking {
 /// A managed object is declared in two parts, the subclass and its table definition.
 ///
 ///         class User extends ManagedObject<_User> implements _User {
-///           String name;
+///           String? name;
 ///         }
 ///         class _User {
 ///           @primaryKey
-///           int id;
+///           int? id;
 ///
 ///           @Column(indexed: true)
-///           String email;
+///           String? email;
 ///         }
 ///
 /// Table definitions are plain Dart objects that represent a database table. Each property is a column in the database.

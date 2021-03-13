@@ -938,7 +938,7 @@ void expectTokenErrorRedirect(
 }
 
 Map<String, String> parametersFromFragment(String fragment) {
-  if (fragment == null || fragment.isEmpty) {
+  if (fragment.isEmpty) {
     return {};
   }
 

@@ -39,7 +39,7 @@ void main() {
 
       expect(
           Directory.fromUri(
-                  cli!.agent!.workingDirectory.uri.resolve("test_project/"))
+                  cli!.agent.workingDirectory.uri.resolve("test_project/"))
               .existsSync(),
           true);
     });
@@ -61,7 +61,7 @@ void main() {
 
       expect(
           Directory.fromUri(
-                  cli!.agent!.workingDirectory.uri.resolve("test_project/"))
+                  cli!.agent.workingDirectory.uri.resolve("test_project/"))
               .existsSync(),
           false);
     });
@@ -74,7 +74,7 @@ void main() {
 
       expect(
           Directory.fromUri(
-                  cli!.agent!.workingDirectory.uri.resolve("test_project/"))
+                  cli!.agent.workingDirectory.uri.resolve("test_project/"))
               .existsSync(),
           false);
     });
@@ -105,7 +105,7 @@ void main() {
       var res = await cli!.run("create", ["test_project", "--offline"]);
       expect(res, 0);
 
-      var aqueductLocationString = File.fromUri(cli!.agent!.workingDirectory.uri
+      var aqueductLocationString = File.fromUri(cli!.agent.workingDirectory.uri
               .resolve("test_project/")
               .resolve(".packages"))
           .readAsStringSync()
@@ -128,7 +128,7 @@ void main() {
     final aqueductVersion = Version.parse("${aqueductPubspec["version"]}");
 
     for (var template in templates) {
-      test("Templates can use 'this' version of Aqueduct in their dependencies",
+      test("$template: Templates can use 'this' version of Aqueduct in their dependencies",
           () {
         var projectDir = Directory("templates/$template/");
         var pubspec = File.fromUri(projectDir.uri.resolve("pubspec.yaml"));
@@ -138,7 +138,7 @@ void main() {
         expect(projectVersionConstraint.allows(aqueductVersion), true);
       });
 
-      test("Tests run on template generated from local path", () async {
+      test("$template: Tests run on template generated from local path", () async {
         expect(
             await cli!
                 .run("create", ["test_project", "-t", template, "--offline"]),
@@ -147,10 +147,11 @@ void main() {
         final cmd = Platform.isWindows ? "pub.bat" : "pub";
         var res = Process.runSync(cmd, ["run", "test", "-j", "1"],
             runInShell: true,
-            workingDirectory: cli!.agent!.workingDirectory.uri
+            workingDirectory: cli!.agent.workingDirectory.uri
                 .resolve("test_project")
                 .toFilePath(windows: Platform.isWindows));
 
+        print(res.stderr);
         expect(res.stdout, contains("All tests passed"));
         expect(res.exitCode, 0);
       });

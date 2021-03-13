@@ -11,10 +11,10 @@ import 'managed.dart';
 ///         @Table(name: "_Account");
 ///         class _User {
 ///           @primaryKey
-///           int id;
+///           in? id;
 ///
-///           String name;
-///           String email;
+///           String? name;
+///           String? email;
 ///         }
 class Table {
   /// Default constructor.
@@ -109,7 +109,7 @@ class Relate {
 ///         class User extends ManagedObject<_User> implements _User {}
 ///         class _User {
 ///           @primaryKey
-///           int id;
+///           int? id;
 ///
 ///           @Column(indexed: true, unique: true)
 ///           String email;
@@ -230,7 +230,7 @@ class Serialize {
 /// This annotation is a convenience for the following annotation:
 ///
 ///         @Column(primaryKey: true, databaseType: ManagedPropertyType.bigInteger, autoincrement: true)
-///         int id;
+///         int? id;
 ///
 /// The annotated property type must be [int].
 ///

@@ -400,7 +400,7 @@ class TestModel extends ManagedObject<_TestModel> implements _TestModel {}
 
 class _TestModel {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -417,7 +417,7 @@ class GenUser extends ManagedObject<_GenUser> implements _GenUser {}
 
 class _GenUser {
   @primaryKey
-  late int id;
+  int? id;
   String? name;
 
   ManagedSet<GenPost>? posts;
@@ -427,7 +427,7 @@ class GenPost extends ManagedObject<_GenPost> implements _GenPost {}
 
 class _GenPost {
   @primaryKey
-  late int id;
+  int? id;
   String? text;
 
   @Relate(Symbol('posts'))
@@ -438,7 +438,7 @@ class GenTime extends ManagedObject<_GenTime> implements _GenTime {}
 
 class _GenTime {
   @primaryKey
-  late int id;
+  int? id;
 
   String? text;
 
@@ -453,7 +453,7 @@ class TransientModel extends ManagedObject<_Transient> implements _Transient {
 
 class _Transient {
   @primaryKey
-  late int id;
+  int? id;
 
   String? value;
 }
@@ -463,7 +463,7 @@ class BoringObject extends ManagedObject<_BoringObject>
 
 class _BoringObject {
   @primaryKey
-  late int id;
+  int? id;
 }
 
 class PrivateField extends ManagedObject<_PrivateField>
@@ -477,7 +477,7 @@ class PrivateField extends ManagedObject<_PrivateField>
 
 class _PrivateField {
   @primaryKey
-  late int id;
+  int? id;
 
   String? _private;
 }
@@ -486,7 +486,7 @@ class EnumObject extends ManagedObject<_EnumObject> implements _EnumObject {}
 
 class _EnumObject {
   @primaryKey
-  late int id;
+  int? id;
 
   @Column(nullable: true)
   EnumValues? enumValues;
@@ -497,7 +497,7 @@ class MultiUnique extends ManagedObject<_MultiUnique> implements _MultiUnique {}
 @Table.unique([Symbol('a'), Symbol('b')])
 class _MultiUnique {
   @primaryKey
-  late int id;
+  int? id;
 
   String? a;
   String? b;

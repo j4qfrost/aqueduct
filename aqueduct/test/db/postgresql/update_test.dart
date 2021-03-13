@@ -350,7 +350,7 @@ class TestModel extends ManagedObject<_TestModel> implements _TestModel {}
 
 class _TestModel {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -362,7 +362,7 @@ class Child extends ManagedObject<_Child> implements _Child {}
 
 class _Child {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -374,7 +374,7 @@ class Parent extends ManagedObject<_Parent> implements _Child {}
 
 class _Parent {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -385,7 +385,7 @@ class EnumObject extends ManagedObject<_EnumObject> implements _EnumObject {}
 
 class _EnumObject {
   @primaryKey
-  late int id;
+  int? id;
 
   EnumValues? enumValues;
 }

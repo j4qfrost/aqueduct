@@ -208,7 +208,7 @@ void main() {
 
 class _Root {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -221,7 +221,7 @@ class Root extends ManagedObject<_Root> implements _Root {}
 
 class _Child {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 
@@ -236,7 +236,7 @@ class Child extends ManagedObject<_Child> implements _Child {}
 
 class _Constructor {
   @primaryKey
-  late int id;
+  int? id;
 
   String? name;
 }
@@ -251,5 +251,5 @@ class Missing extends ManagedObject<_Missing> {}
 
 class _Missing {
   @primaryKey
-  late int id;
+  int? id;
 }

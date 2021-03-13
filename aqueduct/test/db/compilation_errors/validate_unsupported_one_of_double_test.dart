@@ -5,7 +5,7 @@ class UnsupportedDoubleOneOf extends ManagedObject<_UDOOO> {}
 
 class _UDOOO {
   @primaryKey
-  late int id;
+  int? id;
 
   @Validate.oneOf(["3.14159265359", "2.71828"])
   double? someFloatingNumber;

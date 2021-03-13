@@ -144,7 +144,7 @@ void main() {
       final props = context!
           .entityForType(Parent)!
           .identifyProperties((Parent x) => [x.document, x.field, x.children]);
-      expect(props!.length, 3);
+      expect(props.length, 3);
       expect(props.any((k) => k.path.first.name == "document"), true);
       expect(props.any((k) => k.path.first.name == "field"), true);
       expect(props.any((k) => k.path.first.name == "children"), true);
@@ -154,7 +154,7 @@ void main() {
       final props = context!
           .entityForType(Parent)!
           .identifyProperties((Parent x) => [x.document!["k"]]);
-      expect(props!.length, 1);
+      expect(props.length, 1);
       expect(props.first.path.length, 1);
       expect(props.first.path.first.name, "document");
       expect(props.first.dynamicElements, ["k"]);
@@ -164,7 +164,7 @@ void main() {
       final props = context!
           .entityForType(Parent)!
           .identifyProperties((Parent x) => [x.document!["k"][1]]);
-      expect(props!.length, 1);
+      expect(props.length, 1);
       expect(props.first.path.length, 1);
       expect(props.first.path.first.name, "document");
       expect(props.first.dynamicElements, ["k", 1]);
@@ -174,7 +174,7 @@ void main() {
       final props = context!
           .entityForType(Parent)!
           .identifyProperties((Parent x) => [x.document!["k"][1], x.field]);
-      expect(props!.length, 2);
+      expect(props.length, 2);
 
       expect(props.first.path.length, 1);
       expect(props.first.path.first.name, "document");
@@ -189,7 +189,7 @@ void main() {
       final props = context!
           .entityForType(Child)!
           .identifyProperties((Child x) => [x.parent!.field]);
-      expect(props!.length, 1);
+      expect(props.length, 1);
       expect(props.first.path.length, 2);
       expect(props.first.path.first.name, "parent");
       expect(props.first.path.first.entity.tableName, "_Child");
@@ -203,7 +203,7 @@ class Parent extends ManagedObject<_Parent> implements _Parent {}
 
 class _Parent {
   @primaryKey
-  late int id;
+  int? id;
 
   String? field;
 
@@ -216,7 +216,7 @@ class Child extends ManagedObject<_Child> implements _Child {}
 
 class _Child {
   @primaryKey
-  late int id;
+  int? id;
 
   String? field;
 
@@ -232,7 +232,7 @@ class Grandchild extends ManagedObject<_Grandchild> implements _Grandchild {}
 
 class _Grandchild {
   @primaryKey
-  late int id;
+  int? id;
 
   String? field;
 

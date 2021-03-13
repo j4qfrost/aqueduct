@@ -17,7 +17,7 @@ void main() {
     templateCli =
         await CLIClient(CommandLineAgent(ProjectAgent.projectsDirectory))
             .createProject();
-    await templateCli!.agent!.getDependencies(offline: true);
+    await templateCli!.agent.getDependencies(offline: true);
   });
 
   tearDownAll(() async {
@@ -30,7 +30,7 @@ void main() {
   });
 
   tearDown(() {
-    projectUnderTestCli!.agent!.workingDirectory.deleteSync(recursive: true);
+    projectUnderTestCli!.agent.workingDirectory.deleteSync(recursive: true);
   });
 
   test("Can get API reference", () async {
@@ -38,7 +38,7 @@ void main() {
     await task.hasStarted;
 
     expect(
-        Directory.fromUri(projectUnderTestCli!.agent!.workingDirectory.uri
+        Directory.fromUri(projectUnderTestCli!.agent.workingDirectory.uri
                 .resolve(".aqueduct_spec/"))
             .existsSync(),
         true);
@@ -50,7 +50,7 @@ void main() {
     task.process!.stop(0);
     expect(await task.exitCode, 0);
     expect(
-        Directory.fromUri(projectUnderTestCli!.agent!.workingDirectory.uri
+        Directory.fromUri(projectUnderTestCli!.agent.workingDirectory.uri
                 .resolve(".aqueduct_spec/"))
             .existsSync(),
         false);

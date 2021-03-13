@@ -133,7 +133,7 @@ class ManagedBuilderBacking extends ManagedBacking {
 }
 
 class ManagedAccessTrackingBacking extends ManagedBacking {
-  List<KeyPath>? keyPaths;
+  List<KeyPath> keyPaths = [];
   KeyPath? workingKeyPath;
 
   @override
@@ -147,9 +147,8 @@ class ManagedAccessTrackingBacking extends ManagedBacking {
       return forward(property, workingKeyPath!);
     }
 
-    keyPaths ??= [];
     final keyPath = KeyPath(property);
-    keyPaths!.add(keyPath);
+    keyPaths.add(keyPath);
 
     return forward(property, keyPath);
   }

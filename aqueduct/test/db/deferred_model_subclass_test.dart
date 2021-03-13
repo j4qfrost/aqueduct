@@ -25,7 +25,7 @@ class _OverriddenTotalModel extends PartialModel {
 
 class PartialModel {
   @primaryKey
-  late int id;
+  int? id;
 
   @Column(indexed: true)
   String? field;
@@ -42,7 +42,7 @@ class PartialReferenceModel extends ManagedObject<_PartialReferenceModel>
 
 class _PartialReferenceModel {
   @primaryKey
-  late int id;
+  int? id;
 
   String? field;
 

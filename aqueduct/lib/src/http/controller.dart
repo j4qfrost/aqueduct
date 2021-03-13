@@ -9,7 +9,7 @@ import 'package:runtime/runtime.dart';
 import 'http.dart';
 
 typedef _ControllerGeneratorClosure = Controller Function();
-typedef _Handler = FutureOr<RequestOrResponse> Function(Request request);
+typedef _Handler = FutureOr<RequestOrResponse?> Function(Request request);
 
 /// The unifying protocol for [Request] and [Response] classes.
 ///
@@ -47,7 +47,7 @@ abstract class Linkable {
   Linkable? link(Controller instantiator());
 
   /// See [Controller.linkFunction].
-  Linkable linkFunction(FutureOr<RequestOrResponse> handle(Request request));
+  Linkable linkFunction(FutureOr<RequestOrResponse?> handle(Request request));
 }
 
 /// Base class for request handling objects.
@@ -123,7 +123,7 @@ abstract class Controller
   ///
   /// See [link] for a variant of this method that takes an object instead of a closure.
   @override
-  Linkable linkFunction(FutureOr<RequestOrResponse> handle(Request request)) {
+  Linkable linkFunction(FutureOr<RequestOrResponse?> handle(Request request)) {
     return _nextController = _FunctionController(handle);
   }
 
@@ -177,6 +177,8 @@ abstract class Controller
         return null;
       }
     } catch (any, stacktrace) {
+      print(stacktrace);
+
       // ignore: unawaited_futures
       handleError(req, any, stacktrace);
 
@@ -204,7 +206,7 @@ abstract class Controller
   ///
   /// If this method returns null, [request] is not passed to any other controller and is not responded to. You must respond to [request]
   /// through [Request.raw].
-  FutureOr<RequestOrResponse> handle(Request request);
+  FutureOr<RequestOrResponse?> handle(Request request);
 
   /// Executed prior to [Response] being sent.
   ///
@@ -378,7 +380,7 @@ class _ControllerRecycler<T> extends Controller {
   }
 
   @override
-  Linkable linkFunction(FutureOr<RequestOrResponse> handle(Request request)) {
+  Linkable linkFunction(FutureOr<RequestOrResponse?> handle(Request request)) {
     final c = super.linkFunction(handle);
     nextInstanceToReceive?._nextController = c as Controller;
     return c;
@@ -424,7 +426,7 @@ class _FunctionController extends Controller {
   final _Handler _handler;
 
   @override
-  FutureOr<RequestOrResponse> handle(Request request) {
+  FutureOr<RequestOrResponse?> handle(Request request) {
     return _handler(request);
   }
 

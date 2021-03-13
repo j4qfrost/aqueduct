@@ -29,20 +29,20 @@ class ManagedDataModel extends Object
         .whereType<ManagedEntityRuntime?>()
         .toList();
     final expectedRuntimes = instanceTypes
-        .map((t) => runtimes.firstWhere((e) => e?.entity.instanceType == t,
+        .map((t) => runtimes.firstWhere((e) => e?.entity!.instanceType == t,
             orElse: () => null))
         .toList();
 
     final notFound = expectedRuntimes.where((e) => e == null).toList();
     if (notFound.isNotEmpty) {
       throw ManagedDataModelError(
-          "Data model types were not found: ${notFound.map((e) => e!.entity.name).join(", ")}");
+          "Data model types were not found: ${notFound.map((e) => e!.entity!.name).join(", ")}");
     }
 
     expectedRuntimes.forEach((runtime) {
-      _entities[runtime!.entity.instanceType] = runtime.entity;
-      _tableDefinitionToEntityMap[runtime.entity.tableDefinition] =
-          runtime.entity;
+      _entities[runtime!.entity!.instanceType] = runtime.entity!;
+      _tableDefinitionToEntityMap[runtime.entity!.tableDefinition] =
+          runtime.entity!;
     });
     expectedRuntimes.forEach((runtime) => runtime!.finalize(this));
   }
@@ -61,9 +61,9 @@ class ManagedDataModel extends Object
         .whereType<ManagedEntityRuntime>();
 
     runtimes.forEach((runtime) {
-      _entities[runtime.entity.instanceType] = runtime.entity;
-      _tableDefinitionToEntityMap[runtime.entity.tableDefinition] =
-          runtime.entity;
+      _entities[runtime.entity!.instanceType] = runtime.entity!;
+      _tableDefinitionToEntityMap[runtime.entity!.tableDefinition] =
+          runtime.entity!;
     });
     runtimes.forEach((runtime) => runtime.finalize(this));
   }
@@ -80,7 +80,7 @@ class ManagedDataModel extends Object
   ///         class MyModel extends ManagedObject<_MyModel> implements _MyModel {}
   ///         class _MyModel {
   ///           @primaryKey
-  ///           int id;
+  ///           int? id;
   ///         }
   ManagedEntity? entityForType(Type type) {
     return _entities[type] ?? _tableDefinitionToEntityMap[type.toString()];

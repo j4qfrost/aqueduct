@@ -9,8 +9,8 @@ import 'package:runtime/runtime.dart';
 ///
 /// See [RequestBody] for a concrete implementation.
 abstract class BodyDecoder {
-  BodyDecoder(Stream<List<int>> bodyByteStream)
-      : _originalByteStream = bodyByteStream;
+  BodyDecoder(Stream<List<int>>? bodyByteStream)
+      : _originalByteStream = bodyByteStream ?? const Stream.empty();
 
   /// The stream of bytes to decode.
   ///

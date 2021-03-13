@@ -141,7 +141,7 @@ class Migration1 extends Migration {
       SchemaColumn("foobar", ManagedPropertyType.integer, isIndexed: true)
     ]));
 
-    //database.renameTable(currentSchema["tableToRename"], "renamedTable");
+    //database!.renameTable(currentSchema["tableToRename"], "renamedTable");
     database!.deleteTable("tableToDelete");
 
     database!.addColumn(
@@ -149,7 +149,7 @@ class Migration1 extends Migration {
         SchemaColumn("addedColumn", ManagedPropertyType.integer,
             defaultValue: "2"));
     database!.deleteColumn("tableToKeep", "columnToDelete");
-    //database.renameColumn()
+    //database!.renameColumn()
     database!.alterColumn("tableToKeep", "columnToEdit", (col) {
       col.defaultValue = "'foo'";
     });

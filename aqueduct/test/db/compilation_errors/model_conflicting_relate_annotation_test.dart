@@ -5,7 +5,7 @@ class InvalidCyclicLeft extends ManagedObject<_InvalidCyclicLeft> {}
 
 class _InvalidCyclicLeft {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('ref'))
   InvalidCyclicRight? ref;
@@ -15,7 +15,7 @@ class InvalidCyclicRight extends ManagedObject<_InvalidCyclicRight> {}
 
 class _InvalidCyclicRight {
   @primaryKey
-  late int id;
+  int? id;
 
   @Relate(Symbol('ref'))
   InvalidCyclicLeft? ref;

@@ -20,11 +20,14 @@ class RequestPath {
     }
 
     for (var segment in spec.segments) {
-      requestIterator.moveNext();
-      var requestSegment = requestIterator.current;
+      if (!requestIterator.moveNext()) {
+        remainingPath = "";
+        return;
+      }
+      final requestSegment = requestIterator.current;
 
       if (segment.isVariable) {
-        variables[segment.variableName!] = requestSegment;
+        variables[segment.variableName.toString()] = requestSegment;
         orderedVariableNames.add(segment.variableName!);
       } else if (segment.isRemainingMatcher) {
         var remaining = [];
@@ -33,7 +36,6 @@ class RequestPath {
           remaining.add(requestIterator.current);
         }
         remainingPath = remaining.join("/");
-
         return;
       }
     }

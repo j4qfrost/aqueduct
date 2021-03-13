@@ -78,7 +78,7 @@ class ManagedAuthToken extends ManagedObject<_ManagedAuthToken>
       ..type = type
       ..resourceOwnerIdentifier = resourceOwner.id
       ..scopes = scope?.split(" ").map((s) => AuthScope(s)).toList()
-      ..clientID = client.id;
+      ..clientID = client.id!;
   }
 
   /// As an [AuthCode].
@@ -90,7 +90,7 @@ class ManagedAuthToken extends ManagedObject<_ManagedAuthToken>
       ..issueDate = issueDate
       ..requestedScopes = scope?.split(" ").map((s) => AuthScope(s)).toList()
       ..expirationDate = expirationDate
-      ..clientID = client.id;
+      ..clientID = client.id!;
   }
 }
 
@@ -98,7 +98,7 @@ class ManagedAuthToken extends ManagedObject<_ManagedAuthToken>
 class _ManagedAuthToken {
   /// A primary key identifier.
   @primaryKey
-  late int id;
+  int? id;
 
   /// The authorization code of this token.
   ///
@@ -177,7 +177,7 @@ class ManagedAuthClient extends ManagedObject<_ManagedAuthClient>
   AuthClient asClient() {
     final scopes = allowedScope?.split(" ").map((s) => AuthScope(s)).toList();
 
-    return AuthClient.withRedirectURI(id, hashedSecret, salt, redirectURI,
+    return AuthClient.withRedirectURI(id!, hashedSecret, salt, redirectURI,
         allowedScopes: scopes);
   }
 }
@@ -189,7 +189,7 @@ class _ManagedAuthClient {
   /// An OAuth 2.0 client represents the client application that authorizes on behalf of the user
   /// with this server. For example 'com.company.mobile_apps'. This value is required.
   @Column(primaryKey: true)
-  late String id;
+  String? id;
 
   /// The client secret, hashed with [salt], if this client is confidential.
   ///
@@ -234,7 +234,7 @@ class ResourceOwnerTableDefinition implements ResourceOwner {
   /// The primary key of a resource owner.
   @override
   @primaryKey
-  late int id;
+  int? id;
 
   /// The username of a resource owner.
   @override
@@ -422,7 +422,7 @@ class ManagedAuthDelegate<T extends ManagedAuthResourceOwner>
   }
 
   @override
-  Future<AuthClient?> getClient(AuthServer server, String clientID) async {
+  Future<AuthClient?> getClient(AuthServer server, String? clientID) async {
     final query = Query<ManagedAuthClient>(context)
       ..where((o) => o.id).equalTo(clientID);
 

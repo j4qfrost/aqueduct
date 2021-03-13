@@ -12,14 +12,14 @@ import 'route_specification.dart';
 /// A router is a [Controller] that evaluates the path of a [Request] and determines which controller should be the next to receive it.
 /// Valid paths for a [Router] are called *routes* and are added to a [Router] via [route].
 ///
-/// Each [route] creates a [Controller] that will receive all requests whose path match the route pattern.
+/// Each [route] creates a new [Controller] that will receive all requests whose path match the route pattern.
 /// If a request path does not match one of the registered routes, [Router] responds with 404 Not Found and does not pass
 /// the request to another controller.
 ///
 /// Unlike most [Controller]s, a [Router] may have multiple controllers it sends requests to. In most applications,
 /// a [Router] is the [ApplicationChannel.entryPoint].
 class Router extends Controller {
-  /// Creates a [Router].
+  /// Creates a new [Router].
   Router({String? basePath, Future notFoundHandler(Request request)?})
       : _unmatchedController = notFoundHandler,
         _basePathSegments =
@@ -96,14 +96,14 @@ class Router extends Controller {
   }
 
   @override
-  Linkable linkFunction(FutureOr<RequestOrResponse> handle(Request request)) {
+  Linkable linkFunction(FutureOr<RequestOrResponse?> handle(Request request)) {
     throw ArgumentError(
         "Invalid link. 'Router' cannot directly link to functions. Use 'route'.");
   }
 
   @override
   Future receive(Request req) async {
-    Controller? next;
+    Controller next;
     try {
       var requestURISegmentIterator = req.raw.uri.pathSegments.iterator;
 
@@ -120,22 +120,21 @@ class Router extends Controller {
       }
 
       final node =
-          _root.node?.nodeForPathSegments(requestURISegmentIterator, req.path);
+          _root.node!.nodeForPathSegments(requestURISegmentIterator, req.path);
       if (node?.specification == null) {
         await _handleUnhandledRequest(req);
         return null;
       }
       req.path.setSpecification(node!.specification!,
           segmentOffset: _basePathSegments.length);
-
-      next = node.controller;
+      next = node.controller!;
     } catch (any, stack) {
       return handleError(req, any, stack);
     }
 
     // This line is intentionally outside of the try block
     // so that this object doesn't handle exceptions for 'next'.
-    return next?.receive(req);
+    return next.receive(req);
   }
 
   @override
@@ -221,7 +220,7 @@ class _RouteController extends Controller {
       }
 
       path.operations =
-          spec.controller?.documentOperations(components, pathKey, path);
+          spec.controller!.documentOperations(components, pathKey, path);
 
       pathMap[pathKey] = path;
 

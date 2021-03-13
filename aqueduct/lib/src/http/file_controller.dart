@@ -151,7 +151,7 @@ class FileController extends Controller {
     }
 
     var relativePath = request.path.remainingPath;
-    var fileUri = _servingDirectory.resolve(relativePath!);
+    var fileUri = _servingDirectory.resolve(relativePath ?? "");
     File file;
     if (FileSystemEntity.isDirectorySync(fileUri.toFilePath())) {
       file = File.fromUri(fileUri.resolve("index.html"));
