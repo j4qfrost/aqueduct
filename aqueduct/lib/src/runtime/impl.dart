@@ -192,7 +192,7 @@ class ControllerRuntimeImpl extends ControllerRuntime {
   ResourceControllerRuntime? _resourceController;
 }
 
-${(resourceController as ResourceControllerRuntimeImpl).compile(ctx)}
+${(resourceController as ResourceControllerRuntimeImpl?)?.compile(ctx)}
     """;
   }
 }
