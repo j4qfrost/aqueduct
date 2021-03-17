@@ -80,7 +80,7 @@ class ApplicationInitialServerMessage {
       {this.logToConsole = false});
 
   String streamTypeName;
-  Uri streamLibraryURI;
+  Uri? streamLibraryURI;
   ApplicationOptions configuration;
   SendPort parentMessagePort;
   int identifier;

@@ -26,7 +26,7 @@ void main() {
 
       final serverRequest = await server!.next();
       expect(serverRequest.method, "PUT");
-      expect(serverRequest.body.as<Map>()!["a"], "b");
+      expect(serverRequest.body.as<Map>()["a"], "b");
       // expectRequest(serverRequest, method: "PUT", body: {"a": "b"});
     });
 
@@ -193,7 +193,7 @@ void main() {
       server!.queueHandler(
           (req) => Response.ok({"k": req.raw.uri.queryParameters["k"]}));
       final response = await testClient.request("/ok?k=1").get();
-      expect(response!.body.as<Map>()!["k"], "1");
+      expect(response!.body.as<Map>()["k"], "1");
 
       expect((await testClient.request("/ok").get())!.statusCode,
           server!.defaultResponse.statusCode);

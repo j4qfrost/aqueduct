@@ -22,7 +22,7 @@ class CLIBuild extends CLICommand with CLIProject {
           "The directory to store build artifacts during compilation. By default, this directory is deleted when this command completes. See 'retain-build-artifacts' flag.",
       defaultsTo: "build")
   Directory get buildDirectory =>
-      Directory(decode("build-directory") ?? "").absolute;
+      Directory(decode("build-directory", orElse: () => "")).absolute;
 
   @override
   Future<int> handle() async {

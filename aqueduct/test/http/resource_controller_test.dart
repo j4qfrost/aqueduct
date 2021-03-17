@@ -663,7 +663,7 @@ class BooleanQueryParamController extends ResourceController {
 class HTTPParameterController extends ResourceController {
   @requiredBinding
   @Bind.header("X-Request-id")
-  late String requestId;
+  String? requestId;
   @requiredBinding
   @Bind.query("Shaqs")
   int? numberOfShaqs;

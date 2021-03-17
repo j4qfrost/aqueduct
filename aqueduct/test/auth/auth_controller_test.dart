@@ -86,7 +86,7 @@ void main() {
           hasResponse(200, body: {
             "access_token": isString,
             "refresh_token":
-                resToken.body.as<Map<String, dynamic>>()?["refresh_token"],
+                resToken.body.as<Map<String, dynamic>>()["refresh_token"],
             "expires_in": greaterThan(3500),
             "token_type": "bearer"
           }, headers: {
@@ -115,7 +115,7 @@ void main() {
           hasResponse(200, body: {
             "access_token": isString,
             "refresh_token":
-                resToken.body.as<Map<String, dynamic>>()?["refresh_token"],
+                resToken.body.as<Map<String, dynamic>>()["refresh_token"],
             "expires_in": greaterThan(3500),
             "token_type": "bearer",
             "scope": "user"
@@ -147,7 +147,7 @@ void main() {
           hasResponse(200, body: {
             "access_token": isString,
             "refresh_token":
-                resToken.body.as<Map<String, dynamic>>()?["refresh_token"],
+                resToken.body.as<Map<String, dynamic>>()["refresh_token"],
             "expires_in": greaterThan(3500),
             "token_type": "bearer",
             "scope": "user"
@@ -705,7 +705,7 @@ Map<String, String> substituteUser(Map<String, String> initial,
 Map<String, String> refreshTokenMapFromTokenResponse(TestResponse resp) {
   return {
     "refresh_token":
-        resp.body.as<Map<String, dynamic>>()?["refresh_token"] as String
+        resp.body.as<Map<String, dynamic>>()["refresh_token"] as String
   };
 }
 

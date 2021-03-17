@@ -74,7 +74,7 @@ void main() {
               headers: {"content-type": "text/html; charset=utf-8"}));
 
       // The data is actually JSON for purposes of this test, just makes it easier to validate here.
-      expect(json.decode(resp!.body.as<String>()!), {
+      expect(json.decode(resp!.body.as<String>()), {
         "response_type": "code",
         "client_id": "com.stablekernel.redirect",
         "state": null,
@@ -100,7 +100,7 @@ void main() {
               headers: {"content-type": "text/html; charset=utf-8"}));
 
       // The data is actually JSON for purposes of this test, just makes it easier to validate here.
-      expect(json.decode(resp!.body.as<String>()!), {
+      expect(json.decode(resp!.body.as<String>()), {
         "response_type": "token",
         "client_id": "com.stablekernel.public.redirect",
         "state": null,
@@ -122,7 +122,7 @@ void main() {
       final resp = await req.get();
       expect(resp, hasStatus(200));
       expect(resp, hasHeaders({"content-type": "text/html; charset=utf-8"}));
-      expect(json.decode(resp!.body.as<String>()!), {
+      expect(json.decode(resp!.body.as<String>()), {
         "response_type": "code",
         "client_id": "com.stablekernel.redirect",
         "state": "Alaska",
@@ -144,7 +144,7 @@ void main() {
       final resp = await req.get();
       expect(resp, hasStatus(200));
       expect(resp, hasHeaders({"content-type": "text/html; charset=utf-8"}));
-      expect(json.decode(resp!.body.as<String>()!), {
+      expect(json.decode(resp!.body.as<String>()), {
         "response_type": "token",
         "client_id": "com.stablekernel.public.redirect",
         "state": "Alaska",

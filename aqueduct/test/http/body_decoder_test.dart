@@ -347,7 +347,7 @@ void main() {
       }).catchError((err) => Future.value(http.Response('', 500)));
       var body = RequestBody(await server!.first);
 
-      expect(await body.decode<Map<String, dynamic>>(), null);
+      expect(await body.decode<Map<String, dynamic>?>(), null);
       expect(body.hasBeenDecoded, true);
     });
 
@@ -360,7 +360,7 @@ void main() {
 
       var body = RequestBody(await server!.first);
       await body.decode();
-      expect(body.as<Map<String, dynamic>>(), null);
+      expect(body.as<Map<String, dynamic>?>(), null);
     });
   });
 
@@ -381,7 +381,7 @@ void main() {
         {"a": "val"}
       ]);
       var body = RequestBody(await server!.first);
-      expect(await body.decode<List<Map<String, dynamic>>>(), [
+      expect(await body.decode<List<Map<String, dynamic>>?>(), [
         {"a": "val"}
       ]);
     });
@@ -446,7 +446,7 @@ void main() {
 
       var body = RequestBody(await server!.first);
       await body.decode();
-      expect(body.as<List<Map<String, dynamic>>>(), null);
+      expect(body.as<List<Map<String, dynamic>>?>(), null);
     });
   });
 
@@ -520,7 +520,7 @@ void main() {
       }).catchError((err) => Future.value(http.Response('', 500)));
       var body = RequestBody(await server!.first);
 
-      expect(await body.decode<String>(), null);
+      expect(await body.decode<String?>(), null);
       expect(body.hasBeenDecoded, true);
     });
 
@@ -533,7 +533,7 @@ void main() {
 
       var body = RequestBody(await server!.first);
       await body.decode();
-      expect(body.as<String>(), null);
+      expect(body.as<String?>(), null);
     });
   });
 
@@ -583,7 +583,7 @@ void main() {
       }).catchError((err) => Future.value(http.Response('', 500)));
       var body = RequestBody(await server!.first);
 
-      expect(await body.decode<List<int>>(), null);
+      expect(await body.decode<List<int>?>(), null);
       expect(body.hasBeenDecoded, true);
     });
 
@@ -596,7 +596,7 @@ void main() {
 
       var body = RequestBody(await server!.first);
       await body.decode();
-      expect(body.as<List<int>>(), null);
+      expect(body.as<List<int>?>(), null);
     });
 
     test("Throw exception if not retaining bytes and body was decoded",

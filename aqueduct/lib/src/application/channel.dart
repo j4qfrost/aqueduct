@@ -273,7 +273,7 @@ abstract class ChannelRuntime {
   Type get channelType;
 
   String get name;
-  Uri get libraryUri;
+  Uri? get libraryUri;
   IsolateEntryFunction get isolateEntryPoint;
 
   ApplicationChannel instantiateChannel();

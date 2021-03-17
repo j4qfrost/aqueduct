@@ -164,7 +164,7 @@ class ResourceControllerRuntimeImpl extends ResourceControllerRuntime {
             decoder = (b) {
               final body = b as RequestBody;
               final bodyList = body.as<List<Map<String, dynamic>>>();
-              if (bodyList!.isEmpty) {
+              if (bodyList.isEmpty) {
                 return boundType.newInstance(#from, [[]]).reflectee;
               }
 
@@ -243,7 +243,7 @@ class ResourceControllerRuntimeImpl extends ResourceControllerRuntime {
         ignoreFilter: metadata.ignore,
         rejectFilter: metadata.reject,
         requireFilter: metadata.require,
-        name: metadata.name,
+        name: metadata.name ?? "",
         type: mirror.type.reflectedType,
         symbolName: MirrorSystem.getName(mirror.simpleName),
         location: metadata.bindingType,

@@ -39,7 +39,7 @@ abstract class CLIDatabaseConnectingCommand implements CLICommand, CLIProject {
           "See 'aqueduct db -h' for details.",
       defaultsTo: "database.yaml")
   File get databaseConfigurationFile =>
-      fileInProjectDirectory(decode("database-config") ?? "");
+      fileInProjectDirectory(decode("database-config", orElse: () => ""));
 
   PersistentStore? _persistentStore;
 

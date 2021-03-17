@@ -62,7 +62,7 @@ class CLIAuthAddClient extends CLICommand
           "A space-delimited list of allowed scopes. Omit if application does not support scopes.",
       defaultsTo: "")
   List<String>? get allowedScopes {
-    String? v = decode("allowed-scopes") as String?;
+    String? v = decode("allowed-scopes");
     if (v?.isEmpty ?? true) {
       return null;
     }

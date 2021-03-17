@@ -93,7 +93,7 @@ class ManagedEntity implements APIComponentDocumenter {
   /// a unique value for that property.
   ///
   /// This value is set by adding [Table] to the table definition of a [ManagedObject].
-  List<ManagedPropertyDescription>? uniquePropertySet;
+  List<ManagedPropertyDescription?>? uniquePropertySet;
 
   /// List of [ManagedValidator]s for attributes of this entity.
   ///
@@ -292,7 +292,7 @@ class ManagedEntity implements APIComponentDocumenter {
     final buffer = StringBuffer();
     if (uniquePropertySet != null) {
       final propString =
-          uniquePropertySet!.map((s) => "'${s.name}'").join(", ");
+          uniquePropertySet!.map((s) => "'${s?.name}'").join(", ");
       buffer.writeln(
           "No two objects may have the same value for all of: $propString.");
     }
@@ -349,7 +349,7 @@ abstract class ManagedEntityRuntime {
 
   ManagedEntity? get entity;
 
-  ManagedObject instanceOfImplementation({ManagedBacking backing});
+  ManagedObject instanceOfImplementation({ManagedBacking? backing});
 
   ManagedSet setOfImplementation(Iterable<dynamic> objects);
 

@@ -15,7 +15,7 @@ If this is your first time viewing Aqueduct, check out [the tour](https://aquedu
 
         pub global activate aqueduct
 
-3. Create a project.
+3. Create a new project.
 
         aqueduct create my_project
 

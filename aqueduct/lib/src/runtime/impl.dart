@@ -28,7 +28,7 @@ class ChannelRuntimeImpl extends ChannelRuntime implements SourceCompiler {
   IsolateEntryFunction get isolateEntryPoint => isolateServerEntryPoint;
 
   @override
-  Uri get libraryUri => (type.owner as LibraryMirror).uri;
+  Uri? get libraryUri => (type.owner as LibraryMirror).uri;
 
   bool get hasGlobalInitializationMethod {
     return type.staticMembers[_globalStartSymbol] != null;
@@ -170,13 +170,14 @@ class ControllerRuntimeImpl extends ControllerRuntime
 
   @override
   String compile(BuildContext ctx) {
-    final originalFileUri = type.location?.sourceUri.toString();
+    final originalFileUri =
+        (type.location != null) ? type.location!.sourceUri.toString() : "";
 
     return """
 import 'dart:async';    
 import 'package:aqueduct/aqueduct.dart';
 import '$originalFileUri';
-${(resourceController as ResourceControllerRuntimeImpl?)?.directives.join("\n")}
+${(resourceController as ResourceControllerRuntimeImpl?)?.directives.join("\n") ?? ""}
     
 final instance = ControllerRuntimeImpl();
     
@@ -192,7 +193,7 @@ class ControllerRuntimeImpl extends ControllerRuntime {
   ResourceControllerRuntime? _resourceController;
 }
 
-${(resourceController as ResourceControllerRuntimeImpl?)?.compile(ctx)}
+${(resourceController as ResourceControllerRuntimeImpl?)?.compile(ctx) ?? ""}
     """;
   }
 }

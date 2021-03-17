@@ -28,7 +28,7 @@ class SchemaTable {
     _columns =
         validProperties.map((p) => SchemaColumn.fromProperty(p!)).toList();
 
-    uniqueColumnSet = entity.uniquePropertySet?.map((p) => p.name).toList();
+    uniqueColumnSet = entity.uniquePropertySet?.map((p) => p!.name).toList();
   }
 
   /// Creates a deep copy of [otherTable].

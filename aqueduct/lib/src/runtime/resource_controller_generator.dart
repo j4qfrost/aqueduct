@@ -17,7 +17,7 @@ String getInvokerSource(BuildContext context,
 
   var counter = 0;
   op.positionalParameters.forEach((p) {
-    buf.writeln("    args.positionalArguments[$counter] as ${p!.type},");
+    buf.writeln("    args.positionalArguments?[$counter],");
     counter++;
   });
 
@@ -25,7 +25,7 @@ String getInvokerSource(BuildContext context,
     var defaultValue = sourcifyValue(p!.defaultValue);
 
     buf.writeln(
-        "    ${p.symbolName}: args.namedArguments['${p.symbolName}'] as ${p.type} ?? $defaultValue,");
+        "    ${p.symbolName}: args.namedArguments?['${p.symbolName}'] ?? $defaultValue,");
   });
 
   buf.writeln("  );");
@@ -41,7 +41,7 @@ String getApplyRequestPropertiesSource(
 
   runtime.ivarParameters?.forEach((f) {
     buf.writeln("(untypedController as $subclassName).${f.symbolName} "
-        "= args.instanceVariables['${f.symbolName}'] as ${f.type};");
+        "= args.instanceVariables?['${f.symbolName}'];");
   });
 
   return buf.toString();

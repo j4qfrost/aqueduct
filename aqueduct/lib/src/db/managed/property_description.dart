@@ -402,7 +402,7 @@ class ManagedRelationshipDescription extends ManagedPropertyDescription {
   static ManagedRelationshipDescription make<T>(
       ManagedEntity entity,
       String name,
-      ManagedType type,
+      ManagedType? type,
       ManagedEntity destinationEntity,
       DeleteRule? deleteRule,
       ManagedRelationshipType? relationshipType,

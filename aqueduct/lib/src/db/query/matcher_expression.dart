@@ -128,7 +128,7 @@ class QueryExpression<T, InstanceType> {
   /// Example:
   ///
   ///       final query = Query<User>()
-  ///         ..where((u) => u.name ).like("bob");
+  ///         ..where((u) => u?.name).like("bob");
   ///
   QueryExpressionJunction<T, InstanceType> like(String value,
       {bool caseSensitive = true}) {

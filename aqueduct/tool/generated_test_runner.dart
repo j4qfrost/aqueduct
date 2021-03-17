@@ -75,10 +75,10 @@ Future main(List<String> args) async {
     }
 
     final elapsed = DateTime.now().difference(currentTime);
+    remainingCounter--;
     print(
         "${makePrompt()} (${elapsed.inSeconds}s) Completed tests derived from ${f.path}.");
     await bm.clean();
-    remainingCounter--;
   }
 
   print("==============");
@@ -92,11 +92,16 @@ Future main(List<String> args) async {
     while (parentDirPathIterator.moveNext()) {
       testPathIterator.moveNext();
     }
-    final components = <String>[];
-    do {
+    if (testPathIterator.moveNext()) {
+      final components = <String>[];
       components.add(testPathIterator.current);
-    } while (testPathIterator.moveNext());
-    return components.join("/");
+      do {
+        components.add(testPathIterator.current);
+      } while (testPathIterator.moveNext());
+      return components.join("/");
+    } else {
+      return "";
+    }
   };
 
   passingFiles.forEach((f) {

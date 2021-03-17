@@ -263,8 +263,8 @@ void main() {
 
       final defaultTestClient = Agent.onPort(4000);
       final response = await defaultTestClient.request("/foo").get();
-      expect(response!.body.as<List>()!.length, 1);
-      expect(response.body.as<List>()!.first["a"], "b");
+      expect(response!.body.as<List>().length, 1);
+      expect(response.body.as<List>().first["a"], "b");
     });
 
     test("Responses with no body don't return one", () async {

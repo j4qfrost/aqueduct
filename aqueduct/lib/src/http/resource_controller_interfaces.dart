@@ -101,10 +101,10 @@ class ResourceControllerParameter {
       required bool isRequired,
       required dynamic Function(dynamic input) decoder,
       required dynamic defaultValue,
-      required List<String> acceptFilter,
-      required List<String> ignoreFilter,
-      required List<String> requireFilter,
-      required List<String> rejectFilter}) {
+      required List<String>? acceptFilter,
+      required List<String>? ignoreFilter,
+      required List<String>? requireFilter,
+      required List<String>? rejectFilter}) {
     return ResourceControllerParameter(
         symbolName: symbolName,
         name: name,
@@ -120,7 +120,7 @@ class ResourceControllerParameter {
   }
 
   final String symbolName;
-  final String? name;
+  final String name;
   final Type type;
   final dynamic defaultValue;
   final List<String>? acceptFilter;
@@ -171,7 +171,7 @@ class ResourceControllerParameter {
         {
           var queryParameters = request.raw.uri.queryParametersAll;
           var value = request.body.isFormData
-              ? request.body.as<Map<String, List<String>>>()![name]
+              ? request.body.as<Map<String, List<String>>>()[name]
               : queryParameters[name];
           if (value == null) {
             return null;
@@ -187,7 +187,7 @@ class ResourceControllerParameter {
         }
       case BindingType.header:
         {
-          final header = request.raw.headers[name!];
+          final header = request.raw.headers[name];
           if (header == null) {
             return null;
           }

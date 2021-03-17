@@ -366,7 +366,7 @@ return entity
   }
 
   String _getGetPropertyNameImpl(BuildContext ctx) {
-    return """final name = entity.symbolMap[invocation.memberName];
+    return """final name = entity.symbolMap?[invocation.memberName];
 if (name != null) {
   return name;
 }
@@ -382,7 +382,7 @@ if (idxEnd < 0) {
 }
 final symbolName = invocationMemberNameAsString.substring(idxUnderscore, idxEnd);
 
-return entity.symbolMap[Symbol(symbolName)];
+return entity.symbolMap?[Symbol(symbolName)];
 """;
   }
 
@@ -398,7 +398,7 @@ return entity.symbolMap[Symbol(symbolName)];
 
     final uniqueStr = entity.uniquePropertySet == null
         ? "null"
-        : "[${entity.uniquePropertySet?.map((u) => "'${u.name}'").join(",")}].map((k) => entity.properties[k]).toList()";
+        : "[${entity.uniquePropertySet?.map((u) => "'${u?.name}'").join(",")}].map((k) => entity.properties[k])!.toList()";
 
     final entityConstructor =
         _getEntityConstructor(ctx, importUris: importUris);
@@ -429,23 +429,23 @@ class ManagedEntityRuntimeImpl extends ManagedEntityRuntime {
    _entity = $entityConstructor;
   }
 
-  ManagedEntity? _entity;
+  late ManagedEntity _entity;
 
   @override
-  ManagedEntity? get entity => _entity; 
+  ManagedEntity get entity => _entity; 
 
   @override
   void finalize(ManagedDataModel dataModel) {
     _entity.relationships = {$relationshipsStr};
     _entity.validators = [];
-    _entity.validators.addAll(_entity.attributes.values.expand((a) => a.validators));
-    _entity.validators.addAll(_entity.relationships.values.expand((a) => a.validators));
+    _entity.validators!.addAll(_entity.attributes.values.expand((a) => a!.validators));
+    _entity.validators!.addAll(_entity.relationships!.values.expand((a) => a!.validators));
     
     entity.uniquePropertySet = $uniqueStr;
   }
 
   @override
-  ManagedObject instanceOfImplementation({ManagedBacking backing}) {
+  ManagedObject instanceOfImplementation({ManagedBacking? backing}) {
     final object = $className();
     if (backing != null) {
       object.backing = backing;
