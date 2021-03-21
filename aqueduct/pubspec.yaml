@@ -21,14 +21,17 @@ dependencies:
   path: ^1.8.0
   postgres:
     git: https://github.com/j4qfrost/postgresql-dart
-  pub_cache:
-    git: https://github.com/j4qfrost/pub_cache
+  pub_cache: ^0.3.0
   pub_semver: ^2.0.0
   safe_config:
     git: https://github.com/j4qfrost/safe_config
   yaml: ^3.1.0
   runtime:
     git: https://github.com/j4qfrost/dart-runtime
+
+dependency_overrides:
+  runtime:
+    path: ../../dart-runtime
 
 dev_dependencies:
   matcher: ^0.12.10
