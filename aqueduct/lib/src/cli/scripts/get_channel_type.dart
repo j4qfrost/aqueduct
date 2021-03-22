@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:mirrors';
 
 import 'package:aqueduct/src/application/channel.dart';
-import 'package:isolate_executor/isolate_executor.dart';
+import 'package:conduit_isolate_executor/isolate_executor.dart';
 import 'package:runtime/runtime.dart';
 
 class GetChannelExecutable extends Executable<String> {

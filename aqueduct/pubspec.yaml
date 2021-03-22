@@ -12,7 +12,7 @@ dependencies:
   analyzer: ^1.1.0
   crypto: ^3.0.0
   logging: ^1.0.0
-  isolate_executor:
+  conduit_isolate_executor:
     git: https://github.com/j4qfrost/dart-isolate-executor
   open_api:
     git: https://github.com/j4qfrost/open-api-dart

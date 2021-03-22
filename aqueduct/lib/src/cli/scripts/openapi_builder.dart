@@ -4,7 +4,7 @@ import 'package:aqueduct/aqueduct.dart';
 import 'package:aqueduct/src/cli/command.dart';
 import 'package:aqueduct/src/cli/mixins/openapi_options.dart';
 import 'package:aqueduct/src/cli/mixins/project.dart';
-import 'package:isolate_executor/isolate_executor.dart';
+import 'package:conduit_isolate_executor/isolate_executor.dart';
 import 'package:runtime/runtime.dart';
 import 'package:yaml/yaml.dart';
 
