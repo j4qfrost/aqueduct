@@ -35,7 +35,7 @@ class CLIBuild extends CLICommand with CLIProject {
         getScriptSource(await getChannelName()),
         forTests: false);
 
-    final bm = BuildManager(ctx);
+    final bm = BuildManager(ctx, isFlutter: true);
     await bm.build();
 
     return 0;
