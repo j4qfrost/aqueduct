@@ -1,0 +1,115 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  aqueduct_test:
+    env:
+      TEST_DIR: aqueduct_test
+      RUNNER_CMD: pub run test -j 1 -r expanded
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        sdk: [stable, beta]
+        runner_args: [-t cli, -x cli]
+    services:
+      postgres:
+        image: postgres:9.6
+        env:
+          POSTGRES_USER: dart
+          POSTGRES_PASSWORD: dart
+          POSTGRES_DB: dart_test
+        ports:
+          - 5432:5432
+    steps:
+    - uses: actions/checkout@v2
+    - name: Cache Dart dependencies
+      uses: actions/cache@v1
+      with:
+        path: ~/.pub-cache
+        key: ${{ matrix.os }}-dart-install-cache-${{ matrix.sdk }}
+    - uses: dart-lang/setup-dart@v1
+      with:
+        sdk: ${{ matrix.sdk }}
+    - name: Get Dependencies
+      working-directory: ${{ env.working-directory }}
+      run: dart pub get
+    - name: Run tests
+      working-directory: ${{ env.working-directory }}
+      run: ${{ env.RUNNER_CMD }}
+    
+  aqueduct:
+    env:
+      TEST_DIR: aqueduct
+      RUNNER_CMD: pub run test -j 1 -r expanded
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        sdk: [stable, beta]
+        runner_args: [-t cli, -x cli]
+    services:
+      postgres:
+        image: postgres:9.6
+        env:
+          POSTGRES_USER: dart
+          POSTGRES_PASSWORD: dart
+          POSTGRES_DB: dart_test
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache Dart dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.pub-cache
+          key: ${{ matrix.os }}-dart-install-cache-${{ matrix.sdk }}
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.sdk }}
+      - name: Get Dependencies
+        working-directory: ${{ env.working-directory }}
+        run: dart pub get
+      - name: Run tests
+        working-directory: ${{ env.working-directory }}
+        run: ${{ env.RUNNER_CMD }} ${{ matrix.runner_args }}
+        
+  aqueduct_tool:
+    env:
+      TEST_DIR: aqueduct
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        sdk: [stable, beta]
+        runner_args: [-t cli, -x cli]
+    services:
+      postgres:
+        image: postgres:9.6
+        env:
+          POSTGRES_USER: dart
+          POSTGRES_PASSWORD: dart
+          POSTGRES_DB: dart_test
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache Dart dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.pub-cache
+          key: ${{ matrix.os }}-dart-install-cache-${{ matrix.sdk }}
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.sdk }}
+      - name: Get Dependencies
+        working-directory: ${{ env.working-directory }}
+        run: dart pub get
+      - name: Run tests
+        working-directory: ${{ env.working-directory }}
+        run: dart tool/generated_test_runner.dart
