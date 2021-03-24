@@ -1,10 +1,7 @@
 name: Test Suite
 
 on:
-  push:
-    branches: [master]
-  pull_request:
-    branches: [master]
+  release:
 
 jobs:
   aqueduct_test:
@@ -14,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        sdk: [stable, beta]
+        sdk: [stable, beta, dev]
         runner_args: [-t cli, -x cli]
     services:
       postgres:
@@ -31,7 +28,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ~/.pub-cache
-        key: ${{ matrix.os }}-dart-install-cache-${{ matrix.sdk }}
+        key: dart-install-cache-${{ matrix.sdk }}
     - uses: dart-lang/setup-dart@v1
       with:
         sdk: ${{ matrix.sdk }}
@@ -49,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        sdk: [stable, beta]
+        sdk: [stable, beta, dev]
         runner_args: [-t cli, -x cli]
     services:
       postgres:
@@ -66,7 +63,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.pub-cache
-          key: ${{ matrix.os }}-dart-install-cache-${{ matrix.sdk }}
+          key: dart-install-cache-${{ matrix.sdk }}
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ matrix.sdk }}
@@ -83,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        sdk: [stable, beta]
+        sdk: [stable, beta, dev]
     services:
       postgres:
         image: postgres:9.6
@@ -99,7 +96,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.pub-cache
-          key: ${{ matrix.os }}-dart-install-cache-${{ matrix.sdk }}
+          key: dart-install-cache-${{ matrix.sdk }}
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: ${{ matrix.sdk }}
