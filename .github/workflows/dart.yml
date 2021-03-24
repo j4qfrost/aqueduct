@@ -36,10 +36,10 @@ jobs:
       with:
         sdk: ${{ matrix.sdk }}
     - name: Get Dependencies
-      working-directory: ${{ env.working-directory }}
+      working-directory: ${{ env.TEST_DIR }}
       run: dart pub get
     - name: Run tests
-      working-directory: ${{ env.working-directory }}
+      working-directory: ${{ env.TEST_DIR }}
       run: ${{ env.RUNNER_CMD }}
     
   aqueduct:
@@ -71,10 +71,10 @@ jobs:
         with:
           sdk: ${{ matrix.sdk }}
       - name: Get Dependencies
-        working-directory: ${{ env.working-directory }}
+        working-directory: ${{ env.TEST_DIR }}
         run: dart pub get
       - name: Run tests
-        working-directory: ${{ env.working-directory }}
+        working-directory: ${{ env.TEST_DIR }}
         run: ${{ env.RUNNER_CMD }} ${{ matrix.runner_args }}
         
   aqueduct_tool:
@@ -84,7 +84,6 @@ jobs:
     strategy:
       matrix:
         sdk: [stable, beta]
-        runner_args: [-t cli, -x cli]
     services:
       postgres:
         image: postgres:9.6
@@ -105,8 +104,8 @@ jobs:
         with:
           sdk: ${{ matrix.sdk }}
       - name: Get Dependencies
-        working-directory: ${{ env.working-directory }}
+        working-directory: ${{ env.TEST_DIR }}
         run: dart pub get
       - name: Run tests
-        working-directory: ${{ env.working-directory }}
+        working-directory: ${{ env.TEST_DIR }}
         run: dart tool/generated_test_runner.dart
