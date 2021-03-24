@@ -11,10 +11,9 @@ jobs:
     env:
       TEST_DIR: aqueduct_test
       RUNNER_CMD: pub run test -j 1 -r expanded
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
         sdk: [stable, beta]
         runner_args: [-t cli, -x cli]
     services:
@@ -47,10 +46,9 @@ jobs:
     env:
       TEST_DIR: aqueduct
       RUNNER_CMD: pub run test -j 1 -r expanded
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
         sdk: [stable, beta]
         runner_args: [-t cli, -x cli]
     services:
@@ -82,10 +80,9 @@ jobs:
   aqueduct_tool:
     env:
       TEST_DIR: aqueduct
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
         sdk: [stable, beta]
         runner_args: [-t cli, -x cli]
     services:
