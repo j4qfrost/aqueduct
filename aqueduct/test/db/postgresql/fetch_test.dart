@@ -499,6 +499,7 @@ class _TestModel {
   @Column(nullable: true, unique: true)
   String email;
 
+  // ignore: unused_element
   static String tableName() {
     return "simple";
   }
@@ -519,6 +520,7 @@ class _GenUser {
 
   ManagedSet<GenPost> posts;
 
+  // ignore: unused_element
   static String tableName() {
     return "GenUser";
   }

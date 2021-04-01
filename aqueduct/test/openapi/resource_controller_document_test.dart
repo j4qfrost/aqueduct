@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:aqueduct/aqueduct.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -292,4 +293,3 @@ class OverrideGeneration extends Serializable {
 }
 
 class PODO {}
-

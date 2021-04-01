@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:aqueduct/src/http/resource_controller_interfaces.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 import 'package:logging/logging.dart';
 import 'package:runtime/runtime.dart';
 

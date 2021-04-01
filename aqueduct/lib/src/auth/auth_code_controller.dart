@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:aqueduct/src/openapi/openapi.dart';
+
+
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 
 import '../http/http.dart';
 import 'auth.dart';
@@ -163,7 +166,7 @@ class AuthCodeController extends ResourceController {
     if (operation.method == "POST") {
       body.content["application/x-www-form-urlencoded"].schema
           .properties["password"].format = "password";
-      body.content["application/x-www-form-urlencoded"].schema.required = [
+      body.content["application/x-www-form-urlencoded"].schema.isRequired = [
         "client_id",
         "state",
         "response_type",

@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_open_api/v3.dart';
+import 'package:conduit_common/conduit_common.dart';
 
 import '../db/db.dart';
 import 'http.dart';
@@ -351,7 +352,7 @@ class ManagedObjectController<InstanceType extends ManagedObject>
       return APIRequestBody.schema(
           context.schema.getObjectWithType(InstanceType),
           contentTypes: ["application/json"],
-          required: true);
+          isRequired: true);
     }
 
     return null;

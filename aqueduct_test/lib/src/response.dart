@@ -16,7 +16,7 @@ class TestResponse {
   /// The HTTP body of the response.
   ///
   /// The body is guaranteed to be decoded prior to accessing it. You do
-  /// not need to invoke [TestResponseBody.decode] or any of its asynchronous
+  /// not need to invoke TestResponseBody.decode or any of its asynchronous
   /// decoding methods.
   final TestResponseBody body;
   

@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:aqueduct/src/http/request.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
+
 import 'auth.dart';
 
 /// Instances that implement this type can be used by an [Authorizer] to determine authorization of a request.
