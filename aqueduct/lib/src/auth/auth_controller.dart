@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 
 import '../http/http.dart';
 import 'auth.dart';
@@ -146,7 +147,7 @@ class AuthController extends ResourceController {
   APIRequestBody documentOperationRequestBody(
       APIDocumentContext context, Operation operation) {
     final body = super.documentOperationRequestBody(context, operation);
-    body.content["application/x-www-form-urlencoded"].schema.required = [
+    body.content["application/x-www-form-urlencoded"].schema.isRequired = [
       "grant_type"
     ];
     body.content["application/x-www-form-urlencoded"].schema

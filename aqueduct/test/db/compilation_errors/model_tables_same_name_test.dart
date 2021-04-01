@@ -20,6 +20,7 @@ class _SameNameOne {
   @primaryKey
   int id;
 
+  // ignore: unused_element
   static String tableName() => "fo";
 }
 
@@ -29,5 +30,6 @@ class _SameNameTwo {
   @primaryKey
   int id;
 
+  // ignore: unused_element
   static String tableName() => "fo";
 }

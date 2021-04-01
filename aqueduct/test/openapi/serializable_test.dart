@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 import 'package:test/test.dart';
 import 'package:aqueduct/aqueduct.dart';
 
@@ -57,7 +58,9 @@ void main() {
     expect(doc.properties["k"], isNotNull);
   });
 
-  test("Can bind a Serializable implementor to a resource controller method and it auto-documents", () async {
+  test(
+      "Can bind a Serializable implementor to a resource controller method and it auto-documents",
+      () async {
     final c = BoundBodyController();
     c.didAddToChannel();
     c.restore(c.recycledState);
@@ -66,7 +69,15 @@ void main() {
     final op = c.documentOperations(ctx, "/", APIPath.empty());
     await ctx.finalize();
 
-    expect(op["post"].requestBody.content["application/json"].schema.referenceURI.pathSegments.last, "BoundBody");
+    expect(
+        op["post"]
+            .requestBody
+            .content["application/json"]
+            .schema
+            .referenceURI
+            .pathSegments
+            .last,
+        "BoundBody");
   });
 }
 
@@ -108,8 +119,7 @@ class FailsToDocument extends Serializable {
 
 class OverrideDocument extends Serializable {
   @override
-  APISchemaObject documentSchema(
-      APIDocumentContext context) {
+  APISchemaObject documentSchema(APIDocumentContext context) {
     return APISchemaObject.object({"k": APISchemaObject.string()});
   }
 
@@ -119,7 +129,6 @@ class OverrideDocument extends Serializable {
   @override
   void readFromMap(Map<String, dynamic> requestBody) {}
 }
-
 
 class BoundBody extends Serializable {
   int x;

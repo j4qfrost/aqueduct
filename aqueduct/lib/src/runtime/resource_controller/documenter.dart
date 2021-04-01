@@ -5,11 +5,12 @@ import 'package:aqueduct/src/http/resource_controller.dart';
 import 'package:aqueduct/src/http/resource_controller_bindings.dart';
 import 'package:aqueduct/src/http/resource_controller_interfaces.dart';
 import 'package:aqueduct/src/http/serializable.dart';
-import 'package:aqueduct/src/openapi/documentable.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
 import 'package:aqueduct/src/runtime/impl.dart';
 import 'package:aqueduct/src/runtime/resource_controller_impl.dart';
 import 'package:aqueduct/src/utilities/mirror_helpers.dart';
+import 'package:conduit_common/conduit_common.dart';
+
+import 'package:conduit_open_api/v3.dart';
 
 bool isSerializable(Type type) {
   return reflectType(type).isSubtypeOf(reflectType(Serializable));
@@ -100,7 +101,7 @@ class ResourceControllerDocumenterImpl extends ResourceControllerDocumenter {
         return APIRequestBody.schema(ref,
             contentTypes: rc.acceptedContentTypes
                 .map((ct) => "${ct.primaryType}/${ct.subType}"),
-            required: boundBody.isRequired);
+            isRequired: boundBody.isRequired);
       }
     } else if (usesFormEncodedData) {
       final Map<String, APISchemaObject> props =
@@ -113,7 +114,7 @@ class ResourceControllerDocumenterImpl extends ResourceControllerDocumenter {
       });
 
       return APIRequestBody.schema(APISchemaObject.object(props),
-          contentTypes: ["application/x-www-form-urlencoded"], required: true);
+          contentTypes: ["application/x-www-form-urlencoded"], isRequired: true);
     }
 
     return null;
@@ -194,7 +195,7 @@ class ResourceControllerDocumenterImpl extends ResourceControllerDocumenter {
         SerializableRuntimeImpl.documentType(context, reflectType(param.type));
     final documentedParameter = APIParameter(param.name, param.apiLocation,
         schema: schema,
-        required: param.isRequired,
+        isRequired: param.isRequired,
         allowEmptyValue: schema.type == APIType.boolean);
 
     return documentedParameter;

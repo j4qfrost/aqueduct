@@ -1,5 +1,6 @@
 import 'package:aqueduct/src/db/managed/data_model_manager.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 import 'package:meta/meta.dart';
 
 import '../../http/serializable.dart';
@@ -191,8 +192,7 @@ abstract class ManagedObject<T> extends Serializable {
       if (invocation.isGetter) {
         return this[propertyName];
       } else if (invocation.isSetter) {
-        this[propertyName] =
-          invocation.positionalArguments.first;
+        this[propertyName] = invocation.positionalArguments.first;
 
         return null;
       }
@@ -268,7 +268,8 @@ abstract class ManagedObject<T> extends Serializable {
   }
 
   @override
-  APISchemaObject documentSchema(APIDocumentContext context) => entity.document(context);
+  APISchemaObject documentSchema(APIDocumentContext context) =>
+      entity.document(context);
 
   static bool _isPropertyPrivate(String propertyName) =>
       propertyName.startsWith("_");

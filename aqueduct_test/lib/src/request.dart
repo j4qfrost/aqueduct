@@ -10,7 +10,7 @@ part of aqueduct_test.client;
 class TestRequest {
   TestRequest._(this._client);
 
-  HttpClient _client;
+  final HttpClient _client;
   Uri _baseUrl;
 
   /// The base URL of the request.

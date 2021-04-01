@@ -1,6 +1,8 @@
 import 'package:aqueduct/aqueduct.dart';
 import 'package:aqueduct/src/db/managed/validation/impl.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+
+import 'package:conduit_open_api/v3.dart';
 
 /// Types of operations [ManagedValidator]s will be triggered for.
 enum Validating { update, insert }
@@ -32,7 +34,8 @@ class ValidationContext {
   void addError(String reason) {
     final p = property;
     if (p is ManagedRelationshipDescription) {
-      errors.add("${p.entity.name}.${p.name}.${p.destinationEntity.primaryKey}: $reason");
+      errors.add(
+          "${p.entity.name}.${p.name}.${p.destinationEntity.primaryKey}: $reason");
     } else {
       errors.add("${p.entity.name}.${p.name}: $reason");
     }

@@ -3,7 +3,8 @@ import 'dart:io';
 
 import 'package:aqueduct/src/auth/auth.dart';
 import 'package:aqueduct/src/http/resource_controller_interfaces.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:runtime/runtime.dart';
@@ -294,13 +295,13 @@ abstract class ResourceController extends Controller
       }
       return null;
     };
-    final checkIfMissingRequiredAndEmitErrorIfSo = (ResourceControllerParameter p, dynamic v) {
+    final checkIfMissingRequiredAndEmitErrorIfSo =
+        (ResourceControllerParameter p, dynamic v) {
       if (v == null && p.isRequired) {
         if (p.location == BindingType.body) {
           errors.add("missing required ${p.locationName}");
         } else {
-          errors.add(
-            "missing required ${p.locationName} '${p.name ?? ""}'");
+          errors.add("missing required ${p.locationName} '${p.name ?? ""}'");
         }
         return null;
       }

@@ -4,8 +4,10 @@ import 'package:aqueduct/src/auth/auth.dart';
 import 'package:aqueduct/src/http/http.dart';
 import 'package:aqueduct/src/http/resource_controller.dart';
 import 'package:aqueduct/src/http/resource_controller_bindings.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
 import 'package:meta/meta.dart';
+
+import 'package:conduit_open_api/v3.dart';
 
 abstract class ResourceControllerRuntime {
   List<ResourceControllerParameter> ivarParameters;
@@ -93,7 +95,7 @@ class ResourceControllerParameter {
 
   // ignore: prefer_constructors_over_static_methods
   static ResourceControllerParameter make<T>(
-    {@required String symbolName,
+      {@required String symbolName,
       @required String name,
       @required BindingType location,
       @required bool isRequired,
@@ -103,13 +105,19 @@ class ResourceControllerParameter {
       @required List<String> ignoreFilter,
       @required List<String> requireFilter,
       @required List<String> rejectFilter}) {
-    return ResourceControllerParameter(symbolName: symbolName,
-      name: name, location: location, isRequired: isRequired,
-      decoder: decoder, type: T, defaultValue: defaultValue,
-      acceptFilter: acceptFilter, ignoreFilter: ignoreFilter,
-      requireFilter: requireFilter, rejectFilter: rejectFilter);
+    return ResourceControllerParameter(
+        symbolName: symbolName,
+        name: name,
+        location: location,
+        isRequired: isRequired,
+        decoder: decoder,
+        type: T,
+        defaultValue: defaultValue,
+        acceptFilter: acceptFilter,
+        ignoreFilter: ignoreFilter,
+        requireFilter: requireFilter,
+        rejectFilter: rejectFilter);
   }
-
 
   final String symbolName;
   final String name;

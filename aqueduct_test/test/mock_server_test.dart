@@ -30,7 +30,8 @@ void main() {
     });
 
     test("Request is enqueued and immediately available", () async {
-      await testClient.get("/hello", query: {"foo": "bar"}, headers: {"X": "Y"});
+      await testClient
+          .get("/hello", query: {"foo": "bar"}, headers: {"X": "Y"});
 
       final serverRequest = await server.next();
       expect(serverRequest.method, "GET");
@@ -94,23 +95,23 @@ void main() {
 
     test("Mock Server respects delays for queued requests", () async {
       server.queueResponse(Response.ok(null),
-          delay: Duration(milliseconds: 1000));
+          delay: const Duration(milliseconds: 1000));
 
       var responseReturned = false;
       final responseFuture = testClient.request("/hello").get();
       // ignore: unawaited_futures
       responseFuture.whenComplete(() => responseReturned = true);
 
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       expect(responseReturned, false);
-      await Future.delayed(Duration(milliseconds: 1500));
+      await Future.delayed(const Duration(milliseconds: 1500));
       expect(responseReturned, true);
     });
 
     test(
         "Mock server uses default delay for requests without an explicit delay",
         () async {
-      server.defaultDelay = Duration(milliseconds: 1000);
+      server.defaultDelay = const Duration(milliseconds: 1000);
       server.queueResponse(Response.ok(null));
 
       var responseReturned = false;
@@ -118,36 +119,36 @@ void main() {
       // ignore: unawaited_futures
       responseFuture.whenComplete(() => responseReturned = true);
 
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       expect(responseReturned, false);
-      await Future.delayed(Duration(milliseconds: 1500));
+      await Future.delayed(const Duration(milliseconds: 1500));
       expect(responseReturned, true);
 
       server.queueResponse(Response.ok(null),
-          delay: Duration(milliseconds: 1000));
+          delay: const Duration(milliseconds: 1000));
 
       responseReturned = false;
       responseFuture = testClient.request("/hello").get();
       // ignore: unawaited_futures
       responseFuture.whenComplete(() => responseReturned = true);
 
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       expect(responseReturned, false);
-      await Future.delayed(Duration(milliseconds: 1500));
+      await Future.delayed(const Duration(milliseconds: 1500));
       expect(responseReturned, true);
     });
 
     test("Default response respects default delay", () async {
-      server.defaultDelay = Duration(milliseconds: 1000);
+      server.defaultDelay = const Duration(milliseconds: 1000);
 
       var responseReturned = false;
       final responseFuture = testClient.request("/hello").get();
       // ignore: unawaited_futures
       responseFuture.whenComplete(() => responseReturned = true);
 
-      await Future.delayed(Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 100));
       expect(responseReturned, false);
-      await Future.delayed(Duration(milliseconds: 1500));
+      await Future.delayed(const Duration(milliseconds: 1500));
       expect(responseReturned, true);
     });
 
@@ -157,14 +158,14 @@ void main() {
       final outageResponseFuture = testClient.request("/outage").get();
 
       // Introduce a delay to ensure that the /outage request gets there before /success
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       final successResponse = await testClient.request("/success").get();
 
       expect(successResponse.statusCode, 200);
 
       expect(
-          outageResponseFuture.timeout(Duration(milliseconds: 100),
-              onTimeout: () {}),
+          outageResponseFuture.timeout(const Duration(milliseconds: 100),
+              onTimeout: () => Future.value(null)),
           completes);
     });
 
@@ -177,7 +178,7 @@ void main() {
       final outageResponseFuture3 = testClient.request("/outage").get();
 
       // Introduce a delay to ensure that the /outage request gets there before /success
-      await Future.delayed(Duration(seconds: 1));
+      await Future.delayed(const Duration(seconds: 1));
       final successResponse = await testClient.request("/success").get();
 
       expect(successResponse.statusCode, 200);
@@ -205,5 +206,4 @@ Future spawnFunc(List pair) async {
   final testClient = Agent.onPort(4000);
   sleep(Duration(seconds: delay));
   await testClient.request(path).get().catchError((_) => null);
-
 }

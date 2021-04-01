@@ -199,9 +199,6 @@ class _TestModel {
 
   ManagedSet<RefModel> ref;
 
-  static String tableName() {
-    return "simple";
-  }
 
   @override
   String toString() {

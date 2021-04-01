@@ -114,9 +114,9 @@ class ManagedEntityRuntimeImpl extends ManagedEntityRuntime
               .getSubclassesOf(Validate)
               .any((subclass) =>
                   MirrorSystem.getName(subclass.simpleName) ==
-                  type.getDisplayString()) ||
-          type.getDisplayString() == "Validate";
-      final isInstanceOfColumn = type.getDisplayString() == "Column";
+                  type.getDisplayString(withNullability: true)) ||
+          type.getDisplayString(withNullability: true) == "Validate";
+      final isInstanceOfColumn = type.getDisplayString(withNullability: true) == "Column";
 
       if (isSubclassOrInstanceOfValidate) {
         importUris.add(annotation.element.source.uri);
