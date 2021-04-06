@@ -134,7 +134,6 @@ class Agent {
     final r = TestRequest._(_client)
       ..baseURL = baseURL
       ..path = path
-      .._client = _client
       ..contentType = contentType;
 
     r.headers.addAll(headers);

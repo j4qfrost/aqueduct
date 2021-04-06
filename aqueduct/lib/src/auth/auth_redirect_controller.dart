@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 
 import '../http/http.dart';
 import 'auth.dart';
@@ -45,7 +46,7 @@ abstract class AuthRedirectControllerDelegate {
 class AuthRedirectController extends ResourceController {
   /// Creates a new instance of an [AuthRedirectController].
   ///
-  /// [authServer] is the isRequired authorization server. If [delegate] is provided, this controller will return a login page for all GET requests.
+  /// [authServer] is the required authorization server. If [delegate] is provided, this controller will return a login page for all GET requests.
   AuthRedirectController(this.authServer,
       {this.delegate, this.allowsImplicit = true}) {
     acceptedContentTypes = [

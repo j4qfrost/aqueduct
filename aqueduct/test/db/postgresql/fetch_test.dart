@@ -500,6 +500,11 @@ class _TestModel {
   @Column(nullable: true, unique: true)
   String email;
 
+  // ignore: unused_element
+  static String tableName() {
+    return "simple";
+  }
+
   @override
   String toString() {
     return "TestModel: $id $name $email";
@@ -516,6 +521,11 @@ class _GenUser {
   String name;
 
   ManagedSet<GenPost> posts;
+
+  // ignore: unused_element
+  static String tableName() {
+    return "GenUser";
+  }
 }
 
 class GenPost extends ManagedObject<_GenPost> implements _GenPost {}

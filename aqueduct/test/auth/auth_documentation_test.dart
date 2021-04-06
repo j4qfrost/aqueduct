@@ -1,7 +1,8 @@
 import 'dart:io';
 
 import 'package:aqueduct/aqueduct.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 import 'package:test/test.dart';
 
 import 'package:aqueduct/src/dev/helpers.dart';

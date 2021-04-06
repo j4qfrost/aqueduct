@@ -9,10 +9,11 @@ import 'package:aqueduct/src/http/controller.dart';
 import 'package:aqueduct/src/http/resource_controller.dart';
 import 'package:aqueduct/src/http/resource_controller_interfaces.dart';
 import 'package:aqueduct/src/http/serializable.dart';
-import 'package:aqueduct/src/openapi/documentable.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
 import 'package:aqueduct/src/runtime/resource_controller_impl.dart';
 import 'package:conduit_runtime/runtime.dart';
+import 'package:conduit_common/conduit_common.dart';
+
+import 'package:conduit_open_api/v3.dart';
 
 class ChannelRuntimeImpl extends ChannelRuntime implements SourceCompiler {
   ChannelRuntimeImpl(this.type);
@@ -262,6 +263,6 @@ class SerializableRuntimeImpl extends SerializableRuntime {
 
     throw ArgumentError(
         "Unsupported type '${MirrorSystem.getName(type.simpleName)}' "
-          "for 'APIComponentDocumenter.documentType'.");
+        "for 'APIComponentDocumenter.documentType'.");
   }
 }

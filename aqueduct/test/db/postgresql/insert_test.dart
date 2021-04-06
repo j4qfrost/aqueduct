@@ -574,6 +574,10 @@ class _TestModel {
 
   @Column(nullable: true, unique: true)
   String emailAddress;
+  // ignore: unused_element
+  static String tableName() {
+    return "simple";
+  }
 }
 
 class GenUser extends ManagedObject<_GenUser> implements _GenUser {}

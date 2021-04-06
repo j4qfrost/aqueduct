@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 import 'package:path/path.dart' as path;
 import 'http.dart';
 
@@ -40,10 +41,10 @@ class FileController extends Controller {
   ///
   /// Note that the 'Last-Modified' header is always applied to a response served from this instance.
   FileController(String pathOfDirectoryToServe,
-    {FutureOr<Response> onFileNotFound(
-      FileController controller, Request req)})
-    : _servingDirectory = Uri.directory(pathOfDirectoryToServe),
-      _onFileNotFound = onFileNotFound;
+      {FutureOr<Response> onFileNotFound(
+          FileController controller, Request req)})
+      : _servingDirectory = Uri.directory(pathOfDirectoryToServe),
+        _onFileNotFound = onFileNotFound;
 
   static Map<String, ContentType> _defaultExtensionMap = {
     /* Web content */

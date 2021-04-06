@@ -2,7 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:aqueduct/src/application/service_registry.dart';
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_common/conduit_common.dart';
+import 'package:conduit_open_api/v3.dart';
 import 'package:logging/logging.dart';
 import 'package:meta/meta.dart';
 import 'package:conduit_runtime/runtime.dart';
@@ -268,7 +269,7 @@ class ApplicationMessageHub extends Stream<dynamic> implements Sink<dynamic> {
 
 abstract class ChannelRuntime {
   Iterable<APIComponentDocumenter> getDocumentableChannelComponents(
-    ApplicationChannel channel);
+      ApplicationChannel channel);
 
   Type get channelType;
 
@@ -280,4 +281,3 @@ abstract class ChannelRuntime {
 
   Future runGlobalInitialization(ApplicationOptions config);
 }
-

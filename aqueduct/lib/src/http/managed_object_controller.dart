@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:aqueduct/src/openapi/openapi.dart';
+import 'package:conduit_open_api/v3.dart';
+import 'package:conduit_common/conduit_common.dart';
 
 import '../db/db.dart';
 import 'http.dart';

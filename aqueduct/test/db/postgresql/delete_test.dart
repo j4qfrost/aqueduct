@@ -199,7 +199,7 @@ class _TestModel {
   String email;
 
   ManagedSet<RefModel> ref;
-
+  
   @override
   String toString() {
     return "TestModel: $id $name $email";
