@@ -26,11 +26,6 @@ jobs:
           - 5432:5432
     steps:
     - uses: actions/checkout@v2
-    - name: Cache Dart dependencies
-      uses: actions/cache@v1
-      with:
-        path: ~/.pub-cache
-        key: dart-install-cache
     - uses: dart-lang/setup-dart@v1
       with:
         sdk: stable
@@ -60,11 +55,6 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v2
-      - name: Cache Dart dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.pub-cache
-          key: dart-install-cache
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: stable
@@ -90,11 +80,6 @@ jobs:
           - 5432:5432
     steps:
       - uses: actions/checkout@v2
-      - name: Cache Dart dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.pub-cache
-          key: dart-install-cache
       - uses: dart-lang/setup-dart@v1
         with:
           sdk: stable
