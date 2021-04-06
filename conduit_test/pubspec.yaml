@@ -1,0 +1,19 @@
+name: conduit_test
+description: Utilities for writing automated tests for Conduit applications
+version: 2.0.0-b1
+homepage: https://github.com/stablekernel/conduit
+author: stable|kernel <jobs@stablekernel.com>
+documentation:
+
+environment:
+  sdk: ">=2.10.0 <3.0.0"
+
+dependencies:
+  test: ^1.3.0
+  matcher: '>=0.12.3 <0.14.0'
+  conduit: ^2.0.0-b1
+
+# This is removed before being published.
+dependency_overrides:
+  conduit:
+    path: ../conduit
