@@ -2,7 +2,7 @@ name: conduit_dev_tools
 version: 2.0.0-b8
 description: Tools to make developing/testing conduit easier.
 environment: 
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.13.0 <3.0.0'
 dependencies: 
   conduit_common: ^2.0.0-b9
   dcli: ^1.5.1

@@ -2,7 +2,7 @@ name: conduit_ci
 version: 2.0.0-b9
 description: A simple command-line application.
 environment: 
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.13.0 <3.0.0'
 dependencies: 
   conduit_common: ^2.0.0-b9
   conduit_dev_tools: ^2.0.0-b9

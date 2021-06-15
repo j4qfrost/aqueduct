@@ -3,7 +3,7 @@ version: 2.0.0-b9
 homepage: https://github.com/conduit/dart-password-hash
 description: PBKDF2 password hashing utility
 environment: 
-  sdk: '>=2.12.0-0 <3.0.0'
+  sdk: '>=2.13.0-0 <3.0.0'
 dependencies: 
   crypto: ^3.0.0
 dev_dependencies: 

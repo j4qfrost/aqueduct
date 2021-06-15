@@ -3,7 +3,7 @@ version: 2.0.0-b9
 homepage: https://github.com/conduit-dart/common-test
 description: A collection of classes and function used for testing conduit and by the conduit test harness.
 environment: 
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.13.0 <3.0.0'
 dependencies: 
   conduit: ^2.0.0-b9
   conduit_common: ^2.0.0-b9

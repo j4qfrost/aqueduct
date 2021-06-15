@@ -3,7 +3,7 @@ version: 2.0.0-b9
 description: Common classes shared by conduit projects.
 repository: https://github.com/bsutton/conduit-orm
 environment: 
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.13.0 <3.0.0'
 dependencies: 
   conduit_open_api: ^2.0.0-b9
   dcli: ^1.5.1
